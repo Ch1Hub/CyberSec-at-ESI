@@ -1,0 +1,82 @@
+# Nmap 7.92 scan initiated Thu Oct  9 10:16:47 2025 as: nmap -sC -sV -p 1-1000 -oN nmapTest.txt 192.168.122.65
+Nmap scan report for 192.168.122.65
+Host is up (0.00031s latency).
+Not shown: 988 closed tcp ports (conn-refused)
+PORT    STATE SERVICE     VERSION
+21/tcp  open  ftp         vsftpd 2.3.4
+|_ftp-anon: Anonymous FTP login allowed (FTP code 230)
+| ftp-syst: 
+|   STAT: 
+| FTP server status:
+|      Connected to 192.168.122.1
+|      Logged in as ftp
+|      TYPE: ASCII
+|      No session bandwidth limit
+|      Session timeout in seconds is 300
+|      Control connection is plain text
+|      Data connections will be plain text
+|      vsFTPd 2.3.4 - secure, fast, stable
+|_End of status
+22/tcp  open  ssh         OpenSSH 4.7p1 Debian 8ubuntu1 (protocol 2.0)
+| ssh-hostkey: 
+|   1024 60:0f:cf:e1:c0:5f:6a:74:d6:90:24:fa:c4:d5:6c:cd (DSA)
+|_  2048 56:56:24:0f:21:1d:de:a7:2b:ae:61:b1:24:3d:e8:f3 (RSA)
+23/tcp  open  telnet      Linux telnetd
+25/tcp  open  smtp        Postfix smtpd
+| sslv2: 
+|   SSLv2 supported
+|   ciphers: 
+|     SSL2_RC4_128_EXPORT40_WITH_MD5
+|     SSL2_RC4_128_WITH_MD5
+|     SSL2_RC2_128_CBC_EXPORT40_WITH_MD5
+|     SSL2_RC2_128_CBC_WITH_MD5
+|     SSL2_DES_192_EDE3_CBC_WITH_MD5
+|_    SSL2_DES_64_CBC_WITH_MD5
+|_smtp-commands: metasploitable.localdomain, PIPELINING, SIZE 10240000, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, 8BITMIME, DSN
+|_ssl-date: 2025-10-09T09:18:39+00:00; 0s from scanner time.
+53/tcp  open  domain      ISC BIND 9.4.2
+| dns-nsid: 
+|_  bind.version: 9.4.2
+80/tcp  open  http        Apache httpd 2.2.8 ((Ubuntu) DAV/2)
+|_http-title: Metasploitable2 - Linux
+|_http-server-header: Apache/2.2.8 (Ubuntu) DAV/2
+111/tcp open  rpcbind     2 (RPC #100000)
+| rpcinfo: 
+|   program version    port/proto  service
+|   100000  2            111/tcp   rpcbind
+|   100000  2            111/udp   rpcbind
+|   100003  2,3,4       2049/tcp   nfs
+|   100003  2,3,4       2049/udp   nfs
+|   100005  1,2,3      36538/udp   mountd
+|   100005  1,2,3      45499/tcp   mountd
+|   100021  1,3,4      32997/udp   nlockmgr
+|   100021  1,3,4      55641/tcp   nlockmgr
+|   100024  1          35492/udp   status
+|_  100024  1          38258/tcp   status
+139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+512/tcp open  exec?
+513/tcp open  login
+514/tcp open  shell?
+| fingerprint-strings: 
+|   NULL: 
+|_    Couldn't get address for your host (fedora)
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port514-TCP:V=7.92%I=7%D=10/9%Time=68E77D80%P=x86_64-redhat-linux-gnu%r
+SF:(NULL,2D,"\x01Couldn't\x20get\x20address\x20for\x20your\x20host\x20\(fe
+SF:dora\)\n");
+Service Info: Host:  metasploitable.localdomain; OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+
+Host script results:
+|_smb-os-discovery: ERROR: Script execution failed (use -d to debug)
+|_ms-sql-info: ERROR: Script execution failed (use -d to debug)
+|_nbstat: NetBIOS name: METASPLOITABLE, NetBIOS user: <unknown>, NetBIOS MAC: <unknown> (unknown)
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+|_smb2-time: Protocol negotiation failed (SMB2)
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Thu Oct  9 10:18:40 2025 -- 1 IP address (1 host up) scanned in 112.79 seconds

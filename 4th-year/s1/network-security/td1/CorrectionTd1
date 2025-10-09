@@ -1,0 +1,27 @@
+exe1:
+ordering:
+confidentiality -> integrity -> availibility -> authenticity -> traceability
+
+exe2:
+1_ Availibility
+2_ Integrity
+3_ Availibility
+4_ confedentiality
+
+exe3:
+1_
+internal:
+_privelage escalation,
+_human error: updating wrong data...
+_data leaks
+
+external:
+_DDos attacks
+_ransomeware / malware
+_phishing attacks
+
+2_
+ensuring:
+confidentiality, integrity, availability, authenticity
+
+
