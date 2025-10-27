@@ -1,0 +1,14 @@
+1:
+cesar cypher with F as key:
+ALGORITHME -> FQLTWNYMRJ
+
+2:
+decryption with F key:
+FQWKBJCJVZ -> ALGORITHME
+
+3:
+nop,
+attacking methods:
+Brute force,
+known plaintext attack,
+
