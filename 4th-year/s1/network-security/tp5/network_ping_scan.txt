@@ -1,0 +1,7 @@
+# Nmap 7.92 scan initiated Wed Nov  5 10:01:32 2025 as: nmap -sn -oN network_ping_scan.txt 192.168.122.0/24
+Nmap scan report for 192.168.122.65
+Host is up (0.00045s latency).
+MAC Address: 52:54:00:DE:03:90 (QEMU virtual NIC)
+Nmap scan report for fedora (192.168.122.1)
+Host is up.
+# Nmap done at Wed Nov  5 10:01:34 2025 -- 256 IP addresses (2 hosts up) scanned in 2.81 seconds
