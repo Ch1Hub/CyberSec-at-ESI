@@ -1,0 +1,39 @@
+ 
+TP 06 
+Lab Title:  Comparative Study of Clustering Algorithms on Real -World Data  
+Objective:  In this lab, you will explore and  compare two clustering methods: K-means clustering and 
+hierarchical clustering , by sourcing a real dataset from the internet, applying both algorithms, and 
+drawing conclusions about their suitability.  
+Instructions:  
+1. Dataset Selection:  
+o Search the web (e.g., UCI Machine Learning Repository, Kaggle) for a dataset with at 
+least 3 numeric feat ures and 50+ instances . 
+o Briefly justify why the chosen dataset is appropriate for clustering.  
+2. Preprocessing  
+o Handle missing values as needed.  
+o Scale features (e.g., standardization).  
+o Select 2–4 key features  for visualization.  
+3. K-means Clustering  
+o Apply K -means  for several values of K (e.g., K = 2 to K = 5).  
+o Use the elbow method  and/or silhouette score  to recommend a suitable K.  
+o Visualize the resulting clusters in 2D.  
+4. Hierarchical Clustering  
+o Perform hierarchical clustering (e.g., single -linkage and complete -linkage).  
+o Compute and plot a Dendrogram . 
+o Determine an appropriate number of clusters by analyzing the dendrogram and 
+visualize the clusters obtained by cutting it.  
+5. Comparison and Analysis  
+o Compare the cluster assignments obtained from K -means and h ierarchical clustering.  
+o Discuss in which situations K -means aligns better with intuitive groupings and when 
+hierarchical clustering is more informative.  
+o Comment on cluster shapes, sizes, and sensitivity to outliers.  
+6. Report and Presentation  
+o Include key visu als: scatter plots of clusters, dendrogram(s), and any relevant 
+evaluation plots.  
+o Summarize which method appears more suitable for the chosen dataset and why.  
+o Reflect on limitations and possible improvements (e.g., feature selection, scaling, 
+choice of dis tance metric).  
+Note:  You may implement this lab using Python  (e.g., with scipy , scikit -learn , and related 
+libraries) or a visual workflow tool such as KNIME . 
+Submission  Link : https://forms.gle/F7atQVB7hcqUnEnN9  
+ Fundamentals of Artificial Intelligence  
