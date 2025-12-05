@@ -1,0 +1,2 @@
+This is a secret message that needs to be encrypted!
+Multiple lines test.

@@ -1,0 +1,161 @@
+"""
+===============================================================================
+  AUTHENTICATED FILE ENCRYPTION - QUICK REFERENCE
+===============================================================================
+
+IMPLEMENTATIONS:
+  - BLAKE2s-256: Custom hash function (no external crypto libs)
+  - HMAC-BLAKE2s: Message authentication
+  - AES-256: CBC and CTR modes (PyCryptodome)
+
+FILES:
+  blake2s.py          - BLAKE2s hash implementation
+  hmac_blake2s.py     - HMAC implementation
+  file_encryption.py  - Main application (interactive)
+  quick_encrypt.py    - Command-line tool
+  test_encryption.py  - Automated tests
+
+===============================================================================
+  USAGE
+===============================================================================
+
+INTERACTIVE:
+  python file_encryption.py
+
+COMMAND LINE:
+  # Encrypt
+  python quick_encrypt.py encrypt input.txt output.enc password123 CBC
+  python quick_encrypt.py encrypt input.txt output.enc password123 CTR
+  
+  # Decrypt
+  python quick_encrypt.py decrypt output.enc decrypted.txt password123
+
+PROGRAMMATIC:
+  from file_encryption import AuthenticatedFileEncryption
+  
+  enc = AuthenticatedFileEncryption()
+  
+  # Encrypt
+  enc.encrypt_file('secret.txt', 'secret.enc', 'pass', 'CBC')
+  
+  # Decrypt
+  enc.decrypt_file('secret.enc', 'decrypted.txt', 'pass')
+
+===============================================================================
+  HASH & HMAC FUNCTIONS
+===============================================================================
+
+BLAKE2s (256-bit hash):
+  from blake2s import blake2s_hex
+  
+  hash_value = blake2s_hex("data")              # String
+  hash_value = blake2s_hex(b"data")             # Bytes
+  
+HMAC-BLAKE2s (authentication):
+  from hmac_blake2s import hmac_blake2s_hex, verify_hmac
+  
+  mac = hmac_blake2s_hex(b"key", b"message")
+  valid = verify_hmac(b"key", b"message", mac)
+
+===============================================================================
+  FILE FORMAT
+===============================================================================
+
+  [Mode] [Salt] [IV] [Ciphertext] [HMAC-Tag]
+   3B     16B   16B   variable      32B
+
+  Mode: "CBC" or "CTR"
+  Salt: Random for key derivation
+  IV: Random initialization vector
+  Ciphertext: AES-256 encrypted data
+  HMAC-Tag: Authentication tag
+
+===============================================================================
+  KEY DERIVATION
+===============================================================================
+
+  password + salt → BLAKE2s → master_key
+  
+  encryption_key = BLAKE2s(master_key || "encryption")
+  hmac_key = BLAKE2s(master_key || "authentication")
+
+===============================================================================
+  SECURITY FEATURES
+===============================================================================
+
+  ✓ AES-256 encryption (CBC/CTR)
+  ✓ Password-based key derivation (BLAKE2s)
+  ✓ HMAC authentication (prevents tampering)
+  ✓ Random salt per encryption
+  ✓ Random IV per encryption
+  ✓ Authenticate-then-decrypt (no padding oracle)
+  ✓ Constant-time MAC comparison
+
+===============================================================================
+  TESTING
+===============================================================================
+
+  python test_encryption.py
+
+  Tests:
+    - CBC encryption/decryption
+    - CTR encryption/decryption
+    - Wrong password rejection
+    - Tampered file detection
+
+===============================================================================
+  EXAMPLES
+===============================================================================
+
+  # Encrypt with CBC
+  python quick_encrypt.py encrypt data.txt data.enc SecurePass CBC
+  
+  # Encrypt with CTR
+  python quick_encrypt.py encrypt data.txt data.enc SecurePass CTR
+  
+  # Decrypt
+  python quick_encrypt.py decrypt data.enc restored.txt SecurePass
+  
+  # Verify files match
+  diff data.txt restored.txt
+
+===============================================================================
+  ENCRYPTION MODES
+===============================================================================
+
+  CBC (Cipher Block Chaining):
+    - Traditional block mode
+    - PKCS7 padding added
+    - Larger output (padding)
+    - Sequential encryption
+  
+  CTR (Counter Mode):
+    - Stream cipher mode
+    - No padding needed
+    - Smaller output
+    - Can parallelize
+
+===============================================================================
+  BEST PRACTICES
+===============================================================================
+
+  ✓ Use strong passwords (12+ characters, mixed case, numbers, symbols)
+  ✓ Never reuse passwords
+  ✓ Don't store passwords in code
+  ✓ Keep encrypted files and passwords separate
+  ✓ Verify authentication before trusting decrypted data
+  ✓ Use CTR mode for files that don't need padding
+
+===============================================================================
+  INSTALLATION
+===============================================================================
+
+  pip install pycryptodome
+
+  Note: Only needed for AES. BLAKE2s and HMAC are custom implementations.
+
+===============================================================================
+"""
+
+if __name__ == "__main__":
+    print(__doc__)
