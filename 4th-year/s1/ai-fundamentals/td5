@@ -1,0 +1,27 @@
+task1:
+
+a_ -
+b_ -
+c_ +
+d_ the number of negative values are only 5, setting the k to a value more than the double of 5 will set get the answer to be always positive
+
+Task2:
+
+A: triangle OR square
+B: triangle
+C: square
+D: heart
+E: sqaure
+F: heart
+
+A:
+There's two triangle with distance of sqrt(2)
+and other two squares with distance of sqrt(2)
+
+
+C:
+it has a triangle with distance 1
+a square with distance 1
+another squre with distance sqrt(5)
+and a final star with distance sqrt(5)
+
