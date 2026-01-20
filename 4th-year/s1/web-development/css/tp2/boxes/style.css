@@ -1,0 +1,56 @@
+.container {
+    color: white;
+    margin: 5px;
+    display: inline-flex; 
+    justify-content: center; 
+    align-items: center; 
+    font-size: 2rem; 
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+@media screen and (min-width: 1400px) and (max-width: 1920px) {
+    .container {
+        background-color: rgb(255, 80, 80);
+        height: 150px;
+        width: 24%;
+    }
+}
+
+@media screen and (min-width: 800px) and (max-width: 1400px) {
+    .container {
+        background-color: rgb(69, 69, 255);
+        height: 150px;
+        width: 31%;
+    }
+}
+
+@media screen and (min-width: 420px) and (max-width: 800px) {
+    .container {
+        background-color: rgb(255, 232, 104);
+        height: 150px;
+        width: 47%;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .container {
+        background-color: grey;
+        height: 150px;
+        width: 90%;
+    }
+}
+
+@media print {
+    .container {
+        color: black;             
+        font-family: serif;       
+        font-size: 12pt;          
+        height: 150px;            
+        width: 100%;              
+        margin: 5px;              
+        display: block;           
+        text-align: center;       
+        line-height: 150px;       
+    }
+}

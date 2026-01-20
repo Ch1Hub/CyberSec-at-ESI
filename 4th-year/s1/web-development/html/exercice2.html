@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <main>
+        <form action="#" method="post" >
+            <fieldset>
+                <legend>Registration</legend>
+                <label for="fname">First Name:</label>
+                <input type="text" id="fname" name="fname" required maxlength="30" pattern="[A-Za-z]+" />
+                <br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" />
+                <br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required minlength="8" maxlength="20" pattern="(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}" />
+                <br>
+                <label for="birth">Birth Date:</label>
+                <input type="date" id="birth" name="birth" required min="1900-01-01" max="2025-10-08" />
+                <br>
+                <label for="country">Country:</label>
+                <select id="country" name="country" required>
+                    <option value="">Select a country</option>
+                    <option value="Algeria">Algeria</option>
+                    <option value="Tunisia">Tunisia</option>
+                    <option value="France">France</option>
+                    <option value="Morocco">Morocco</option>
+                    <option value="Canada">Canada</option>
+                </select>
+                <br>
+                <label for="countrySearch">Or search country:</label>
+                <input list="countries" id="countrySearch" name="countrySearch" />
+                <datalist id="countries">
+                    <option value="Algeria">
+                    <option value="Tunisia">
+                    <option value="France">
+                    <option value="Morocco">
+                    <option value="Canada">
+                </datalist>
+                <br>
+                <label for="photo">Upload Photo:</label>
+                <input type="file" id="photo" name="photo" required />
+                <br>
+                <progress value="0" max="100" id="progressBar"></progress>
+                <br>
+                <output id="formOutput">result:</output>
+                <br>
+                <button type="submit">Register</button>
+            </fieldset>
+        </form>
+    </main>
+</body>
+</html>

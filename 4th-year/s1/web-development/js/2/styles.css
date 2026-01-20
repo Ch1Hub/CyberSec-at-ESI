@@ -1,0 +1,16 @@
+p {
+  transition: all 0.3s ease;
+  font-size: 30px;
+}
+.bold {
+  font-weight: bold;
+}
+.italic {
+  font-style: italic;
+ }
+.red {
+  color: red;
+}
+.big {
+  font-size: 40px;
+}
