@@ -1,0 +1,16 @@
+# Example rule
+alert http any any -> any any (msg:"Example.com Access Detected"; content:"example.com"; sid:1000001; rev:1;)
+alert icmp any any -> any any (msg:"ICMP Echo Request Detected"; itype:8; sid:2000001; rev:1;)
+
+# Challenges:
+alert tcp any any -> any 22 (msg:"SSH Brute-Force Attempt"; flow:to_server,established; threshold:type both, track by_src, count 5, seconds 60; sid:1000002; rev:2;)
+alert http any any -> any any (msg:"Suspicious User-Agent Detected"; content:"sqlmap"; http_user_agent; nocase; sid:1000003; rev:1;)
+alert http any any -> any any (msg:"Executable File Download Detected (.exe)"; content:".exe"; http_uri; sid:1000004; rev:2;)
+alert http any any -> any any (msg:"SQL Injection Attempt Detected"; pcre:"/union\s+select|select.+from|or\s+1=1|--|%27/i"; sid:1000005; rev:4;)
+alert tcp any any -> any any (msg:"SYN Port Scan Detected"; flags:S; flow:stateless; threshold:type both, track by_src, count 20, seconds 10; sid:1000006; rev:2;)
+alert http any any -> any any (msg:"Suspicious .php Access Detected"; content:".php"; http_uri; nocase; sid:1000007; rev:2;)
+alert http any any -> any any (msg:"HTTP POST With JSON Payload"; content:"POST"; http_method; content:"application/json"; http_header; sid:1000008; rev:2;)
+
+# IPS drop rules 
+drop icmp any any -> any any (msg:"ICMP ping blocked by Suricata"; sid:3000001; rev:1;)
+drop http any any -> any any (msg:"PHP access blocked by Suricata"; flow:to_server,established; http.uri; content:".php"; nocase; sid:3000002; rev:1;)

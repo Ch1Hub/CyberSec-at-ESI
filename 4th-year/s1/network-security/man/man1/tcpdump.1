@@ -1,0 +1,32 @@
+.TH TCPDUMP 1 "December 2024" "Network Security" "Lab Commands"
+.SH NAME
+tcpdump_lab \- Customized tcpdump commands for Network Traffic Analysis Lab
+.SH DESCRIPTION
+Key tcpdump commands and BPF filters for capturing and analyzing
+network packets (Lab Sheet 4: Part 1 & Part 2).
+.SH BASIC COMMANDS
+.TP
+.B Capture on interface eth0 (real time)
+sudo tcpdump -i eth0
+.TP
+.B Save capture to file
+sudo tcpdump -i eth0 -w capture.pcap
+.TP
+.B Read packets from file
+tcpdump -r capture.pcap
+.TP
+.B Detailed output (no name resolution)
+sudo tcpdump -nn -vvv -i eth0
+.SH LAB CHALLENGES (Filters)
+.TP
+.B Targeted capture (exercise 1)
+sudo tcpdump -i eth0 -c 50 host TARGET_IP and host KALI_IP
+.TP
+.B Capture rotation (exercise 4)
+sudo tcpdump -i eth0 -C 10 -W 5 -w /tmp/capture.pcap
+.TP
+.B Clear-text credentials (FTP/Telnet)
+sudo tcpdump -i eth0 -w /tmp/creds.pcap tcp port 23 or tcp port 21
+.SH AUTHOR
+Exam preparation cheat-sheet.
+

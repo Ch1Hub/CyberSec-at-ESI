@@ -1,0 +1,31 @@
+.TH ACL_QUICKREF 1 "December 2024" "Network Security" "Lab Commands"
+.SH NAME
+acl_quickref_lab \- Quick reference for ACL permissions codes
+.SH DESCRIPTION
+Permission codes used in ACLs.
+.SH CODES
+.TP
+.B r
+Read permission
+.TP
+.B w
+Write permission
+.TP
+.B x
+Execute permission
+.TP
+.B rwx
+Full permissions
+.TP
+.B ---
+No permissions
+.SH LAB CHALLENGES
+.TP
+.B Set read/write only for owner, no access for others
+chmod 600 file.txt
+.TP
+.B Give execute to everyone
+chmod a+x script.sh
+.SH AUTHOR
+Exam preparation cheat-sheet.
+

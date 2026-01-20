@@ -1,0 +1,25 @@
+.TH ACL_CHOWN 1 "December 2024" "Network Security" "Lab Commands"
+.SH NAME
+acl_chown_lab \- chown command quick lab reference
+.SH DESCRIPTION
+Change ownership of files and directories (Lab Sheet: ACL Exercises).
+.SH COMMANDS
+.TP
+.B Change owner
+chown alice file.txt
+.TP
+.B Change owner and group
+chown alice:staff file.txt
+.TP
+.B Change recursively
+chown -R alice:staff /project/
+.SH LAB CHALLENGES
+.TP
+.B Give ownership of a directory to user bob
+chown bob /shared/
+.TP
+.B Give ownership to user+group recursively
+chown -R alice:developers /project/
+.SH AUTHOR
+Exam preparation cheat-sheet.
+

@@ -1,0 +1,51 @@
+.TH UFW 1 "December 2024" "Network Security" "Lab Commands"
+.SH NAME
+ufw \- Customized UFW commands for Network Security Lab
+.SH DESCRIPTION
+This manual provides simplified UFW commands needed in common
+network security lab scenarios (Lab Sheet 8: Part 0 & Part 2).
+.SH COMMANDS
+.SS Enable / Status / Reset
+.TP
+.B sudo ufw enable
+Enable the firewall.
+.TP
+.B sudo ufw status numbered
+Show active rules with numbers.
+.TP
+.B sudo ufw disable
+Disable the firewall.
+.SS Basic Rules
+.TP
+.B Allow SSH
+sudo ufw allow ssh
+.br
+(or sudo ufw allow 22/tcp)
+.TP
+.B Block a port
+sudo ufw deny 80/tcp
+.TP
+.B Allow a port with protocol
+sudo ufw allow 8080/tcp
+.TP
+.B Delete a rule
+sudo ufw delete NUM
+.SH LAB CHALLENGES
+.SS 1. Block all incoming traffic (default deny)
+.TP
+sudo ufw default deny incoming
+.br
+sudo ufw allow icmp from any
+.br
+(Allow only ping)
+.SS 2. Allow only port 8080/tcp
+.TP
+sudo ufw default deny incoming
+.br
+sudo ufw allow 8080/tcp
+.SS 3. Deny SSH from a specific subnet
+.TP
+sudo ufw deny from 192.168.1.0/24 to any port 22 proto tcp
+.SH AUTHOR
+Exam preparation cheat-sheet.
+

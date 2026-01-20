@@ -1,0 +1,29 @@
+.TH NMAP 1 "December 2024" "Network Security" "Lab Commands"
+.SH NAME
+nmap_lab \- Customized Nmap commands for Practical System Audit Lab
+.SH DESCRIPTION
+Key Nmap commands used for network scanning and basic vulnerability
+assessment (Lab Sheet 5: Part 2, Step 1).
+.SH BASIC SCANNING
+.TP
+.B Discover active hosts
+nmap -sn Network_IP/24
+.TP
+.B Identify open ports
+nmap TARGET_IP
+.SH ADVANCED SCANS
+.TP
+.B Service version and default scripts
+nmap -sV -sC -T4 TARGET_IP
+.TP
+.B Vulnerability scripts (search for known CVEs)
+nmap --script vuln TARGET_IP
+.TP
+.B Operating system detection
+nmap -O TARGET_IP
+.TP
+.B Aggressive scan (no ping) on common ports
+nmap -A -Pn -p22,80,139,445 TARGET_IP
+.SH AUTHOR
+Exam preparation cheat-sheet.
+

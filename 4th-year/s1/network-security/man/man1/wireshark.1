@@ -1,0 +1,48 @@
+.TH WIRESHARK 1 "December 2024" "Network Security" "Lab Commands"
+.SH NAME
+wireshark_lab \- Customized Wireshark display filters for lab analysis
+.SH DESCRIPTION
+Essential Wireshark display filters for quick packet analysis
+(Lab Sheet 4: Part 1).
+.SH DISPLAY FILTERS
+.TP
+.B All packets involving a specific IP
+ip.addr == 192.168.56.101
+.TP
+.B HTTP traffic only
+tcp.port == 80
+.br
+(or simply: http)
+.TP
+.B DNS traffic only
+dns
+.TP
+.B Unencrypted FTP or Telnet
+ftp or telnet
+.TP
+.B TCP retransmissions
+tcp.analysis.retransmission
+.TP
+.B HTTP GET requests only
+http.request.method == "GET"
+.SH LAB CHALLENGES
+.TP
+.B Identify TCP flows (exercise 2)
+Use: tcp.flags.syn==1 and tcp.flags.ack==0
+.br
+(Initial SYN packets)
+.TP
+.B Extract credentials (exercise 3)
+Filter: telnet or ftp
+.br
+(Inspect raw payload in "Packet Details")
+.TP
+.B Detect suspicious activity (exercise 5)
+Use filters:
+.br
+icmp
+.br
+tcp.analysis.flags
+.SH AUTHOR
+Exam preparation cheat-sheet.
+

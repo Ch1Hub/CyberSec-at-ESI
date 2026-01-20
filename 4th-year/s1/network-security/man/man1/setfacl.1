@@ -1,0 +1,33 @@
+.TH ACL_SETFACL 1 "December 2024" "Network Security" "Lab Commands"
+.SH NAME
+acl_setfacl_lab \- setfacl command quick lab reference
+.SH DESCRIPTION
+Set ACL permissions for users/groups on files and directories.
+.SH COMMANDS
+.TP
+.B Add/modify ACL for user
+setfacl -m u:alice:rwx file.txt
+.TP
+.B Add/modify ACL for group
+setfacl -m g:staff:rw- file.txt
+.TP
+.B Remove a user ACL
+setfacl -x u:alice file.txt
+.TP
+.B Remove all ACLs
+setfacl -b file.txt
+.TP
+.B Set default ACL on directory (inherit)
+setfacl -m d:u:alice:rwx /shared/
+.SH LAB CHALLENGES
+.TP
+.B Give user bob read/write on a directory, all new files inherit
+setfacl -m u:bob:rw- /shared/
+.br
+setfacl -m d:u:bob:rw- /shared/
+.TP
+.B Remove ACL for group interns recursively
+setfacl -R -x g:interns /project/
+.SH AUTHOR
+Exam preparation cheat-sheet.
+
