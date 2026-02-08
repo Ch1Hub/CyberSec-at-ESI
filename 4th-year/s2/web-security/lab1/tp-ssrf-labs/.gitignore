@@ -1,0 +1,5 @@
+# Crée un fichier .gitignore
+"__pycache__/" | Out-File .gitignore -Encoding utf8
+"*.pyc" | Out-File -Append .gitignore
+".venv/" | Out-File -Append .gitignore
+".idea/" | Out-File -Append .gitignore
