@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">📋 Server Outgoing Traffic Monitor</h2>
+    <div class="alert alert-info">
+        Ceci est une page de simulation. Dans un cas réel, ces logs seraient visibles sur votre serveur d'attaque (ex: Webhook.site ou Burp Collaborator).
+    </div>
+    
+    <table class="table table-dark table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Target URL (From Referer)</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.time }}</td>
+                <td style="word-break: break-all; color: #0d6efd;">{{ log.target }}</td>
+                <td>
+                    {% if "SUCCESS" in log.status %}
+                        <span class="badge bg-success">{{ log.status }}</span>
+                    {% elif "PENDING" in log.status %}
+                        <span class="badge bg-warning">{{ log.status }}</span>
+                    {% else %}
+                        <span class="badge bg-danger">{{ log.status }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3" class="text-center text-muted">No outgoing requests recorded yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="text-center mt-3">
+        <a href="/admin/analytics-monitor" class="btn btn-secondary">Refresh Logs</a>
+    </div>
+</div>
+{% endblock %}

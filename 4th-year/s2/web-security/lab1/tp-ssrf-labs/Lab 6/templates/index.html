@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="text-center mb-5">
+    <span class="badge bg-warning text-dark mb-2">SECURITY LAB 6</span>
+    <span class="badge bg-secondary mb-2">DIFFICULTY: PRACTITIONER</span>
+    <h1>TP SSRF (LAB 6)</h1>
+    <h3 class="text-muted">Blind SSRF with out-of-band detection</h3>
+    <p class="lead mt-3">
+        Ce site utilise un logiciel d'analyse qui récupère l'URL spécifiée dans l'en-tête <code>Referer</code> lorsqu'une page produit est chargée.<br>
+        <strong>Problème :</strong> Vous ne verrez aucune réponse s'afficher sur la page (C'est "Aveugle").<br>
+        <strong>Mission :</strong> Faire en sorte que le serveur envoie une requête HTTP vers un système externe que vous contrôlez.
+    </p>
+    <a href="/admin/analytics-monitor" class="btn btn-outline-info mt-2">
+        🛠️ Ouvrir le moniteur de logs (Simulation Burp Collaborator)
+    </a>
+</div>
+
+<div class="row">
+    {% for p in products %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <img src="{{ p.image }}" class="card-img-top p-3" alt="{{ p.name }}" style="height: 200px; object-fit: contain;">
+            <div class="card-body">
+                <h5 class="card-title">{{ p.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ p.price }}</h6>
+                <p class="card-text">{{ p.desc }}</p>
+                <a href="/product/{{ p.id }}" class="btn btn-primary w-100">View Details</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
