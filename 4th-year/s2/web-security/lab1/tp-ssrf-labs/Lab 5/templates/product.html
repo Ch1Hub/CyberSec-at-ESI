@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h2>{{ product.name }}</h2>
+            <h4 class="text-success">{{ product.price }}</h4>
+            <p>{{ product.desc }}</p>
+            
+            <div class="mb-4">
+                <a href="/product/nextProduct?path={{ next_path }}" class="btn btn-outline-secondary btn-sm">
+                    ➡️ Next Product
+                </a>
+            </div>
+
+            <hr>
+            
+            <div class="card bg-light p-3">
+                <h5>Check Availability</h5>
+                <form action="/check-stock" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label small text-muted">Stock Check API (Local Only):</label>
+                        <input type="text" name="stockApi" class="form-control" value="{{ stock_api }}">
+                    </div>
+                    <button type="submit" class="btn btn-warning">Check Stock</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

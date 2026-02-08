@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="text-center mb-5">
+    <span class="badge bg-danger mb-2">SECURITY LAB 5</span>
+    <span class="badge bg-secondary mb-2">DIFFICULTY: PRACTITIONER</span>
+    <h1>TP SSRF (LAB 5)</h1>
+    <h3 class="text-muted">SSRF Filter Bypass via Open Redirection</h3>
+    <p class="lead mt-3">
+        Le Stock Checker est verrouillé : il n'accepte que des URL locales.<br>
+        Cependant, une faille de redirection ouverte (Open Redirect) existe ailleurs sur le site.<br>
+        <strong>Mission :</strong> Combinez les deux failles pour atteindre <code>192.168.0.12:8080/admin</code> et supprimer <strong>DELLAA Abderrahmen</strong>.
+    </p>
+</div>
+
+<div class="row">
+    {% for p in products %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <img src="{{ p.image }}" class="card-img-top p-3" alt="{{ p.name }}" style="height: 200px; object-fit: contain;">
+            <div class="card-body">
+                <h5 class="card-title">{{ p.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ p.price }}</h6>
+                <p class="card-text">{{ p.desc }}</p>
+                <a href="/product/{{ p.id }}" class="btn btn-primary w-100">View Details</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
