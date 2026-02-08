@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="text-center mb-5">
+    <span class="badge bg-warning text-dark mb-2">SECURITY LAB 2</span>
+    <h1>TP SSRF (LAB 2)</h1>
+    <h3 class="text-muted">Basic SSRF against another back-end system</h3>
+    <p class="lead mt-3">
+        L'interface d'administration n'est plus sur <code>localhost</code>.<br>
+        Elle se trouve quelque part sur le réseau interne <code>192.168.0.X</code> au port <code>8080</code>.<br>
+        Scannez le réseau pour la trouver !
+    </p>
+</div>
+
+<div class="row">
+    {% for p in products %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <img src="{{ p.image }}" class="card-img-top p-3" alt="{{ p.name }}" style="height: 200px; object-fit: contain;">
+            <div class="card-body">
+                <h5 class="card-title">{{ p.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ p.price }}</h6>
+                <p class="card-text">{{ p.desc }}</p>
+                <a href="/product/{{ p.id }}" class="btn btn-primary w-100">View Details</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
