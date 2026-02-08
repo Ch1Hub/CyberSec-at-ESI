@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Webhook Connectivity Tester</h4>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    Use this tool to debug your webhooks. Our server will send a <code>GET</code> request 
+                    to the URL you provide to verify reachability from our infrastructure.
+                </p>
+                
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="url" class="form-label">Target Endpoint URL:</label>
+                        <input type="text" class="form-control" id="url" name="url" 
+                               placeholder="http://your-server.com/callback" required>
+                        <div class="form-text text-muted">
+                            Supported protocols: HTTP, HTTPS. 
+                            <span class="text-danger">Internal IP ranges are restricted.</span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Test Connectivity</button>
+                </form>
+
+                {% if message %}
+                <hr>
+                <div class="alert alert-info mt-3" role="alert">
+                    <strong>Status:</strong> {{ message }}
+                </div>
+                {% endif %}
+            </div>
+            <div class="card-footer text-muted small">
+                Node ID: worker-public-01 | Network: 172.20.0.0/24
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

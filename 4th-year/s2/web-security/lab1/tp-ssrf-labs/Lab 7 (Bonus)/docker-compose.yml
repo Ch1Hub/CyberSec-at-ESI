@@ -1,0 +1,24 @@
+version: '3'
+services:
+  public-app:
+    build: ./public-app
+    ports:
+      - "5000:5000"
+    networks:
+      - internal_net
+    environment:
+      - FLASK_ENV=production
+
+  internal-admin:
+    build: ./internal-admin
+    networks:
+      internal_net:
+        ipv4_address: 172.20.0.10 # On fixe l'IP pour que ce soit scanable (mais dur)
+    # Le flag est généré ici au démarrage
+    command: /bin/sh -c "echo 'ESI-SBA{Blind_SSRF_'$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12)'}' > /flag.txt && python app.py"
+
+networks:
+  internal_net:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
