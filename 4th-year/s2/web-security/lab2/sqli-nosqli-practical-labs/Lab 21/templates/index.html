@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge" style="background-color: #00ed64; color: #000;">LAB 21: NoSQL INJECTION</span>
+    <h2 class="mt-2">Detecting NoSQL Injection (MongoDB)</h2>
+    <p class="text-muted">
+        The product category filter is powered by a MongoDB database using the dangerous <code>$where</code> operator.<br>
+        <strong>Goal:</strong> Display unreleased products.
+    </p>
+
+    <div class="btn-group mb-4" role="group">
+        <a href="/?category=Gifts" class="btn btn-outline-dark {% if current_cat == 'Gifts' %}active{% endif %}">Gifts</a>
+        <a href="/?category=Tech" class="btn btn-outline-dark {% if current_cat == 'Tech' %}active{% endif %}">Tech</a>
+        <a href="/?category=Furniture" class="btn btn-outline-dark {% if current_cat == 'Furniture' %}active{% endif %}">Furniture</a>
+    </div>
+
+    {% if error %}
+    <div class="alert alert-danger font-monospace text-start mx-auto" style="max-width: 600px;">
+        <strong><i class="bi bi-exclamation-triangle"></i> Database Error:</strong><br>
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <div class="row justify-content-center">
+        {% for product in products %}
+        <div class="col-md-4 mb-3">
+            <div class="card h-100 {% if not product.released %}border-danger bg-light{% endif %}">
+                <div class="card-header d-flex justify-content-between">
+                    <span>{{ product.category }}</span>
+                    {% if not product.released %}
+                    <span class="badge bg-danger">UNRELEASED</span>
+                    {% else %}
+                    <span class="badge bg-success">RELEASED</span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description }}</p>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <p class="text-muted">No products found.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
