@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-4">
+    <span class="lab-badge">LAB 08: DATA RETRIEVAL</span>
+    <h2 class="mt-2">Steal the Admin Password</h2>
+    <p class="text-muted">
+        The database contains a <code>users</code> table (columns: <code>username</code>, <code>password</code>).<br>
+        Use a <strong>UNION attack</strong> to display these credentials in the product list below.
+    </p>
+    <a href="/login" class="btn btn-outline-primary btn-sm mt-2">I have the password</a>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="list-group shadow-sm">
+            <div class="list-group-item bg-light fw-bold">Categories</div>
+            <a href="/?category=All" class="list-group-item list-group-item-action">All Products</a>
+            <a href="/?category=Software" class="list-group-item list-group-item-action">Software</a>
+            <a href="/?category=Hardware" class="list-group-item list-group-item-action">Hardware</a>
+        </div>
+        
+        {% if error %}
+        <div class="alert alert-danger mt-3 small border-danger">
+            <strong>SQL Error:</strong><br>
+            {{ error }}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-9">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for p in products %}
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">{{ p.name }}</h5>
+                        
+                        <div class="card-text text-muted bg-light p-2 rounded">
+                            {{ p.description }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12 text-center py-5">
+                <h4 class="text-muted">No products found.</h4>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
