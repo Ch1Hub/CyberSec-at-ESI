@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow border-0">
+            <div class="card-body p-5 text-center">
+                
+                {% if user.username == 'administrator' %}
+                    <div class="display-1 text-success mb-3">🔓</div>
+                    <h2 class="text-success fw-bold">Authentication Bypassed!</h2>
+                    <p class="lead">Welcome back, Administrator.</p>
+                    
+                    <div class="alert alert-success mt-4 p-4 border-2 border-success">
+                        <h4>🎉 CONGRATULATIONS!</h4>
+                        <p>You have successfully exploited the SQL Injection vulnerability.</p>
+                        <hr>
+                        <strong>YOUR FLAG:</strong>
+                        <code class="fs-4 bg-white px-2 py-1 rounded border">ESI-SBA{L0G1N_BYP4SS_M4ST3R}</code>
+                    </div>
+
+                    <div class="mt-4 text-start bg-light p-3 rounded">
+                        <h5>Admin Confidential Data:</h5>
+                        <ul>
+                            <li><strong>System Status:</strong> Online</li>
+                            <li><strong>Database Users:</strong> 3 (admin, djamel, karim)</li>
+                            <li><strong>Server IP:</strong> 192.168.1.50</li>
+                        </ul>
+                    </div>
+
+                {% else %}
+                    <div class="display-1 text-warning mb-3">👤</div>
+                    <h2>Welcome, {{ user.username }}</h2>
+                    <p>You are logged in as a standard user.</p>
+                    <div class="alert alert-warning mt-4">
+                        <strong>Mission Status:</strong> Incomplete.<br>
+                        You need to log in as <code>administrator</code> to get the flag.
+                    </div>
+                {% endif %}
+
+                <a href="/logout" class="btn btn-outline-secondary mt-3">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
