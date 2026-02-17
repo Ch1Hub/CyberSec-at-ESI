@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-4">
+    <span class="lab-badge">LAB 04: DATABASE MAPPING</span>
+    <h2 class="mt-2">Extracting Sensitive Data</h2>
+    <p class="text-muted">
+        The database contains a hidden table with user credentials.<br>
+        Find the table name, the column names, and finally the Administrator's password.
+    </p>
+    <a href="/login" class="btn btn-outline-primary btn-sm mt-2">Go to Login Page</a>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="list-group shadow-sm">
+            <div class="list-group-item bg-light fw-bold">Categories</div>
+            <a href="/?category=All" class="list-group-item list-group-item-action">All Products</a>
+            <a href="/?category=Hardware" class="list-group-item list-group-item-action">Hardware</a>
+            <a href="/?category=Software" class="list-group-item list-group-item-action">Software</a>
+        </div>
+        {% if error %}
+        <div class="alert alert-danger mt-3 small">SQL Error: {{ error }}</div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-9">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for p in products %}
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">{{ p.name }}</h5>
+                        <p class="card-text text-muted">{{ p.description }}</p>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12 text-center py-5"><h4 class="text-muted">No products found.</h4></div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
