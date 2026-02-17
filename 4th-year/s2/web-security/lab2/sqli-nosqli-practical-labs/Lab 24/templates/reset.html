@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-4">
+        <h3>Reset Password for {{ user }}</h3>
+        <form action="/reset" method="POST">
+            <input type="hidden" name="token" value="{{ token }}">
+            <div class="mb-3">
+                <label>New Password</label>
+                <input type="password" name="new_password" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success w-100">Change Password</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

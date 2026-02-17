@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h2>Forgot Password</h2>
+    <p>Please enter your email to reset password.</p>
+    <form> <input type="email" placeholder="Email" class="form-control w-25 mx-auto mb-2">
+        <button type="button" class="btn btn-secondary">Send Email</button>
+    </form>
+    <div class="alert alert-warning mt-4 d-inline-block">
+        <strong>Hint:</strong> Try adding parameters to the URL.<br>
+        <code>/forgot-password?token_name=invalid</code>
+    </div>
+</div>
+{% endblock %}
