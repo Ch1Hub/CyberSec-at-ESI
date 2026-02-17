@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_SECRET: "oob_exfil_secret"
+    networks:
+      - cys-net
+
+networks:
+  cys-net:

