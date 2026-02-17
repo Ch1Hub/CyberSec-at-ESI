@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge" style="background-color: #6f42c1;">LAB 15: OOB SQLi</span>
+    <h2 class="mt-2">Blind SQL Injection (Out-Of-Band)</h2>
+    <p class="text-muted">
+        This application simulates an <strong>Oracle</strong> environment.<br>
+        The vulnerability allows you to force the server to perform a DNS/HTTP request to an external domain.
+    </p>
+
+    <div class="alert alert-info d-inline-block mt-3">
+        <strong>Scenario:</strong> Inject an XXE payload inside the SQL query to trigger a callback.<br>
+        Use <strong>Burp Collaborator</strong> OR the <a href="/logs" class="alert-link">internal log viewer</a>.
+    </div>
+    
+    <div class="mt-5">
+        <a href="/logs" class="btn btn-outline-dark">
+            <i class="bi bi-list-ul"></i> View Server Interaction Logs
+        </a>
+        <p class="small text-muted mt-2">(Use this if you don't have Burp Professional)</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4">📡 Server Interaction Logs</h2>
+    <p>If your injection works, the server will try to contact the domain you specified.</p>
+    
+    <div class="table-responsive">
+        <table class="table table-striped border">
+            <thead class="table-dark">
+                <tr>
+                    <th>Time</th>
+                    <th>Target URL (Extracted from Payload)</th>
+                    <th>DNS Resolution</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.time }}</td>
+                    <td class="font-monospace text-primary">{{ log.target }}</td>
+                    <td>{{ log.dns_resolved or 'N/A' }}</td>
+                    <td>
+                        {% if 'Success' in log.status %}
+                        <span class="badge bg-success">{{ log.status }}</span>
+                        {% else %}
+                        <span class="badge bg-danger">{{ log.status }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-3">No interactions detected yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center mt-3">
+        <a href="/" class="btn btn-primary">Back to Lab</a>
+        <a href="/logs" class="btn btn-secondary">Refresh Logs</a>
+    </div>
+</div>
+{% endblock %}
