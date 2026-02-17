@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="display-4">Welcome, <span class="text-primary">{{ user }}</span>!</h1>
+    
+    {% if user == 'administrator' %}
+        <div class="alert alert-success mt-4 d-inline-block">
+            <h4 class="alert-heading"><i class="bi bi-trophy-fill"></i> LAB SOLVED!</h4>
+            <p class="mb-0">You have successfully bypassed authentication as Admin.</p>
+        </div>
+    {% else %}
+        <div class="alert alert-secondary mt-4 d-inline-block">
+            <p class="mb-0">You are logged in as a standard user.<br>Try to log in as <strong>administrator</strong>.</p>
+        </div>
+    {% endif %}
+
+    <div class="mt-4">
+        <a href="/logout" class="btn btn-outline-danger">Logout</a>
+    </div>
+</div>
+{% endblock %}

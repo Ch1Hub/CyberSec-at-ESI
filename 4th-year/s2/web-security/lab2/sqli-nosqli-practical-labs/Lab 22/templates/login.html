@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-5">
+        <div class="text-center mb-4">
+            <span class="lab-badge" style="background-color: #00ed64; color: black;">LAB 22: NoSQL AUTH BYPASS</span>
+            <h2 class="mt-2">Login Area</h2>
+            <p class="text-muted">Log in as <strong>administrator</strong>.</p>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" value="wiener">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" value="peter">
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Log In</button>
+                    </div>
+                    <div id="error-msg" class="text-danger mt-3 text-center" style="display:none;"></div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="alert alert-light border mt-4">
+            <small>
+                <strong>Credentials:</strong> wiener / peter<br>
+                This form sends data as <code>application/json</code>.<br>
+                Intercept it to inject NoSQL operators.
+            </small>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Convert Form Data to JSON Object
+    const formData = {
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value
+    };
+
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            window.location.href = data.redirect;
+        } else {
+            const errDiv = document.getElementById('error-msg');
+            errDiv.innerText = data.message;
+            errDiv.style.display = 'block';
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});
+</script>
+{% endblock %}
