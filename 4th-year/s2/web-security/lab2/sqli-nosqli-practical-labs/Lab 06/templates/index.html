@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-4">
+    <span class="lab-badge">LAB 06: UNION ATTACK</span>
+    <h2 class="mt-2">Determine Column Count</h2>
+    <p class="text-muted">
+        To perform a UNION attack, your injected query must have the <strong>exact same number of columns</strong> as the original query.<br>
+        Use <code>UNION SELECT NULL...</code> to find the magic number.
+    </p>
+</div>
+
+{% if success_msg %}
+<div class="alert alert-success text-center shadow">
+    <h4>{{ success_msg }}</h4>
+    <p>The query structure is: <code>SELECT col1, col2, col3 FROM ...</code></p>
+</div>
+{% endif %}
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="list-group shadow-sm">
+            <div class="list-group-item bg-light fw-bold">Categories</div>
+            <a href="/?category=All" class="list-group-item list-group-item-action">All Products</a>
+            <a href="/?category=Accessories" class="list-group-item list-group-item-action">Accessories</a>
+            <a href="/?category=Monitors" class="list-group-item list-group-item-action">Monitors</a>
+            <a href="/?category=Office" class="list-group-item list-group-item-action">Office</a>
+        </div>
+        
+        {% if error %}
+        <div class="alert alert-danger mt-3 small border-danger">
+            <strong>SQL Error:</strong><br>
+            {{ error }}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-9">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for p in products %}
+            {% if p.name %}
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h5 class="card-title text-primary">{{ p.name }}</h5>
+                            <span class="badge bg-success">{{ p.price }}</span>
+                        </div>
+                        <p class="card-text text-muted mt-2">{{ p.description }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="col-12 text-center py-5">
+                <h4 class="text-muted">No products found.</h4>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
