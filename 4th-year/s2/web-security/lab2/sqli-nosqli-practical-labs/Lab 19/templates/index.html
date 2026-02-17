@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge" style="background-color: #6610f2;">LAB 19: AUTOMATED HEADER SQLi</span>
+    <h2 class="mt-2">Invisible Injection</h2>
+    <p class="text-muted">
+        This page looks static. There are no forms, no URL parameters.<br>
+        However, the server <strong>logs your visit</strong> for analytics.
+    </p>
+
+    <div class="card mx-auto mt-4" style="max-width: 500px;">
+        <div class="card-body">
+            <h1 class="display-4">👋 Welcome!</h1>
+            <p class="lead">We have logged your browser information.</p>
+            <hr>
+            <p class="small text-muted">
+                Your User-Agent has been saved to the database.<br>
+                (I hope you sanitized it...)
+            </p>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <code>sqlmap -u "http://localhost:5000" --level 3 --dbs</code>
+    </div>
+</div>
+{% endblock %}
