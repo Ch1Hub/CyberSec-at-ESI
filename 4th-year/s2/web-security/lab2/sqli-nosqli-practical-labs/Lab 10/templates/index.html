@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-4">
+    <span class="lab-badge">LAB 10: BLIND SQLi (BOOLEAN)</span>
+    <h2 class="mt-2">Conditional Responses</h2>
+    <p class="text-muted">
+        This application tracks your session using a cookie.<br>
+        It doesn't return data or errors, but a <strong>"Welcome back"</strong> message appears if the Tracking ID is valid.
+    </p>
+    <a href="/login" class="btn btn-outline-primary btn-sm mt-2">I have the password</a>
+</div>
+
+<div class="row justify-content-center mb-5">
+    <div class="col-md-8">
+        {% if show_welcome %}
+        <div class="alert alert-success shadow border-success border-3">
+            <h4 class="alert-heading mb-0">👋 Welcome back!</h4>
+            <p class="mb-0">We recognized your Tracking ID.</p>
+        </div>
+        {% else %}
+        <div class="alert alert-light border shadow-sm text-muted">
+            <h4 class="alert-heading mb-0">Example Shop</h4>
+            <p class="mb-0">Browsing as Guest (Tracking ID not found or Query Failed)</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row text-center">
+    <p class="lead">Use your tools (Burp Suite / Zap) to modify the <code>TrackingId</code> cookie.</p>
+    <div class="col-md-4 mx-auto">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h6>Logic:</h6>
+                <code>SELECT id FROM tracking WHERE id = 'YOUR_COOKIE'</code>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
