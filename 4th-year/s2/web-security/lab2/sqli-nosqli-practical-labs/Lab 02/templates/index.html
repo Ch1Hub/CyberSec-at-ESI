@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge">LAB 02: SQL INJECTION</span>
+    <h1 class="display-4 mt-3">Authentication Bypass</h1>
+    <p class="lead text-muted">
+        Can you log in as the Administrator without knowing the password?
+    </p>
+    
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-start">
+                    <h5 class="card-title text-primary"><i class="bi bi-flag"></i> 🎯 Mission Goal</h5>
+                    <p class="card-text">
+                        This application uses a vulnerable SQL query to verify user credentials.
+                        Your objective is to exploit this vulnerability to log in as the <code>administrator</code> user.
+                    </p>
+                    <hr>
+                    <div class="alert alert-warning">
+                        <small>
+                            <strong>Hint:</strong> The database processes the login query linearly. 
+                            How can you use SQL comments to ignore the password check?
+                        </small>
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="/login" class="btn btn-primary btn-lg px-5">Access Login Page</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

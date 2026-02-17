@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: lab02
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - cys-net
+
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASS: root
+      DB_NAME: lab02
+      # Clé secrète pour les sessions Flask (très important pour le login)
+      FLASK_SECRET: "S3cr3t_K3y_F0r_S3ss10ns_M4n4g3m3nt"
+    networks:
+      - cys-net
+
+networks:
+  cys-net:
