@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge" style="background-color: #fd7e14;">LAB 18: WAF EVASION</span>
+    <h2 class="mt-2">Protected Search</h2>
+    <p class="text-muted">
+        A strict WAF is protecting this endpoint.<br>
+        It blocks <strong>spaces</strong> and standard SQL keywords like <code>UNION</code>.
+    </p>
+
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-6">
+            <div class="list-group">
+                <a href="/?id=1" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">Product A</h5>
+                        <small>ID: 1</small>
+                    </div>
+                    <p class="mb-1">Standard item.</p>
+                </a>
+                <a href="/?id=2" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">Product B</h5>
+                        <small>ID: 2</small>
+                    </div>
+                    <p class="mb-1">Another standard item.</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-danger mt-5 d-inline-block">
+        <strong>Challenge:</strong> Bypass the filter to extract the hidden flag in the <code>secret</code> table.<br>
+        <em>Hint: Can you replace spaces with something else? Comments? Tabs?</em>
+    </div>
+</div>
+{% endblock %}
