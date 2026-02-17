@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="auth-card">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white text-center py-3">
+            <h4 class="mb-0">Secure Login</h4>
+        </div>
+        <div class="card-body p-4">
+            
+            {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <form method="POST" action="/login">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-center text-muted small py-3">
+            Forgot Password? Contact IT Support.
+        </div>
+    </div>
+</div>
+{% endblock %}
