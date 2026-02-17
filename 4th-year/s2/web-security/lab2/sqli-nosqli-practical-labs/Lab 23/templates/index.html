@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge" style="background-color: #fd7e14;">LAB 23: NoSQL BLIND EXTRACTION</span>
+    <h2 class="mt-2">User Lookup</h2>
+    <p class="text-muted">
+        Welcome <strong>{{ user.username }}</strong>.<br>
+        Use the tool below to verify if a user exists in the system.<br>
+        <em>(Powered by MongoDB $where)</em>
+    </p>
+
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-6">
+            <div class="input-group mb-3">
+                <input type="text" id="userInput" class="form-control" placeholder="Enter username (e.g. wiener)" value="wiener">
+                <button class="btn btn-outline-primary" type="button" id="lookupBtn">Check User</button>
+            </div>
+            
+            <div id="resultArea" class="mt-3"></div>
+        </div>
+    </div>
+    
+    <div class="alert alert-info mt-5 d-inline-block text-start">
+        <strong><i class="bi bi-info-circle"></i> Hint:</strong><br>
+        Try to inject boolean conditions.<br>
+        Target: Extract <strong>administrator</strong> password.<br>
+        Payload format: <code>user' && this.password[0]=='a</code>
+    </div>
+</div>
+
+<script>
+document.getElementById('lookupBtn').addEventListener('click', function() {
+    const user = document.getElementById('userInput').value;
+    const resultDiv = document.getElementById('resultArea');
+    
+    // Clear previous
+    resultDiv.innerHTML = '<div class="spinner-border text-primary" role="status"></div>';
+
+    // The vulnerability is in the GET parameter 'user'
+    fetch(`/user/lookup?user=${encodeURIComponent(user)}`)
+        .then(response => {
+            if (!response.ok) throw new Error("Could not find user");
+            return response.json();
+        })
+        .then(data => {
+            resultDiv.innerHTML = `
+                <div class="card border-success">
+                    <div class="card-body text-success">
+                        <h5 class="card-title"><i class="bi bi-check-circle"></i> User Found</h5>
+                        <p class="card-text">
+                            <strong>Username:</strong> ${data.username}<br>
+                            <strong>Role:</strong> ${data.role}<br>
+                            <strong>Email:</strong> ${data.email}
+                        </p>
+                    </div>
+                </div>`;
+        })
+        .catch(err => {
+            resultDiv.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="bi bi-x-circle"></i> Could not find user (or syntax error).
+                </div>`;
+        });
+});
+</script>
+{% endblock %}
