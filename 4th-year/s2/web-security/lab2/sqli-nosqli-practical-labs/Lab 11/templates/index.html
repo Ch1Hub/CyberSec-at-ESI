@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-4">
+    <span class="lab-badge" style="background-color: #d60000;">LAB 11: BLIND ERROR-BASED</span>
+    <h2 class="mt-2">Conditional Errors (Oracle Style)</h2>
+    <p class="text-muted">
+        This application uses an <strong>Oracle-compatible</strong> database structure.<br>
+        It does NOT display query results. However, if a SQL error occurs, the server crashes.
+    </p>
+    <a href="/login" class="btn btn-outline-danger btn-sm mt-2">Admin Login</a>
+</div>
+
+<div class="alert alert-success text-center shadow mt-4">
+    <h4 class="mb-0">HTTP 200 OK</h4>
+    <p class="mb-0">The application processed your request successfully.</p>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-6 mx-auto text-center text-muted">
+        <p>Try to make the database generate an error (like <code>1/0</code>) when a condition is TRUE.</p>
+    </div>
+</div>
+{% endblock %}
