@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-4">
+    <span class="lab-badge" style="background-color: #d60000;">LAB 05: ORACLE SQL INJECTION</span>
+    <h2 class="mt-2">Oracle Database Enumeration</h2>
+    <p class="text-muted">
+        This application runs on an <strong>Oracle Database</strong> (Simulated).<br>
+        Specific Oracle syntax is required (e.g., <code>FROM dual</code>).
+    </p>
+    <a href="/login" class="btn btn-outline-danger btn-sm mt-2">Go to Admin Login</a>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="list-group shadow-sm">
+            <div class="list-group-item bg-light fw-bold">Filters</div>
+            <a href="/?category=All" class="list-group-item list-group-item-action">All Products</a>
+            <a href="/?category=Software" class="list-group-item list-group-item-action">Software</a>
+            <a href="/?category=Hardware" class="list-group-item list-group-item-action">Hardware</a>
+        </div>
+        
+        {% if error %}
+        <div class="alert alert-warning mt-3 border-danger">
+            <strong>Database Error:</strong><br>
+            <code class="text-danger">{{ error }}</code>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-9">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for p in products %}
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">{{ p.name }}</h5>
+                        <p class="card-text text-muted">{{ p.description }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

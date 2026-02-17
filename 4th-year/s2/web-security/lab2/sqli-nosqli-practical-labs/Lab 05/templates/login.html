@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow border-0">
+            <div class="card-header bg-primary text-white text-center">
+                <h4>Admin Login</h4>
+            </div>
+            <div class="card-body p-4">
+                {% if success %}
+                    <div class="alert alert-success text-center">
+                        <h4>🎉 Mission Accomplished!</h4>
+                        <p>You successfully mapped the database and stole the credentials.</p>
+                        <strong>FLAG: {{ flag }}</strong>
+                    </div>
+                    <div class="text-center">
+                        <a href="/" class="btn btn-outline-success">Back to Shop</a>
+                    </div>
+                {% else %}
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endif %}
+                    <form method="POST" action="/login">
+                        <div class="mb-3">
+                            <label>Username</label>
+                            <input type="text" name="username" class="form-control" placeholder="administrator" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Password</label>
+                            <input type="password" name="password" class="form-control" placeholder="???" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
