@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge" style="background-color: #343a40;">LAB 14: BLIND DATA RETRIEVAL</span>
+    <h2 class="mt-2">Time-Based Exfiltration</h2>
+    <p class="text-muted">
+        The application is totally silent. <br>
+        <strong>Goal:</strong> Force the database to <code>sleep</code> ONLY IF a specific character of the admin password matches your guess.
+    </p>
+    <a href="/login" class="btn btn-outline-dark btn-sm mt-3">Enter Recovered Password</a>
+</div>
+
+<div class="card mx-auto mt-4 shadow" style="max-width: 400px;">
+    <div class="card-body text-center">
+        <h6 class="card-subtitle mb-2 text-muted">Response Timer</h6>
+        <h1 id="timer" class="display-3 fw-bold">...</h1>
+        <small id="status">Measuring latency...</small>
+    </div>
+</div>
+
+<script>
+    window.addEventListener("load", function() {
+        const perfEntry = performance.getEntriesByType("navigation")[0];
+        // Durée en secondes
+        const duration = (perfEntry.responseEnd - perfEntry.requestStart) / 1000;
+        
+        const timer = document.getElementById("timer");
+        const status = document.getElementById("status");
+        
+        timer.innerText = duration.toFixed(3) + "s";
+        
+        // Seuil de détection (si > 2 secondes, on considère que c'est un délai injecté)
+        if (duration > 2) {
+            timer.style.color = "#dc3545"; // Rouge
+            status.innerText = "⚠️ Significant Delay Detected (TRUE Condition)";
+            status.style.fontWeight = "bold";
+        } else {
+            timer.style.color = "#198754"; // Vert
+            status.innerText = "Normal Response (FALSE Condition)";
+        }
+    });
+</script>
+{% endblock %}
