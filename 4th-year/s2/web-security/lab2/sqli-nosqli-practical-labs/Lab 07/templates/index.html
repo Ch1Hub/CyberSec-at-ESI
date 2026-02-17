@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-4">
+    <span class="lab-badge">LAB 07: UNION STRING TYPE</span>
+    <h2 class="mt-2">Find the Text Column</h2>
+    <p class="text-muted">
+        The query returns <strong>3 columns</strong>.<br>
+        Identify which column is compatible with text data by making the following string appear in the results:
+    </p>
+    <div class="alert alert-info d-inline-block fw-bold display-6 p-2">
+        {{ target }}
+    </div>
+</div>
+
+{% if success %}
+<div class="alert alert-success text-center shadow">
+    <h4>🎉 MISSION ACCOMPLISHED!</h4>
+    <p>You successfully injected the string into the correct column (Column 2).</p>
+</div>
+{% endif %}
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="list-group shadow-sm">
+            <div class="list-group-item bg-light fw-bold">Categories</div>
+            <a href="/?category=All" class="list-group-item list-group-item-action">All Products</a>
+            <a href="/?category=Electronics" class="list-group-item list-group-item-action">Electronics</a>
+            <a href="/?category=Components" class="list-group-item list-group-item-action">Components</a>
+        </div>
+        
+        {% if error %}
+        <div class="alert alert-danger mt-3 small border-danger">
+            <strong>Database Error:</strong><br>
+            {{ error }}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-9">
+        <table class="table table-hover shadow-sm bg-white">
+            <thead class="table-dark">
+                <tr>
+                    <th>Col 1 (ID)</th>
+                    <th>Col 2 (Product Name)</th>
+                    <th>Col 3 (Stock)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in products %}
+                <tr class="{{ 'table-success fw-bold' if p.name == target else '' }}">
+                    <td>{{ p.id }}</td>
+                    <td>{{ p.name }}</td>
+                    <td>{{ p.stock }}</td>
+                </tr>
+                {% else %}
+                <tr><td colspan="3" class="text-center">No results found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
