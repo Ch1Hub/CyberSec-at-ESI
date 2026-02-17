@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8 mx-auto text-center">
+        <span class="lab-badge">LAB 01: SQL INJECTION</span>
+        <h2 class="mt-2">Retrieving Hidden Data</h2>
+        <p class="text-muted lead">
+            This application allows users to filter products by category. However, a filter mechanism 
+            interacts directly with the database without sanitization.
+        </p>
+        <div class="alert alert-info border-0 shadow-sm text-start" role="alert">
+            <strong>🎯 Mission Goal:</strong>
+            The application contains <strong>unreleased products</strong> hidden from the public view (where <code>released = 0</code>).
+            Perform a SQL Injection attack on the category filter to force the application to display these hidden items.
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="list-group shadow-sm">
+            <div class="list-group-item bg-light fw-bold">Categories</div>
+            <a href="/?category=All" class="list-group-item list-group-item-action {{ 'active' if category == 'All' }}">View All Released</a>
+            <a href="/?category=Clothing" class="list-group-item list-group-item-action {{ 'active' if category == 'Clothing' }}">Clothing</a>
+            <a href="/?category=Gadgets" class="list-group-item list-group-item-action {{ 'active' if category == 'Gadgets' }}">Gadgets</a>
+            <a href="/?category=Books" class="list-group-item list-group-item-action {{ 'active' if category == 'Books' }}">Books</a>
+            <a href="/?category=Gifts" class="list-group-item list-group-item-action {{ 'active' if category == 'Gifts' }}">Gifts</a>
+        </div>
+
+        {% if error %}
+        <div class="alert alert-danger mt-3 shadow-sm">
+            <strong>SQL Error:</strong><br>
+            <small>{{ error }}</small>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-9">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for p in products %}
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 {% if p['released'] == 0 %}border border-danger border-3{% endif %}">
+                    {% if p['released'] == 0 %}
+                    <div class="position-absolute top-0 end-0 m-2">
+                        <span class="badge bg-danger">SECRET / UNRELEASED</span>
+                    </div>
+                    {% endif %}
+                    
+                    <img src="{{ p['image'] }}" class="card-img-top p-3" alt="{{ p['name'] }}" style="height: 200px; object-fit: contain;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ p['name'] }}</h5>
+                        <h6 class="card-subtitle mb-2 text-primary">{{ p['price'] }}</h6>
+                        <p class="card-text small text-muted">{{ p['description'] }}</p>
+                    </div>
+                    <div class="card-footer bg-white border-top-0">
+                        <button class="btn btn-outline-dark w-100 btn-sm">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12 text-center py-5">
+                <h3 class="text-muted">No products found.</h3>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
