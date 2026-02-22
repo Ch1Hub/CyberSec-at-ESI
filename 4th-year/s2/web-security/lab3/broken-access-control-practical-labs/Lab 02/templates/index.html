@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge">LAB 02: BROKEN ACCESS CONTROL</span>
+    <h1 class="display-4 mt-3">Unpredictable Admin URL</h1>
+    <p class="lead text-muted">
+        The admin panel is hidden behind a secret URL. Can you find it and delete the target user?
+    </p>
+    
+    {% if lab_solved %}
+    <div class="alert alert-success mt-4">
+        <h4><i class="bi bi-trophy-fill"></i> Congratulations!</h4>
+        <p>You have successfully solved the lab by finding the hidden URL and deleting <strong>djamel</strong>.</p>
+        <p class="fw-bold mb-0">Flag: ESI-SBA{JS_L34K_B4C_H1DD3N_URL}</p>
+    </div>
+    {% endif %}
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-start">
+                    <h5 class="card-title text-primary"><i class="bi bi-flag"></i> 🎯 Mission Goal</h5>
+                    <p class="card-text">
+                        This application has an unprotected admin panel located at an unpredictable URL. However, the developers might have left some traces in the application's source code.
+                    </p>
+                    <p class="card-text fw-bold">
+                        Your objective is to locate the admin panel and delete the user <code>djamel</code>.
+                    </p>
+                    <hr>
+                    <div class="alert alert-warning">
+                        <small>
+                            <strong>Hint:</strong> Use your browser's developer tools (F12) or "View Page Source" to inspect the front-end code carefully.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var isAdministrator = false;
+    
+    // TODO: Remove this before deploying to production
+    if (isAdministrator) {
+        var adminPanelPath = '{{ admin_path }}';
+        console.log("Admin panel is located at: " + adminPanelPath);
+        // document.getElementById('admin-link').setAttribute('href', adminPanelPath);
+    }
+</script>
+{% endblock %}
