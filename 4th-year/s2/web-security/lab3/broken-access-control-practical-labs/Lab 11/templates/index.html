@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge">LAB 11: BROKEN ACCESS CONTROL</span>
+    <h1 class="display-4 mt-3">Method-Based Circumvention</h1>
+    <p class="lead text-muted">
+        Can you exploit flawed HTTP method access controls to elevate your privileges?
+    </p>
+    
+    {% if session.get('lab_solved') %}
+    <div class="alert alert-success mt-4 shadow-sm border-success">
+        <h4><i class="bi bi-trophy-fill"></i> Congratulations!</h4>
+        <p>You have successfully solved the lab by promoting yourself to <strong>Administrator</strong> via HTTP Method tampering.</p>
+        <p class="fw-bold mb-0">Flag: ESI-SBA{M3TH0D_T4MP3R1NG_PR1V3SC}</p>
+    </div>
+    {% else %}
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body text-start">
+                        <h5 class="card-title text-primary"><i class="bi bi-flag"></i> 🎯 Mission Goal</h5>
+                        <p class="card-text">
+                            This lab implements access controls based partly on the HTTP method of requests.
+                        </p>
+                        <p class="card-text fw-bold">
+                            Your objective is to log in using the credentials <code>amine:azerty</code> and exploit the flawed access controls to promote yourself to become an administrator.
+                        </p>
+                        <hr>
+                        <div class="alert alert-info">
+                            <small>
+                                <strong>Admin Credentials:</strong> You can familiarize yourself with the intended admin panel behavior by logging in as <code>administrator:admin</code>.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

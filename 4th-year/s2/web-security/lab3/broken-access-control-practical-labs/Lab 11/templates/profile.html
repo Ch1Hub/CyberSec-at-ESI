@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm mt-4 border-0">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="bi bi-person-badge"></i> Account Settings</h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <i class="bi bi-person-circle text-muted" style="font-size: 4rem;"></i>
+                    <h3 class="mt-2">{{ user.username }}</h3>
+                </div>
+                
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Username</label>
+                        <input type="text" class="form-control" value="{{ user.username }}" disabled>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Current Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" name="password" value="{{ user.password }}" id="pwdInput">
+                            <button class="btn btn-outline-secondary" type="button" disabled>Update</button>
+                        </div>
+                        <div class="form-text">Your password is securely masked.</div>
+                    </div>
+                </form>
+
+                {% if user.username != session.username %}
+                <div class="alert alert-danger mt-4 small">
+                    <i class="bi bi-exclamation-triangle-fill"></i> 
+                    <strong>IDOR DETECTED:</strong> You are viewing another user's profile settings!
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
