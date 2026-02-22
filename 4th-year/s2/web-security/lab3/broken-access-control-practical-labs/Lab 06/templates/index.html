@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge">LAB 06: BROKEN ACCESS CONTROL</span>
+    <h1 class="display-4 mt-3">Unpredictable User IDs</h1>
+    <p class="lead text-muted">
+        Can you find the target's unique GUID and exploit an IDOR to steal their API Key?
+    </p>
+    
+    {% if lab_solved %}
+    <div class="alert alert-success mt-4 shadow-sm border-success">
+        <h4><i class="bi bi-trophy-fill"></i> Congratulations!</h4>
+        <p>You have successfully solved the lab by finding <strong>djamel's</strong> GUID and stealing his API key.</p>
+    </div>
+    {% else %}
+        {% if error %}
+        <div class="alert alert-danger mt-4">{{ error }}</div>
+        {% endif %}
+
+        <div class="card shadow-sm border-0 mt-4 mx-auto" style="max-width: 800px;">
+            <div class="card-body p-4 text-start bg-light rounded">
+                <form action="/submit-solution" method="POST" class="d-flex align-items-center">
+                    <label class="fw-bold me-3 text-nowrap"><i class="bi bi-key"></i> Submit Djamel's API Key:</label>
+                    <input type="text" name="api_key" class="form-control me-2" placeholder="ESI-SBA{...}" required>
+                    <button type="submit" class="btn btn-success text-nowrap">Submit</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+
+    <hr class="my-5">
+
+    <h3 class="mb-4 text-start">Recent Blog Posts</h3>
+    <div class="row">
+        {% for post in posts %}
+        <div class="col-md-4 mb-4 text-start">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text text-muted">{{ post.content }}</p>
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <small class="text-muted">
+                        Author: <a href="/author?id={{ post.author_guid }}" class="text-decoration-none fw-bold">{{ post.username }}</a>
+                    </small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
