@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge">LAB 10: BROKEN ACCESS CONTROL</span>
+    <h1 class="display-4 mt-3">Header-Based Path Override</h1>
+    <p class="lead text-muted">
+        Can you bypass the Front-End WAF to access the unauthenticated Admin Panel?
+    </p>
+    
+    {% if lab_solved %}
+    <div class="alert alert-success mt-4 shadow-sm border-success">
+        <h4><i class="bi bi-trophy-fill"></i> Congratulations!</h4>
+        <p>You have successfully solved the lab by bypassing the Front-End proxy and deleting the user <strong>djamel</strong>.</p>
+        <p class="fw-bold mb-0">Flag: ESI-SBA{X_0R1G1N4L_URL_Byp4ss_M4st3r}</p>
+    </div>
+    {% else %}
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body text-start">
+                        <h5 class="card-title text-primary"><i class="bi bi-flag"></i> 🎯 Mission Goal</h5>
+                        <p class="card-text">
+                            This website has an unauthenticated admin panel at <code>/admin</code>, but a front-end system has been configured to block external access to that path.
+                        </p>
+                        <p class="card-text">
+                            However, the back-end application is built on a framework that supports the <code>X-Original-URL</code> header.
+                        </p>
+                        <p class="card-text fw-bold">
+                            Your objective is to access the admin panel and delete the user <code>djamel</code>.
+                        </p>
+                        <hr>
+                        <div class="alert alert-warning mt-2">
+                            <small>
+                                <strong>Tool required:</strong> You will need an intercepting proxy like <strong>Burp Suite (Repeater)</strong> to manipulate the HTTP headers and query strings directly.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
