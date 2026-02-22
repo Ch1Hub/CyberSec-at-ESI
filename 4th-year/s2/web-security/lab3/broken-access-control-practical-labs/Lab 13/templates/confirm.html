@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-danger mt-4">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="bi bi-exclamation-triangle-fill"></i> Confirm Action</h5>
+            </div>
+            <div class="card-body text-center p-4">
+                <p class="lead">Are you sure you want to promote <strong>{{ target_user }}</strong> to Administrator?</p>
+                <p class="text-muted small">This action will grant them full access to the system.</p>
+                
+                <form action="/admin/promote/confirm" method="POST" class="mt-4">
+                    <input type="hidden" name="username" value="{{ target_user }}">
+                    <input type="hidden" name="action" value="confirmed">
+                    
+                    <a href="/admin" class="btn btn-outline-secondary me-2">Cancel</a>
+                    <button type="submit" class="btn btn-danger">Yes, Promote User</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
