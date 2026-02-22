@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge">LAB 03: BROKEN ACCESS CONTROL</span>
+    <h1 class="display-4 mt-3">Forgeable Cookie Verification</h1>
+    <p class="lead text-muted">
+        Can you elevate your privileges by manipulating client-side data?
+    </p>
+    
+    {% if lab_solved %}
+    <div class="alert alert-success mt-4">
+        <h4><i class="bi bi-trophy-fill"></i> Congratulations!</h4>
+        <p>You have successfully solved the lab by forging your admin cookie and deleting <strong>djamel</strong>.</p>
+        <p class="fw-bold mb-0">Flag: ESI-SBA{C00K13_F0RG3RY_B4C_M4ST3R}</p>
+    </div>
+    {% endif %}
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-start">
+                    <h5 class="card-title text-primary"><i class="bi bi-flag"></i> 🎯 Mission Goal</h5>
+                    <p class="card-text">
+                        This lab has an admin panel at <code>/admin</code>, which identifies administrators using a forgeable cookie.
+                    </p>
+                    <p class="card-text fw-bold">
+                        Your objective is to access the admin panel and delete the user <code>djamel</code>.
+                    </p>
+                    <hr>
+                    <div class="alert alert-info">
+                        <small>
+                            <strong>Credentials:</strong> You can log in to your own account using: <code>amine:azerty</code>
+                        </small>
+                    </div>
+                    <div class="alert alert-warning mt-2">
+                        <small>
+                            <strong>Hint:</strong> Intercept the login response or check your browser's dev tools (Application > Cookies). Can you change who the server thinks you are?
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
