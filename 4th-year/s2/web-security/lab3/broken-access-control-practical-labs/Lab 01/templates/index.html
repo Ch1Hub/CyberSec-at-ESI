@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge">LAB 01: BROKEN ACCESS CONTROL</span>
+    <h1 class="display-4 mt-3">Unprotected Admin Functionality</h1>
+    <p class="lead text-muted">
+        Can you find the hidden administration panel and delete the target user?
+    </p>
+    
+    {% if lab_solved %}
+    <div class="alert alert-success mt-4">
+        <h4><i class="bi bi-trophy-fill"></i> Congratulations!</h4>
+        <p>You have successfully solved the lab by deleting the user <strong>djamel</strong>.</p>
+        <p class="fw-bold mb-0">Flag: ESI-SBA{R0B0TS_TXT_L34K_B4C}</p>
+    </div>
+    {% endif %}
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-start">
+                    <h5 class="card-title text-primary"><i class="bi bi-flag"></i> 🎯 Mission Goal</h5>
+                    <p class="card-text">
+                        This application has an unprotected admin panel that is not linked anywhere on the site, but might be disclosed to search engines.
+                    </p>
+                    <p class="card-text fw-bold">
+                        Your objective is to find the admin panel and delete the user <code>djamel</code>.
+                    </p>
+                    <hr>
+                    <div class="alert alert-warning">
+                        <small>
+                            <strong>Hint:</strong> How do websites tell web crawlers (like Googlebot) which directories they shouldn't visit?
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
