@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge">LAB 08: BROKEN ACCESS CONTROL</span>
+    <h1 class="display-4 mt-3">Password Disclosure via IDOR</h1>
+    <p class="lead text-muted">
+        Can you steal an administrator's credentials exposed in the HTML source code?
+    </p>
+    
+    {% if lab_solved %}
+    <div class="alert alert-success mt-4 shadow-sm border-success">
+        <h4><i class="bi bi-trophy-fill"></i> Congratulations!</h4>
+        <p>You have successfully solved the lab by logging in as administrator and deleting <strong>djamel</strong>.</p>
+        <p class="fw-bold mb-0">Flag: ESI-SBA{P4SSW0RD_D1SCL0SUR3_HTM1_M4ST3R}</p>
+    </div>
+    {% else %}
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body text-start">
+                        <h5 class="card-title text-primary"><i class="bi bi-flag"></i> 🎯 Mission Goal</h5>
+                        <p class="card-text">
+                            This lab has a user account page that contains the current user's existing password, prefilled in a masked input field.
+                        </p>
+                        <p class="card-text fw-bold">
+                            Your objective is to retrieve the <code>administrator</code>'s password, log in with it, and use the admin panel to delete the user <code>djamel</code>.
+                        </p>
+                        <hr>
+                        <div class="alert alert-info">
+                            <small>
+                                <strong>Credentials:</strong> You can log in to your own account using: <code>amine:azerty</code>
+                            </small>
+                        </div>
+                        <div class="alert alert-warning mt-2">
+                            <small>
+                                <strong>Hint:</strong> Even if a field is of type "password", its <code>value</code> attribute is transmitted in clear text in the HTML source code. Use your browser's "Inspect Element" feature.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
