@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge">LAB 07: BROKEN ACCESS CONTROL</span>
+    <h1 class="display-4 mt-3">Data Leakage in Redirect</h1>
+    <p class="lead text-muted">
+        Can you intercept a redirect to find sensitive information hidden in its HTTP body?
+    </p>
+    
+    {% if lab_solved %}
+    <div class="alert alert-success mt-4 shadow-sm border-success">
+        <h4><i class="bi bi-trophy-fill"></i> Congratulations!</h4>
+        <p>You have successfully solved the lab by intercepting the redirect and finding <strong>djamel's</strong> API key.</p>
+    </div>
+    {% else %}
+        {% if error %}
+        <div class="alert alert-danger mt-4">{{ error }}</div>
+        {% endif %}
+
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body text-start">
+                        <h5 class="card-title text-primary"><i class="bi bi-flag"></i> 🎯 Mission Goal</h5>
+                        <p class="card-text">
+                            This lab contains an access control vulnerability where the application attempts to protect unauthorized access by redirecting the user, but accidentally leaks sensitive information in the body of the 302 Redirect response.
+                        </p>
+                        <p class="card-text fw-bold">
+                            Your objective is to obtain the API key for the user <code>djamel</code> and submit it below.
+                        </p>
+                        <hr>
+                        <div class="alert alert-info">
+                            <small>
+                                <strong>Credentials:</strong> You can log in to your own account using: <code>amine:azerty</code>
+                            </small>
+                        </div>
+                        <div class="alert alert-warning mt-2">
+                            <small>
+                                <strong>Hint:</strong> Browsers follow redirects immediately. You will need a proxy like Burp Suite (Repeater) to view the raw HTTP response before the redirect happens.
+                            </small>
+                        </div>
+                        
+                        <div class="mt-4 p-3 bg-light border rounded">
+                            <form action="/submit-solution" method="POST" class="d-flex">
+                                <input type="text" name="api_key" class="form-control me-2" placeholder="Submit API Key here..." required>
+                                <button type="submit" class="btn btn-success text-nowrap">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
