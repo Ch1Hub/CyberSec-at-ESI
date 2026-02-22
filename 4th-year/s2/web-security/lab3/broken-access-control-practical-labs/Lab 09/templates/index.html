@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <span class="lab-badge">LAB 09: BROKEN ACCESS CONTROL</span>
+    <h1 class="display-4 mt-3">Insecure Direct Object References</h1>
+    <p class="lead text-muted">
+        Can you access other users' private chat transcripts stored on the server?
+    </p>
+    
+    {% if session.get('lab_solved') %}
+    <div class="alert alert-success mt-4 shadow-sm border-success">
+        <h4><i class="bi bi-trophy-fill"></i> Congratulations!</h4>
+        <p>You have successfully solved the lab by stealing <strong>djamel's</strong> credentials from the chat logs and logging into his account.</p>
+        <p class="fw-bold mb-0">Flag: ESI-SBA{ID0R_CH4T_TR4NSCR1PT_L34K}</p>
+    </div>
+    {% else %}
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body text-start">
+                        <h5 class="card-title text-primary"><i class="bi bi-flag"></i> 🎯 Mission Goal</h5>
+                        <p class="card-text">
+                            This lab stores user chat logs directly on the server's file system, and retrieves them using static URLs.
+                        </p>
+                        <p class="card-text fw-bold">
+                            Your objective is to find the password for the user <code>djamel</code> in an old transcript, and use it to log into his account.
+                        </p>
+                        <hr>
+                        <div class="text-center mt-4">
+                            <a href="/chat" class="btn btn-primary btn-lg"><i class="bi bi-chat-dots"></i> Go to Live Chat</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
