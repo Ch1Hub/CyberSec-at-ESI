@@ -1,0 +1,11 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	dns
+#open	2026-04-05-09-23-47
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	proto	trans_id	rtt	query	qclass	qclass_name	qtype	qtype_name	rcode	rcode_name	AA	TC	RD	RA	Z	answers	TTLs	rejected	opcode	opcode_name
+#types	time	string	addr	port	addr	port	enum	count	interval	string	count	string	count	string	count	string	bool	bool	bool	bool	count	vector[string]	vector[interval]	bool	count	string
+1775377427.225606	Cd1iwd3BNvaY9aHdW6	10.18.176.182	34927	10.18.176.87	53	udp	15978	-	beacons.gcp.gvt2.com	-	-	-	-	0	NOERROR	F	F	F	T	0	192.178.169.94	60.000000	F	0	query
+1775377427.216043	CavaCp2w8KYk1IWcne	10.18.176.182	49608	10.18.176.87	53	udp	17107	-	beacons.gcp.gvt2.com	-	-	-	-	0	NOERROR	F	F	F	T	0	beacons-handoff.gcp.gvt2.com,2a00:1450:4025:1007::5e	77.000000,282.000000	F	0	query
+#close	2026-04-05-09-23-47

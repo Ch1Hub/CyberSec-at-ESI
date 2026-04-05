@@ -1,0 +1,10 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	quic
+#open	2026-04-05-09-23-47
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	version	client_initial_dcid	client_scid	server_scid	server_name	client_protocol	history
+#types	time	string	addr	port	addr	port	string	string	string	string	string	string	string
+1775377427.355896	Cunhwm48I2IwcGqQUi	10.18.176.182	35906	192.178.169.94	443	1	-	-	f5c3ae89c7b59f27	-	-	iiihoo
+#close	2026-04-05-09-23-47
