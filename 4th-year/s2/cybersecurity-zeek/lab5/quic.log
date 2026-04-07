@@ -1,0 +1,40 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	quic
+#open	2026-04-07-12-25-24
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	version	client_initial_dcid	client_scid	server_scid	server_name	client_protocol	history
+#types	time	string	addr	port	addr	port	string	string	string	string	string	string	string
+1775561061.782111	CKAi2j4tWKqXuYBdF	172.20.10.2	40780	172.217.23.174	443	1	51478d23943c6f98	(empty)	f1478d23943c6f98	google.com	h3	IISZiiishooHOOHoO
+1775561077.498012	CJTGsz4zT58Ai4WaFe	172.20.10.2	33871	142.251.151.119	443	1	8a84917e400928e1	(empty)	ea84917e400928e1	www.google.com	h3	IISZiiishoooHOOO
+1775561085.175096	CZE7EI2RW3ycKrIj1k	172.20.10.2	38396	142.251.140.106	443	1	6b143ab9aeed77fd	(empty)	eb143ab9aeed77fd	peoplestack-pa.clients6.google.com	h3	IIISZZiiiiishoooHOOoO
+1775561085.407937	CYPLPR3NrtTQ9dSgh2	172.20.10.2	44964	172.253.62.94	443	1	54136a75cd7c86ec	(empty)	f4136a75cd7c86ec	beacons.gcp.gvt2.com	h3	IIISZiiIiiisohoiHOOoOo
+1775561092.248373	CE2NMl4kgYBOvb93y5	172.20.10.2	33106	172.217.168.142	443	1	be83bd5033441e11	(empty)	fe83bd5033441e11	play.google.com	h3	IISZiiishooIHOOOOHoooOoO
+1775561118.101130	CBLXlm3viVgAJl2mSj	172.20.10.2	49293	142.251.153.119	443	1	026581366388211d	(empty)	e26581366388211d	www.google.com	h3	IIISZZiiiioishooIHOOOoO
+1775561112.875045	CTowua3vYuYQdXX1r4	172.20.10.2	45829	142.251.141.238	443	1	b0a7fcd511898041	(empty)	f0a7fcd511898041	apis.google.com	h3	IISZZiioishooHOOOHoOo
+1775561108.686360	CO402H2sbInrlhwBH5	172.20.10.2	37160	172.217.168.138	443	1	7e04586e366865bd	(empty)	fe04586e366865bd	espresso-pa.clients6.google.com	h3	IISZiiishoooIHOOOOOooOooOoOo
+1775561173.466364	CwasRj4DejctuwU5uk	172.20.10.2	59593	172.217.23.174	443	1	b17547107612276c	(empty)	f17547107612276c	google.com	h3	IISZiiishooHOOoOOo
+1775561147.467274	CGjk9K1rCaCfJvOKtk	172.20.10.2	33012	172.253.62.94	443	1	d7b0a4bae9b533e7	(empty)	f7b0a4bae9b533e7	beacons.gcp.gvt2.com	h3	IISZiiishooHOOooOOo
+1775561188.874433	CRUuUa3F0t5HDK8CY7	172.20.10.2	55194	172.217.168.138	443	1	24e72a3b2825184b	(empty)	e4e72a3b2825184b	espresso-pa.clients6.google.com	h3	IIISZiiiiishoooHOOOOHooOoO
+1775561198.965299	CbcJXy4r6wLEGk4n9k	172.20.10.2	33759	172.217.168.142	443	1	90789bcda4b24d7e	(empty)	f0789bcda4b24d7e	play.google.com	h3	IISZiiishooHOOOoOo
+1775561199.221170	CCSoah2l64kG2OSGw	172.20.10.2	58280	142.251.140.106	443	1	481062834936d465	(empty)	e81062834936d465	4-prod-dynamite-prod-06-us-signaler-pa.clients6.google.com	h3	IIISZZiiiiishoooHOOOoO
+1775561197.602146	CPeiBE3BrdmJIv3vQj	172.20.10.2	47979	142.251.150.119	443	1	bde6a897814d33df	(empty)	fde6a897814d33df	www.google.com	h3	IIISZiiiiishoooHOOHOOooOo
+1775561202.029260	CpB2wk4NylTwx8tBh6	172.20.10.2	43507	192.178.204.100	443	1	19de790f59f1c504	(empty)	f9de790f59f1c504	www.google-analytics.com	h3	IISZiiIishooHOOoioO
+1775561192.274276	CvYpHZQcv1DKtzxA3	172.20.10.2	36229	172.217.168.138	443	1	6fe52fcf196b247b	(empty)	efe52fcf196b247b	signaler-pa.clients6.google.com	h3	IIISZZiiiiishoooHOOHoOOo
+1775561263.152961	C6GuHN6vJEtQUi6S9	172.20.10.2	54393	172.217.23.174	443	1	80cf122af0440907	(empty)	e0cf122af0440907	google.com	h3	IISZiiishooHOOHoOo
+1775561258.223127	CIJi491Mueg3dDakBe	172.20.10.2	52970	142.251.157.119	443	1	60179852e23b8d5e	(empty)	e0179852e23b8d5e	www.google.com	h3	IISZiiisohooHOOO
+1775561225.998101	ChApUz1wNII8mG3rV8	172.20.10.2	36321	172.217.168.138	443	1	0f2a0baf1d39552b	(empty)	ef2a0baf1d39552b	espresso-pa.clients6.google.com	h3	IISZiIihoisooHOOOHoOoOoO
+1775561238.573229	C02PRd4YDm2DFsTQDl	172.20.10.2	43988	142.251.141.238	443	1	450b750ae6d12245	(empty)	e50b750ae6d12245	contacts.google.com	h3	IISiiiiisIIHhhhHHhohoHHOOOoOo
+1775561175.655451	CniqbR1cuB0GsNWzXj	172.20.10.2	45221	192.178.203.139	443	1	10540669a74767ba	(empty)	f0540669a74767ba	clients4.google.com	h3	IISZiiishooHOOoOoOoO
+1775561249.965625	CPoRaI1LS4eTVlpt8d	172.20.10.2	40993	172.217.168.142	443	1	6dde5e48a22268b7	(empty)	edde5e48a22268b7	play.google.com	h3	IISZZIIIiiishooIHOhoHOiiiOo
+1775561246.762632	CeCtDE4ILfsqSGoCt9	172.20.10.2	53488	172.217.23.170	443	1	f281751b9e3797b8	(empty)	f281751b9e3797b8	peoplestackwebexperiments-pa.clients6.google.com	h3	IIISZZiiiiishoooHOOOHo
+1775561231.989052	CHST4L2INn2YIYSCo9	172.20.10.2	33338	172.217.168.129	443	1	c04b53e08e08ec9f	(empty)	e04b53e08e08ec9f	doc-0k-8o-docstext.googleusercontent.com	h3	IISiiiisIIIhhhHHhoHHOOooOooOOoOoOooOoOoOoOo
+1775561234.204171	CpaQFAz93aFM8sZ29	172.20.10.2	55849	172.253.62.94	443	1	5a4980a13f5d6b3c	(empty)	fa4980a13f5d6b3c	beacons.gcp.gvt2.com	h3	IISZiiisoIhoHOOoOoO
+1775561237.144992	CsLQEwIx72ls2vas9	172.20.10.2	35940	142.251.141.234	443	1	356ed4fb23ab8950	(empty)	f56ed4fb23ab8950	addons-pa.clients6.google.com	h3	IISZiIiisohooiHOOOoO
+1775561247.267315	CdcwDRYnO2EdPnVSl	172.20.10.2	34597	192.178.202.94	443	1	7f5671dd0cd27834	(empty)	ff5671dd0cd27834	www.gstatic.com	h3	IISZZiiishhHhoHOooO
+1775561238.563670	CTlWkQ3d3ch1j2oNVg	172.20.10.2	59490	172.217.23.170	443	1	52fa7d610267d693	(empty)	f2fa7d610267d693	peoplestackwebexperiments-pa.clients6.google.com	h3	IIISZiiiiishoooIHOOOoOo
+1775561246.952297	CI1886491jO3TiHeFc	172.20.10.2	44801	142.251.140.106	443	1	14017cb5a03263f4	(empty)	f4017cb5a03263f4	peoplestack-pa.clients6.google.com	h3	IISZZZiihoisooHOOOioO
+1775561248.871516	Chwb654jbuq8cUJOV7	172.20.10.2	53322	172.217.168.129	443	1	8eeeaf21b07adf38	(empty)	eeeeaf21b07adf38	lh3.googleusercontent.com	h3	IISZZiiisIhoooHOOHOo
+1775561251.900699	CTSxPW2DPDjM6vmCMa	172.20.10.2	37223	172.217.168.138	443	1	b4f682981b382672	(empty)	f4f682981b382672	signaler-pa.clients6.google.com	h3	IIISZZIIiiiiishooHOoOiOihoH
+#close	2026-04-07-12-28-00
