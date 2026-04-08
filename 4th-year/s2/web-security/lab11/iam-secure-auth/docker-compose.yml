@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # 1. Corporate Directory (OpenLDAP)
+  openldap:
+    image: osixia/openldap:latest
+    container_name: esi-ldap
+    environment:
+      - LDAP_ORGANISATION=ESI-SBA
+      - LDAP_DOMAIN=esi-sba.dz
+      - LDAP_ADMIN_PASSWORD=adminpassword
+      - LDAP_READONLY_USER=false
+    ports:
+      - "389:389"
+
+  # 2. Identity Provider (Keycloak)
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.1
+    container_name: esi-keycloak
+    command: start-dev
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_HOSTNAME_STRICT=false
+    ports:
+      - "8080:8080"
+    depends_on:
+      - openldap
+
+  # 3. Internal Application
+  web-app:
+    build: ./app
+    container_name: esi-internal-app
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+    extra_hosts:
+      - "localhost:host-gateway"
+    depends_on:
+      - keycloak
+
+  # 4. Resource Server (HR API)
+  hr-api:
+    build: ./hr-api
+    container_name: esi-hr-api
+    ports:
+      - "5001:5001"
+    environment:
+      - FLASK_APP=app.py
+    depends_on:
+      - keycloak
+
