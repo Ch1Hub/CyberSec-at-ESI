@@ -1,0 +1,5 @@
+return {
+  board = "esp8266:esp8266:nodemcuv2",
+  port = "/dev/ttyACM0",
+  baudrate = "115200",
+}
