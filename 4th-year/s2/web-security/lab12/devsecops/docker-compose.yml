@@ -1,0 +1,9 @@
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL

@@ -1,0 +1,28 @@
+stages:
+  - scan_secrets
+  - sast
+  - sca
+
+default:
+  interruptible: true
+
+detecter_secrets:
+  stage: scan_secrets
+  image:
+    name: zricethezav/gitleaks:latest
+    entrypoint: [""]
+  script:
+    - gitleaks detect --no-git -v --source .
+
+sast_semgrep:
+  stage: sast
+  image: returntocorp/semgrep:latest
+  script:
+    - semgrep ci --config=auto
+
+sca_python:
+  stage: sca
+  image: python:3.9-slim
+  script:
+    - pip install safety
+    - safety check -r requirements.txt
