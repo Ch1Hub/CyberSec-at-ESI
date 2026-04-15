@@ -1,0 +1,45 @@
+stages: [scan_secrets, sast, sca, iac, container, daster]
+
+detecter_secrets:
+  stage: scan_secrets
+  image:
+    name: zricethezav/gitleaks:latest
+    entrypoint: [""]
+  script:
+    - gitleaks detect --no-git -v --source .
+sast_semgrep:
+  stage: sast
+  image: returntocorp/semgrep:latest
+  script:
+    - semgrep ci --config=auto
+sca_python:
+  stage: sca
+  image: python:3.9-slim
+  script:
+    - pip install safety
+    - safety check -r requirements.txt
+scan_iac:
+  stage: iac
+  image: 
+    name: bridgecrew/checkov:latest
+    entrypoint: [""]
+  script:
+    - checkov -f docker-compose.yml
+scan_container:
+  stage: container
+  image: 
+    name: aquasec/trivy:0.49.1
+    entrypoint: [""]
+  script:
+    - trivy image --exit-code 1 --severity CRITICAL python:3.10-alpine
+scan_dast:
+  stage: daster
+  image: zaproxy/zap-stable
+  before_script:
+    - python3 -m pip install --user --break-system-packages -r requirements.txt
+    - mkdir -p /zap/wrk
+  script:
+    - python3 app.py &
+    - sleep 5
+    - zap-baseline.py -t "http://127.0.0.1:5000" -I
+
