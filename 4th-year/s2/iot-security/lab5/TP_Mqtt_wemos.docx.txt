@@ -1,0 +1,189 @@
+TP MQTT_Node Red
+Using DHT
+
+Installing the PubSubClient Library
+The PubSubClient library provides a client for doing simple
+publish/subscribe messaging with a server that supports MQTT (basically
+allows your ESP8266 to talk with Node-RED).
+1.​ Click here to download the PubSubClient library. You should have
+a .zip folder in your Downloads folder
+2.​ Unzip the .zip folder and you should
+get pubsubclient-master folder
+3.​ Rename your folder from to pubsubclient
+4.​ Move the pubsubclient folder to your Arduino IDE
+installation libraries folder
+
+Install MQTT Broker (Mosquitto ) on windows.
+http://bytesofgigabytes.com/mqtt/installing-mqtt-broker-on-windows/
+
+http://www.hivemq.com/demos/websocket-client/ (public Broker)
+
+First install PubSubClient library (Arduino)
+Control ESP8266 (or wemos d1 or nodemcu) outputs (led control) and
+display sensor data (DHT) from the ESP8266 on Node-RED. The Node-RED
+software is running on a Raspberry Pi/pc, and the communication
+between the ESP8266 and the Node-RED software is achieved with the
+MQTT communication protocol.
+
+CODE ARDUINO
+#include <ESP8266WiFi.h>
+#include <PubSubClient.h>
+const char* ssid = ""; // your SSID
+const char* password = ""; // your password
+//const char* mqtt_server = "192.168.1.20"; // Raspberry IP as Broker
+const char* mqtt_server = "broker.mqttdashboard.com";
+// char* mqtt_server = "broker.hivemq.com";
+
+// Initializes the espClient. You should change the espClient name if you
+have multiple ESPs running in your home automation system
+WiFiClient espClient;
+PubSubClient client(espClient);
+
+// Timers auxiliar variables
+long now = millis();
+long lastMeasure = 0;
+void setup_wifi() {
+delay(10);
+Serial.println();
+Serial.print("Connecting to ");
+Serial.println(ssid);
+WiFi.begin(ssid, password);
+while (WiFi.status() != WL_CONNECTED) {
+delay(500);
+Serial.print(".");
+}
+Serial.println("");
+Serial.print("WiFi connected - ESP IP address: ");
+Serial.println(WiFi.localIP());
+}
+void callback(String topic, byte* message, unsigned int length) {
+Serial.print("Message arrived on topic: ");
+Serial.print(topic);
+Serial.print(". Message: ");
+String messageTemp;
+for (int i = 0; i < length; i++) {
+Serial.print((char)message[i]);
+messageTemp += (char)message[i];
+}
+Serial.println();
+// If a message is received on the topic room/lamp2, you check if the
+message is either on or off. Turns the lamp GPIO according to the message
+if(topic=="tpcysmqtt/test1"){
+
+Serial.print("Changing Room lamp to ");
+if(messageTemp == "true"){
+digitalWrite(LED_BUILTIN, HIGH);
+Serial.print("On");
+}
+else if(messageTemp == "false"){
+digitalWrite(LED_BUILTIN, LOW);
+Serial.print("Off");
+}
+}
+Serial.println();
+}
+// This functions reconnects your ESP8266 to your MQTT broker
+// Change the function below if you want to subscribe to more topics with
+your ESP8266
+void reconnect() {
+// Loop until we're reconnected
+while (!client.connected()) {
+Serial.print("Attempting MQTT connection...");
+// Attempt to connect
+if (client.connect("espClient")) {
+Serial.println("connected");
+// Subscribe or resubscribe to a topic
+// You can subscribe to more topics (to control more LEDs in this
+example)
+client.subscribe("tpcysmqtt/test1");
+} else {
+Serial.print("failed, rc=");
+Serial.print(client.state());
+Serial.println(" try again in 5 seconds");
+// Wait 5 seconds before retrying
+delay(5000);
+}
+}
+}
+void setup() {
+pinMode(LED_BUILTIN, OUTPUT);
+dht.begin();
+
+Serial.begin(115200);
+setup_wifi();
+client.setServer(mqtt_server,1883);
+client.setCallback(callback);
+}
+float h=0;
+float t=0;
+void loop() {
+if (!client.connected()) {
+reconnect();
+}
+if(!client.loop())
+client.connect("Wifi Client");
+
+static char temperatureTemp[7];
+dtostrf(t++, 6, 2, temperatureTemp);
+static char humidityTemp[7];
+dtostrf(h++, 6, 2, humidityTemp);
+// Publishes Temperature and Humidity values
+client.publish("tpcysmqtt/test2", String(t).c_str(),true);
+client.publish("tpcysmqtt/test3", String(h).c_str(),true);
+Serial.print("Humidity: ");
+Serial.print(h);
+Serial.print(" %\t Temperature: ");
+Serial.print(t);
+Serial.print(" *C ");
+Serial.println();
+delay(1000);
+
+}
+
+JSON FILE:
+[{"id":"f1e3791c.8d49c8","type":"tab","label":"Mqtt-wemos_hivemq","disabled":false,"info":""},{"id":"5
+8ed6a69.973734","type":"mqtt
+
+in","z":"f1e3791c.8d49c8","name":"Temp","topic":"esisba/temperature","qos":"0","datatype":"auto","b
+roker":"21512347.7b195c","inputs":0,"x":146.5,"y":265,"wires":[["284d668d.06ddda","a430bdc4.6d44a
+"]]},{"id":"de962d5b.16aa8","type":"mqtt
+out","z":"f1e3791c.8d49c8","name":"Lamp","topic":"room/lamp","qos":"0","retain":"","broker":"21512
+347.7b195c","x":345.5,"y":69,"wires":[]},{"id":"1cb0b11e.dca10f","type":"mqtt
+in","z":"f1e3791c.8d49c8","name":"Humidity","topic":"esisba/humidity","qos":"0","datatype":"auto","b
+roker":"21512347.7b195c","nl":false,"rap":false,"inputs":0,"x":156.5,"y":343,"wires":[["479490f5.2f5f3"]
+]},{"id":"a430bdc4.6d44a","type":"debug","z":"f1e3791c.8d49c8","name":"","active":true,"tosidebar":tr
+ue,"console":false,"tostatus":false,"complete":"false","x":693.5,"y":228,"wires":[]},{"id":"a3be4d02.ec14
+7","type":"mqtt
+out","z":"f1e3791c.8d49c8","name":"","topic":"room/lamp","qos":"0","retain":"","broker":"67f25082.ef
+6ef","x":361.5,"y":150,"wires":[]},{"id":"f491156d.3734e8","type":"mqtt
+in","z":"f1e3791c.8d49c8","name":"","topic":"esisba/temperature","qos":"2","datatype":"auto","broker
+":"67f25082.ef6ef","nl":false,"rap":false,"inputs":0,"x":180.5,"y":221,"wires":[["284d668d.06ddda"]]},{"i
+d":"ec79c135.6c2f5","type":"mqtt
+in","z":"f1e3791c.8d49c8","name":"","topic":"esisba/humidity","qos":"2","datatype":"auto","broker":"6
+7f25082.ef6ef","inputs":0,"x":174.5,"y":393,"wires":[["479490f5.2f5f3"]]},{"id":"15e29144.71a56f","typ
+e":"ui_switch","z":"f1e3791c.8d49c8","name":"","label":"switch","tooltip":"","group":"fbe72202.1955b"
+,"order":0,"width":0,"height":0,"passthru":true,"decouple":"false","topic":"","style":"","onvalue":"true",
+"onvalueType":"bool","onicon":"","oncolor":"","offvalue":"false","offvalueType":"bool","officon":"","offc
+olor":"","x":132.5,"y":131,"wires":[["de962d5b.16aa8","a3be4d02.ec147"]]},{"id":"479490f5.2f5f3","typ
+e":"ui_chart","z":"f1e3791c.8d49c8","name":"","group":"a7fa6d7a.56a29","order":2,"width":0,"height":
+0,"label":"chart","chartType":"line","legend":"false","xformat":"HH:mm:ss","interpolate":"linear","nodat
+a":"","dot":false,"ymin":"0","ymax":"100","removeOlder":1,"removeOlderPoints":"","removeOlderUnit":
+"3600","cutout":0,"useOneColor":false,"colors":["#1f77b4","#aec7e8","#ff7f0e","#2ca02c","#98df8a","#
+d62728","#ff9896","#9467bd","#c5b0d5"],"outputs":1,"x":499.5,"y":270,"wires":[[]]},{"id":"284d668d.0
+6ddda","type":"ui_gauge","z":"f1e3791c.8d49c8","name":"","group":"a7fa6d7a.56a29","order":0,"width
+":0,"height":0,"gtype":"gage","title":"gauge","label":"units","format":"{{value}}","min":0,"max":"40","col
+ors":["#00b500","#e6e600","#ca3838"],"seg1":"","seg2":"","x":514.5,"y":165,"wires":[]},{"id":"21512347
+.7b195c","type":"mqtt-broker","name":"Raspi_Broker","broker":"192.168.1.15","port":"1883","clientid":
+"","usetls":false,"compatmode":true,"keepalive":"60","cleansession":true,"birthTopic":"","birthQos":"0",
+"birthPayload":"","closeTopic":"","closeQos":"0","closePayload":"","willTopic":"","willQos":"0","willPaylo
+ad":""},{"id":"67f25082.ef6ef","type":"mqtt-broker","name":"","broker":"broker.mqttdashboard.com","p
+ort":"1883","clientid":"","autoConnect":true,"usetls":false,"protocolVersion":"4","keepalive":"60","clean
+session":true,"birthTopic":"","birthQos":"0","birthPayload":"","birthMsg":{},"closeTopic":"","closeQos":"
+0","closePayload":"","closeMsg":{},"willTopic":"","willQos":"0","willPayload":"","willMsg":{},"sessionExpi
+ry":"","credentials":{"user":"","password":""}},{"id":"fbe72202.1955b","type":"ui_group","name":"Lamp
+","tab":"2ea7b59.251d14a","order":2,"disp":true,"width":"6","collapse":false},{"id":"a7fa6d7a.56a29","t
+ype":"ui_group","name":"Dht","tab":"2ea7b59.251d14a","order":1,"disp":true,"width":"6","collapse":fal
+se},{"id":"2ea7b59.251d14a","type":"ui_tab","name":"MyHome","icon":"dashboard","order":11,"disabl
+ed":false,"hidden":false}]
+
+
