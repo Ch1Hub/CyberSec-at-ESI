@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      # L'application web doit pointer vers le conteneur Vault
+      - VAULT_ADDR=http://vault:8200
+    depends_on:
+      - vault
+
+  vault:
+    image: hashicorp/vault:latest
+    ports:
+      - "8200:8200"
+    environment:
+      - VAULT_DEV_ROOT_TOKEN_ID=root
+    cap_add:
+      - IPC_LOCK

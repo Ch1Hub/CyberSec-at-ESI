@@ -1,0 +1,5 @@
+Flask==3.0.0
+pycryptodome==3.19.0
+argon2-cffi==23.1.0
+cryptography==41.0.5
+hvac==2.1.0
