@@ -1,0 +1,14 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	weird
+#open	2026-04-21-11-34-38
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	name	addl	notice	peer	source
+#types	time	string	addr	port	addr	port	string	string	bool	string	string
+1776767667.200979	CuU1Cj2CnnB45ZIIQ6	172.20.10.2	34376	142.251.151.119	443	QUIC_spurious_short_header_packet_threshold_crossed	1	F	zeek	-
+1776767667.948198	C1SKpM14TqMdf1KrBc	172.20.10.2	43961	142.251.208.131	443	QUIC_spurious_short_header_packet_threshold_crossed	1	F	zeek	-
+1776767669.776076	CCtcH7bcXgvjuRYOj	172.20.10.2	51522	142.251.209.74	443	QUIC_spurious_short_header_packet_threshold_crossed	1	F	zeek	-
+1776767670.249093	CP2dga4VsKGf2T464i	172.20.10.2	43984	142.250.178.10	443	QUIC_spurious_short_header_packet_threshold_crossed	1	F	zeek	-
+1776767676.184511	CBRhbkSR0OTGWAVI9	172.20.10.2	55810	142.251.36.206	443	QUIC_spurious_short_header_packet_threshold_crossed	1	F	zeek	-
+#close	2026-04-21-11-34-38

@@ -1,0 +1,19 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	dns
+#open	2026-04-21-11-34-38
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	proto	trans_id	rtt	query	qclass	qclass_name	qtype	qtype_name	rcode	rcode_name	AA	TC	RD	RA	Z	answers	TTLs	rejected	opcode	opcode_name
+#types	time	string	addr	port	addr	port	enum	count	interval	string	count	string	count	string	count	string	bool	bool	bool	bool	count	vector[string]	vector[interval]	bool	count	string
+1776767668.262807	CuCFAI2PdnYIGPxqB3	172.20.10.2	46831	172.20.10.1	53	udp	26127	0.057660	github.com	1	C_INTERNET	1	A	0	NOERROR	F	F	T	T	0	140.82.121.4	77.000000	F	0	query
+1776767668.375444	CtgaRC1yD4cga04Lpg	172.20.10.2	60856	172.20.10.1	53	udp	48137	0.045967	openai.com	1	C_INTERNET	1	A	0	NOERROR	F	F	T	T	0	172.64.154.211,104.18.33.45	49.000000,49.000000	F	0	query
+1776767668.446021	CKzLdd4bJoKK6Bvrlh	172.20.10.2	53775	172.20.10.1	53	udp	34821	0.033190	example.com	1	C_INTERNET	28	AAAA	0	NOERROR	F	F	T	T	0	2606:4700:10::6814:179a,2606:4700:10::ac42:93f3	15.000000,15.000000	F	0	query
+1776767668.445947	C9u9mW3OF677Efdhc	172.20.10.2	46961	172.20.10.1	53	udp	59958	0.033269	example.com	1	C_INTERNET	1	A	0	NOERROR	F	F	T	T	0	104.20.23.154,172.66.147.243	144.000000,144.000000	F	0	query
+1776767668.645807	C9UOsq4di7i4FAQgq9	172.20.10.2	52183	172.20.10.1	53	udp	9313	0.063886	neverssl.com	1	C_INTERNET	1	A	0	NOERROR	F	F	T	T	0	34.223.124.45	77.000000	F	0	query
+1776767668.645892	CIiRLr3wUnAGohr8ve	172.20.10.2	36218	172.20.10.1	53	udp	6681	0.066071	neverssl.com	1	C_INTERNET	28	AAAA	0	NOERROR	F	F	T	T	0	2600:1f13:37c:1400:ba21:7165:5fc7:736e	77.000000	F	0	query
+1776767672.238823	CQewY24DeqFloH0L7	172.20.10.2	51512	172.20.10.1	53	udp	32020	0.081365	addons-pa.clients6.google.com	1	C_INTERNET	1	A	0	NOERROR	F	F	T	T	0	142.251.36.202	78.000000	F	0	query
+1776767672.580898	CtXhkZ1eigLZz2aNuj	172.20.10.2	35938	172.20.10.1	53	udp	4416	0.100096	scanme.nmap.org	1	C_INTERNET	28	AAAA	0	NOERROR	F	F	T	T	0	2600:3c01::f03c:91ff:fe18:bb2f	4448.000000	F	0	query
+1776767672.580957	CoSeB34eLCBQ2nPUkg	172.20.10.2	54746	172.20.10.1	53	udp	57697	0.227745	scanme.nmap.org	1	C_INTERNET	1	A	0	NOERROR	F	F	T	T	0	45.33.32.156	4502.000000	F	0	query
+1776767672.810120	CmEYUo4T9oOr0Y6bxk	172.20.10.2	35257	172.20.10.1	53	udp	58558	0.110391	156.32.33.45.in-addr.arpa	1	C_INTERNET	12	PTR	0	NOERROR	F	F	T	T	0	scanme.nmap.org	377.000000	F	0	query
+#close	2026-04-21-11-34-38
