@@ -1,0 +1,207 @@
+This is a great idea! You went through a massive troubleshooting journey, and now you have the perfect "golden path" for your friend to follow without hitting any of the roadblocks you did.
+
+Here is the complete, start-to-finish guide to building this exact IoT Microservices Lab. You can send this entire message directly to your friend!
+
+---
+
+# **The Ultimate IoT Microservices Lab Guide**
+
+**The Goal:** Read temperature data from a physical DHT11 sensor using a NodeMCU, send it over Wi-Fi using MQTT, format it using Node-RED, store it in InfluxDB, and visualize it live on a Grafana dashboard—all running inside Docker containers on a Kali Linux machine.
+
+### **Phase 1: The Backend Software (Docker)**
+Instead of installing all these programs manually, we use Docker Compose to spin up the entire server environment instantly.
+
+1. On your Kali machine, open a terminal and create a folder for the project:
+   ```bash
+   mkdir ~/iot_lab && cd ~/iot_lab
+   ```
+2. Create the Docker configuration file:
+   ```bash
+   nano docker-compose.yml
+   ```
+3. Paste this exact configuration. *(Note: We use specific older versions of InfluxDB and Mosquitto to match the lab instructions and avoid complex security token setups).*
+   ```yaml
+   version: '3'
+   services:
+     mosquitto:
+       image: eclipse-mosquitto:1.6.15
+       container_name: mosquitto
+       ports:
+         - "1883:1883"
+       networks:
+         - mybridge
+
+     nodered:
+       image: nodered/node-red:latest
+       container_name: nodered
+       ports:
+         - "1880:1880"
+       networks:
+         - mybridge
+
+     influxdb:
+       image: influxdb:1.8
+       container_name: influxdb
+       ports:
+         - "8086:8086"
+       environment:
+         - INFLUXDB_DB=DBONE
+         - INFLUXDB_ADMIN_USER=change
+         - INFLUXDB_ADMIN_PASSWORD=this
+       networks:
+         - mybridge
+
+     grafana:
+       image: grafana/grafana:latest
+       container_name: grafana
+       ports:
+         - "3000:3000"
+       networks:
+         - mybridge
+
+   networks:
+     mybridge:
+       driver: bridge
+   ```
+4. Save the file (`Ctrl+O`, `Enter`, `Ctrl+X`) and launch the stack:
+   ```bash
+   sudo docker compose up -d
+   ```
+5. Find your Kali machine's local Wi-Fi IP address by running `ip a`. Write this down (e.g., `192.168.x.x` or `10.x.x.x`). You will need it for the code!
+
+---
+
+### **Phase 2: Hardware Wiring**
+You will need a **NodeMCU (ESP8266)**, a **DHT11 Sensor**, and 3 jumper wires. 
+*(Warning: You MUST use a Micro-USB cable that supports Data Sync, not just power!).*
+
+Wire them together exactly like this:
+* **DHT `VCC`** ➔ connects to ➔ **NodeMCU `3V3`** *(Provides 3.3V power)*
+* **DHT `GND`** ➔ connects to ➔ **NodeMCU `GND`** *(Completes the circuit)*
+* **DHT `DATA`** ➔ connects to ➔ **NodeMCU `D4`** *(Sends the data)*
+
+---
+
+### **Phase 3: The Microcontroller Code**
+*Pro-Tip: If your school network or home router blocks the NodeMCU, turn on your phone's Mobile Hotspot, connect your Kali laptop to it, and put your Hotspot credentials in the code below!*
+
+1. Open the Arduino IDE. 
+2. Go to **Sketch -> Include Library -> Manage Libraries** and install:
+   * `PubSubClient` by Nick O'Leary
+   * `DHT sensor library` by Adafruit
+3. Go to **Tools -> Board** and select `NodeMCU 1.0 (ESP-12E Module)`. Select your COM/USB port.
+4. Paste this code, update the **Wi-Fi** and **IP Address**, and click **Upload**:
+
+```cpp
+#include <ESP8266WiFi.h>
+#include <PubSubClient.h>
+#include "DHT.h"
+
+// 1. UPDATE THESE CREDENTIALS
+const char* ssid = "YOUR_WIFI_NAME";         
+const char* password = "YOUR_WIFI_PASSWORD"; 
+
+// 2. UPDATE WITH YOUR KALI MACHINE'S IP ADDRESS
+const char* mqtt_server = "192.168.X.X";    
+const char* mqtt_topic = "sensor/temp";      
+
+#define DHTPIN D4       
+#define DHTTYPE DHT11   
+
+WiFiClient espClient;
+PubSubClient client(espClient);
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup_wifi() {
+  delay(10);
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nWiFi connected");
+}
+
+void reconnect() {
+  while (!client.connected()) {
+    Serial.print("Attempting MQTT connection...");
+    if (client.connect("NodeMCUClient")) {
+      Serial.println("connected");
+    } else {
+      Serial.print("failed, rc=");
+      Serial.print(client.state());
+      Serial.println(" try again in 5 seconds");
+      delay(5000);
+    }
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  dht.begin();
+  setup_wifi();
+  client.setServer(mqtt_server, 1883);
+}
+
+void loop() {
+  if (!client.connected()) { reconnect(); }
+  client.loop();
+  
+  delay(2000);
+  float t = dht.readTemperature();
+  
+  if (isnan(t)) { return; }
+
+  Serial.print("Temperature: ");
+  Serial.print(t);
+  Serial.println(" *C");
+
+  char tempString[8];
+  dtostrf(t, 1, 2, tempString);
+  client.publish(mqtt_topic, tempString);
+}
+```
+*(Open the Serial Monitor at 115200 baud to verify it says "connected" and prints temperatures).*
+
+---
+
+### **Phase 4: The Node-RED Data Bridge**
+Node-RED grabs the raw MQTT data, formats it into JSON, and pushes it to the InfluxDB database. *(Note: The original lab document has a typo where it mixes up `val` and `valeur`. This JSON block fixes that bug!)*
+
+1. Open your browser and go to **`http://localhost:1880`**.
+2. Click the top-right menu ➔ **Manage Palette** ➔ **Install** tab ➔ Search for and install `node-red-contrib-influxdb`.
+3. Click the top-right menu ➔ **Import**. Paste this code and hit Deploy:
+
+```json
+[
+    {"id":"tab_microservices","type":"tab","label":"IoT Microservices","disabled":false,"info":""},
+    {"id":"broker_mosquitto_docker","type":"mqtt-broker","name":"Mosquitto Container","broker":"mosquitto","port":"1883","clientid":"","usetls":false,"compatmode":false,"keepalive":"60","cleansession":true,"birthTopic":"","birthQos":"0","birthPayload":"","closeTopic":"","closeQos":"0","closePayload":"","willTopic":"","willQos":"0","willPayload":""},
+    {"id":"config_influxdb","type":"influxdb","hostname":"influxdb","port":"8086","protocol":"http","database":"DBONE","name":"InfluxDB Container","usetls":false,"tls":"","influxdbVersion":"1.x","url":"http://influxdb:8086","rejectUnauthorized":true},
+    {"id":"mqtt_in_docker","type":"mqtt in","z":"tab_microservices","name":"temp","topic":"sensor/temp","qos":"0","datatype":"auto","broker":"broker_mosquitto_docker","nl":false,"rap":true,"rh":0,"inputs":0,"x":150,"y":160,"wires":[["func_format"]]},
+    {"id":"func_format","type":"function","z":"tab_microservices","name":"func","func":"var sensor = Number(msg.payload);\n\nif (sensor >= 25) {\n    msg.payload = {\n        val: sensor,\n        etat: \"high\"\n    };\n} else if (sensor < 25) {\n    msg.payload = {\n        val: sensor,\n        etat: \"low\"\n    };\n}\nreturn msg;","outputs":1,"noerr":0,"initialize":"","finalize":"","libs":[],"x":350,"y":160,"wires":[["influx_out_db","debug_node"]]},
+    {"id":"influx_out_db","type":"influxdb out","z":"tab_microservices","influxdb":"config_influxdb","name":"test","measurement":"sensor_temp","precision":"","retentionPolicy":"","database":"database","precisionV18FluxV20":"ms","retentionPolicyV18Flux":"","org":"organisation","bucket":"bucket","x":550,"y":120,"wires":[]},
+    {"id":"debug_node","type":"debug","z":"tab_microservices","name":"msg.payload","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","targetType":"msg","statusVal":"","statusType":"auto","x":570,"y":200,"wires":[]}
+]
+```
+
+---
+
+### **Phase 5: The Grafana Dashboard**
+Time to draw the chart!
+
+1. Open a new browser tab to **`http://localhost:3000`** (Login: `admin` / `admin`).
+2. **Connect the Database:**
+   * Go to Connections (Gear Icon) ➔ **Data Sources** ➔ **Add Data Source** ➔ **InfluxDB**.
+   * URL: `http://influxdb:8086`
+   * Database: `DBONE` | User: `change` | Password: `this`
+   * Click **Save & Test** (Look for the green success banner).
+3. **Build the Chart:**
+   * Click the **+** icon on the left ➔ **New Dashboard** ➔ **Add an empty panel**.
+   * At the bottom, next to `FROM`, click `select measurement` and choose `sensor_temp`.
+   * Next to `SELECT`, click `field(value)` and type **`val`**.
+   * Next to `GROUP BY`, change `fill(null)` to **`fill(linear)`** so the dots connect into a solid line.
+   * At the top right, change the time range to **"Last 5 minutes"**.
+4. Click **Save** in the top right corner!

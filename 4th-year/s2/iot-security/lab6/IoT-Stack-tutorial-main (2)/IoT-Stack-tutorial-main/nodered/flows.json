@@ -1,0 +1,169 @@
+[
+  {
+    "id": "tab_microservices",
+    "type": "tab",
+    "label": "IoT Microservices",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "broker_mosquitto_docker",
+    "type": "mqtt-broker",
+    "name": "Mosquitto Container",
+    "broker": "mosquitto",
+    "port": "1883",
+    "clientid": "",
+    "usetls": false,
+    "compatmode": false,
+    "keepalive": "60",
+    "cleansession": true,
+    "birthTopic": "",
+    "birthQos": "0",
+    "birthPayload": "",
+    "closeTopic": "",
+    "closeQos": "0",
+    "closePayload": "",
+    "willTopic": "",
+    "willQos": "0",
+    "willPayload": ""
+  },
+  {
+    "id": "mqtt_in_docker",
+    "type": "mqtt in",
+    "z": "tab_microservices",
+    "name": "temp",
+    "topic": "sensor/temp",
+    "qos": "0",
+    "datatype": "auto",
+    "broker": "broker_mosquitto_docker",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 140,
+    "y": 160,
+    "wires": [
+      [
+        "func_format"
+      ]
+    ]
+  },
+  {
+    "id": "mqtt_in_legacy",
+    "type": "mqtt in",
+    "z": "tab_microservices",
+    "name": "temp (legacy topic)",
+    "topic": "home/esp8266/temperature",
+    "qos": "0",
+    "datatype": "auto",
+    "broker": "broker_mosquitto_docker",
+    "nl": false,
+    "rap": true,
+    "rh": 0,
+    "inputs": 0,
+    "x": 170,
+    "y": 220,
+    "wires": [
+      [
+        "func_format"
+      ]
+    ]
+  },
+  {
+    "id": "func_format",
+    "type": "function",
+    "z": "tab_microservices",
+    "name": "format val/etat",
+    "func": "var sensor = Number(msg.payload);\n\nif (Number.isNaN(sensor)) {\n    return null;\n}\n\nif (sensor >= 25) {\n    msg.payload = {\n        val: sensor,\n        etat: \"high\"\n    };\n} else {\n    msg.payload = {\n        val: sensor,\n        etat: \"low\"\n    };\n}\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 350,
+    "y": 160,
+    "wires": [
+      [
+        "func_to_line_protocol",
+        "debug_payload"
+      ]
+    ]
+  },
+  {
+    "id": "func_to_line_protocol",
+    "type": "function",
+    "z": "tab_microservices",
+    "name": "to Influx line protocol",
+    "func": "const p = msg.payload;\nif (!p || typeof p.val !== \"number\") {\n    return null;\n}\nconst etat = String(p.etat || \"\").replace(/\"/g, '\\\\\"');\nmsg.payload = `sensor_temp val=${p.val},etat=\\\"${etat}\\\"`;\nmsg.headers = {\"Content-Type\": \"text/plain\"};\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 610,
+    "y": 120,
+    "wires": [
+      [
+        "http_write_influx"
+      ]
+    ]
+  },
+  {
+    "id": "http_write_influx",
+    "type": "http request",
+    "z": "tab_microservices",
+    "name": "write to InfluxDB",
+    "method": "POST",
+    "ret": "txt",
+    "paytoqs": "ignore",
+    "url": "http://influxdb:8086/write?db=DBONE&u=change&p=this",
+    "tls": "",
+    "persist": false,
+    "proxy": "",
+    "insecureHTTPParser": false,
+    "authType": "",
+    "senderr": false,
+    "headers": [],
+    "x": 870,
+    "y": 120,
+    "wires": [
+      [
+        "debug_influx_response"
+      ]
+    ]
+  },
+  {
+    "id": "debug_payload",
+    "type": "debug",
+    "z": "tab_microservices",
+    "name": "msg.payload",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 590,
+    "y": 220,
+    "wires": []
+  },
+  {
+    "id": "debug_influx_response",
+    "type": "debug",
+    "z": "tab_microservices",
+    "name": "influx write response",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "statusCode",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 1120,
+    "y": 120,
+    "wires": []
+  }
+]
