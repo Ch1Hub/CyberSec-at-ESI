@@ -1,0 +1,27 @@
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - VAULT_ADDR=http://vault:8200
+      - VAULT_ROLE_ID=28d90714-3e52-2c78-eb9f-c6125954acff
+      - VAULT_SECRET_ID=309a4aa6-9608-c435-b6a3-0103a80463cf
+      - FLASK_HOST=0.0.0.0
+    depends_on:
+      - vault
+
+  vault:
+    image: hashicorp/vault:latest
+    container_name: vault-server
+    ports:
+      - "8200:8200"
+    environment:
+      - VAULT_DEV_ROOT_TOKEN_ID=root
+      - VAULT_ADDR=http://0.0.0.0:8200
+      # Empêche le script de tenter de modifier les privilèges du binaire
+      - SKIP_SETCAP=true
+      # Désactive le verrouillage mémoire qui nécessite des privilèges élevés
+      - VAULT_LOCAL_CONFIG={"disable_mlock":true}
+    cap_add:
+      - IPC_LOCK

@@ -1,0 +1,5 @@
+flask
+hvac
+argon2-cffi
+cryptography
+bandit
