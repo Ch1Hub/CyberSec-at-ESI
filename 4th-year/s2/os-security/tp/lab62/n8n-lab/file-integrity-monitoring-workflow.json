@@ -1,0 +1,160 @@
+[
+  {
+    "id": "tp6-fim-001",
+    "name": "TP6 - File Integrity Monitoring Alert",
+    "nodes": [
+      {
+        "parameters": {
+          "triggerTimes": {
+            "item": [
+              {
+                "mode": "everyMinute"
+              }
+            ]
+          }
+        },
+        "id": "a9fc6b11-5cc7-43b8-9838-929f7d718001",
+        "name": "Schedule Trigger",
+        "type": "n8n-nodes-base.cron",
+        "typeVersion": 1,
+        "position": [
+          260,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "command": "sha256sum /files/fim_target.txt | awk '{print $1}'"
+        },
+        "id": "7b768fbe-58f4-4e9d-8cef-19a875ed1002",
+        "name": "Execute Command - Hash File",
+        "type": "n8n-nodes-base.executeCommand",
+        "typeVersion": 1,
+        "position": [
+          520,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "functionCode": "const currentHash = ($json.stdout || '').trim();\nconst staticData = this.getWorkflowStaticData('global');\nconst oldHash = staticData.oldHash || null;\n\nlet alert = false;\nif (oldHash && currentHash !== oldHash) {\n  alert = true;\n}\n\nstaticData.oldHash = currentHash;\n\nreturn [{\n  json: {\n    alert,\n    monitoredFile: '/files/fim_target.txt',\n    currentHash,\n    oldHash,\n    checkedAt: new Date().toISOString()\n  }\n}];"
+        },
+        "id": "6ea66efa-e0d7-4e8d-9f9f-44a8d6982003",
+        "name": "Function - Compare Hash",
+        "type": "n8n-nodes-base.function",
+        "typeVersion": 1,
+        "position": [
+          780,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "boolean": [
+              {
+                "value1": "={{$json[\"alert\"]}}",
+                "operation": "equal",
+                "value2": true
+              }
+            ]
+          }
+        },
+        "id": "2ad29406-c760-4d7b-93c6-cc65f2c43004",
+        "name": "IF - Alert?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+          1040,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "command": "={{\"echo \\\"[$(date -Iseconds)] ALERT: /files/fim_target.txt changed old=\" + $json.oldHash + \" new=\" + $json.currentHash + \"\\\" >> /files/fim_alert.log\"}}"
+        },
+        "id": "30e8a46c-4f91-4175-bf2b-4d66316b1005",
+        "name": "Execute Command - Write Alert",
+        "type": "n8n-nodes-base.executeCommand",
+        "typeVersion": 1,
+        "position": [
+          1280,
+          200
+        ]
+      },
+      {
+        "parameters": {},
+        "id": "e4073e7e-b348-4f53-bce2-5426cbe12006",
+        "name": "No Alert",
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          1280,
+          400
+        ]
+      }
+    ],
+    "pinData": {},
+    "connections": {
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Execute Command - Hash File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute Command - Hash File": {
+        "main": [
+          [
+            {
+              "node": "Function - Compare Hash",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Function - Compare Hash": {
+        "main": [
+          [
+            {
+              "node": "IF - Alert?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "IF - Alert?": {
+        "main": [
+          [
+            {
+              "node": "Execute Command - Write Alert",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "No Alert",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "active": true,
+    "settings": {
+      "executionOrder": "v1"
+    },
+    "versionId": "9343c8a4-8dab-4f7e-ab33-9d7bbdef9007",
+    "meta": {
+      "templateCredsSetupCompleted": true
+    }
+  }
+]

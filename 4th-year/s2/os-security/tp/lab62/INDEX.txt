@@ -1,0 +1,254 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                      TP6 LAB 62 - COMPLETE FILE INDEX                        ║
+║                      File Integrity Monitoring with n8n                       ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+📌 PROJECT DIRECTORY: /home/chihab/Documents/cys2CS/s2/opSysSec/tp/lab62/
+
+┌─ 📖 DOCUMENTATION FILES ──────────────────────────────────────────────────────┐
+│                                                                                │
+│  📄 README.md ⭐ START HERE
+│     ├─ Purpose: Main overview & navigation guide
+│     ├─ Length: ~8 KB (5-10 min read)
+│     ├─ Covers: Project overview, architecture, learning outcomes
+│     └─ Best for: Understanding the big picture
+│
+│  ⚡ QUICK_VERIFICATION.md (FASTEST VERIFICATION)
+│     ├─ Purpose: Quick test procedures
+│     ├─ Length: ~5 KB (3 min to test)
+│     ├─ Covers: 5 verification methods, test procedures, sample output
+│     └─ Best for: Rapid confirmation everything works
+│
+│  📚 IMPLEMENTATION_COMPLETE.md (MOST DETAILED)
+│     ├─ Purpose: Comprehensive technical documentation
+│     ├─ Length: ~10 KB (15-20 min read)
+│     ├─ Covers: Prerequisites, architecture, node details, testing, troubleshooting
+│     └─ Best for: Deep understanding & problem solving
+│
+│  🔍 VERIFY_SETUP.sh (AUTOMATED CHECKS)
+│     ├─ Purpose: Automated 10-point verification checklist
+│     ├─ Runtime: 30 seconds
+│     ├─ Usage: bash VERIFY_SETUP.sh
+│     └─ Best for: Automated validation
+│
+│  📋 TP6_part1_n8n_setup.md
+│     ├─ Purpose: Original setup notes from initial implementation
+│     └─ Status: Reference documentation
+│
+│  📄 TP6.pdf
+│     ├─ Purpose: Original lab specifications
+│     ├─ Content: Part 1 (n8n) & Part 2 (Forensics) requirements
+│     └─ Status: Lab source document
+│
+│  📑 INDEX.txt
+│     ├─ Purpose: This file - complete file listing
+│     └─ Helps: Navigate all documentation
+│
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌─ 🔧 WORKFLOW DIRECTORY (n8n-lab/) ────────────────────────────────────────────┐
+│                                                                                │
+│  📄 file-integrity-monitoring-workflow.json
+│     ├─ Purpose: n8n workflow definition
+│     ├─ Size: ~4 KB
+│     ├─ Contains: Complete 6-node workflow configuration
+│     ├─ Format: JSON (importable in n8n)
+│     ├─ Workflow Name: "TP6 - File Integrity Monitoring Alert"
+│     └─ Workflow ID: tp6-fim-001
+│
+│  📝 fim_target.txt
+│     ├─ Purpose: Test file being monitored for integrity
+│     ├─ Location: /files/fim_target.txt (inside n8n container)
+│     ├─ Current: Contains test content (modifiable)
+│     └─ Function: Demonstrates FIM capability
+│
+│  📋 fim_alert.log
+│     ├─ Purpose: Alert log output
+│     ├─ Format: [TIMESTAMP] ALERT: FILE changed old=HASH new=HASH
+│     ├─ Content: Append-only log (2 entries from tests)
+│     ├─ Entries:
+│     │   1. [2026-05-04T13:12:07+00:00] ALERT: ...
+│     │   2. [2026-05-04T14:00:55+00:00] ALERT: ...
+│     └─ Updated: By workflow when changes detected
+│
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌─ 🐳 DOCKER SETUP ────────────────────────────────────────────────────────────┐
+│                                                                                │
+│  Container Name: n8n-tp6
+│  Image: n8nio/n8n:latest (v2.18.7)
+│  Status: RUNNING (up 50+ minutes)
+│  Port: 5678 (accessible)
+│  Restart Policy: unless-stopped (survives system reboot)
+│
+│  Mounted Volumes:
+│  ├─ /home/chihab/.n8n          → /home/node/.n8n      (n8n data)
+│  ├─ n8n-lab/                   → /files               (workflow files)
+│  └─ /etc/passwd                → /host/etc/passwd:ro  (read-only)
+│
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌─ 🎯 QUICK ACCESS COMMANDS ────────────────────────────────────────────────────┐
+│                                                                                │
+│  Check Status:
+│  $ docker ps | grep n8n
+│
+│  View Web UI:
+│  Open: http://localhost:5678
+│
+│  Quick Test:
+│  $ echo "TEST" >> n8n-lab/fim_target.txt
+│  $ sleep 65
+│  $ cat n8n-lab/fim_alert.log | tail -1
+│
+│  Automated Verification:
+│  $ bash VERIFY_SETUP.sh
+│
+│  View Logs:
+│  $ docker logs n8n-tp6 | tail -20
+│
+│  View Alert Log:
+│  $ cat n8n-lab/fim_alert.log
+│
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌─ 📚 READING GUIDE ────────────────────────────────────────────────────────────┐
+│                                                                                │
+│  Time: 3 minutes (Quick Test)
+│  ────────────────────────────────
+│  1. Open QUICK_VERIFICATION.md
+│  2. Follow "Test File Modification Detection" section
+│  3. Done!
+│
+│  Time: 30 seconds (Automated Checks)
+│  ────────────────────────────────────
+│  1. Run: bash VERIFY_SETUP.sh
+│  2. See pass/fail results
+│  3. Done!
+│
+│  Time: 15 minutes (Full Understanding)
+│  ──────────────────────────────────────
+│  1. Read: README.md
+│  2. Skim: IMPLEMENTATION_COMPLETE.md (architecture section)
+│  3. Test: QUICK_VERIFICATION.md
+│  4. Explore: http://localhost:5678 (web UI)
+│
+│  Time: 30 minutes (Complete Mastery)
+│  ──────────────────────────────────
+│  1. Read: README.md (full)
+│  2. Read: IMPLEMENTATION_COMPLETE.md (full)
+│  3. Test: QUICK_VERIFICATION.md (all methods)
+│  4. Run: VERIFY_SETUP.sh
+│  5. Explore: n8n UI and workflow details
+│  6. Review: Workflow JSON structure
+│
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌─ ✅ VERIFICATION STATUS ──────────────────────────────────────────────────────┐
+│                                                                                │
+│  [✅] Docker installed and running                                            │
+│  [✅] n8n container deployed (n8n-tp6)                                        │
+│  [✅] Port 5678 accessible                                                    │
+│  [✅] n8n Web UI responsive                                                   │
+│  [✅] Workflow created ("TP6 - FIM Alert")                                   │
+│  [✅] Workflow activated (6 nodes configured)                                │
+│  [✅] Cron trigger working (every 1 minute)                                  │
+│  [✅] File monitoring functional                                              │
+│  [✅] Hash comparison working                                                 │
+│  [✅] Alert logging operational (2 entries)                                   │
+│  [✅] File change detection verified                                          │
+│  [✅] Persistent storage working                                              │
+│  [✅] Documentation complete (4 files)                                        │
+│                                                                                │
+│  STATUS: ✅ ALL SYSTEMS OPERATIONAL                                           │
+│                                                                                │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌─ 🔄 WORKFLOW NODES (6 Total) ─────────────────────────────────────────────────┐
+│                                                                                │
+│  1. Schedule Trigger (Cron)
+│     └─ Runs: Every 1 minute
+│
+│  2. Execute Command - Hash File
+│     └─ Command: sha256sum /files/fim_target.txt | awk '{print $1}'
+│
+│  3. Function - Compare Hash
+│     └─ Compares current hash with stored hash
+│     └─ Sets: alert = true/false
+│
+│  4. IF Condition
+│     └─ Checks: alert == true
+│
+│  5. Execute Command - Write Alert (True Branch)
+│     └─ Logs: [TIMESTAMP] ALERT: ... old=... new=...
+│
+│  6. No Alert (False Branch)
+│     └─ No action if file unchanged
+│
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌─ 📊 FILE SIZE SUMMARY ────────────────────────────────────────────────────────┐
+│                                                                                │
+│  README.md                              ~8 KB                                 │
+│  IMPLEMENTATION_COMPLETE.md             ~10 KB                                │
+│  QUICK_VERIFICATION.md                  ~5 KB                                 │
+│  VERIFY_SETUP.sh                        ~4 KB                                 │
+│  file-integrity-monitoring-workflow.json ~4 KB                                │
+│  fim_target.txt                         <1 KB                                 │
+│  fim_alert.log                          <1 KB                                 │
+│                                                                                │
+│  Total Documentation: ~27 KB                                                  │
+│                                                                                │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌─ 🚀 NEXT STEPS ───────────────────────────────────────────────────────────────┐
+│                                                                                │
+│  IMMEDIATE:
+│  1. Read README.md for orientation
+│  2. Run QUICK_VERIFICATION.md (3 min)
+│  3. Explore http://localhost:5678
+│
+│  OPTIONAL ENHANCEMENTS:
+│  • Add email alert notification
+│  • Add Slack/Telegram notifications
+│  • Monitor multiple files
+│  • Add database logging
+│  • Custom alert templates
+│
+│  FUTURE:
+│  • Part 2 - Disk Forensics
+│  • Part 2 - Memory Forensics
+│
+└──────────────────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════════════
+
+GETTING STARTED:
+
+Option 1 (Fastest - 3 minutes):
+  1. Open QUICK_VERIFICATION.md
+  2. Follow test procedure
+  3. ✅ Done
+
+Option 2 (Best Overview - 15 minutes):
+  1. Read README.md
+  2. Test: QUICK_VERIFICATION.md
+  3. Explore http://localhost:5678
+  4. ✅ Done
+
+Option 3 (Complete Understanding - 30 minutes):
+  1. Read README.md
+  2. Read IMPLEMENTATION_COMPLETE.md
+  3. Run VERIFY_SETUP.sh
+  4. Test QUICK_VERIFICATION.md (all methods)
+  5. Explore n8n Web UI
+  6. ✅ Complete Master
+
+═══════════════════════════════════════════════════════════════════════════════════
+
+Created: May 4, 2026
+Status: ✅ COMPLETE & VERIFIED
+Part: 1 (n8n Automation)
+Lab: TP6 - Incident Response & Forensics
+
+═══════════════════════════════════════════════════════════════════════════════════
