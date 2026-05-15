@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Révision Sécurité des Systèmes d'Exploitation</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a30;
+      --panel-2: #1a2442;
+      --text: #ecf0ff;
+      --muted: #a6b2d9;
+      --accent: #7aa2ff;
+      --ok: #3ccf91;
+      --bad: #ff6b6b;
+      --warn: #ffd166;
+      --border: #2a3762;
+      --code: #0f1630;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at top, #12214d 0, var(--bg) 45%);
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      border-right: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(18, 26, 48, 0.95), rgba(12, 18, 35, 0.95));
+      padding: 16px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 1.12rem;
+      line-height: 1.35;
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 14px;
+    }
+
+    .meta {
+      font-size: 0.86rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .chapter-list {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .chapter-btn {
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      color: var(--text);
+      background: rgba(20, 31, 58, 0.85);
+      cursor: pointer;
+    }
+
+    .chapter-btn:hover { border-color: var(--accent); }
+    .chapter-btn.active {
+      border-color: var(--accent);
+      background: rgba(40, 61, 118, 0.35);
+    }
+
+    .chapter-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    .chapter-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .score-pill {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 1px 8px;
+      font-weight: 600;
+    }
+
+    .score-ok {
+      border-color: rgba(60, 207, 145, 0.6);
+      color: #b8ffe1;
+    }
+
+    .tools {
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .input, .select, .toggle {
+      width: 100%;
+      background: var(--panel-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 0.9rem;
+    }
+
+    .toggle { display: flex; gap: 8px; align-items: center; }
+    .toggle input { transform: translateY(1px); }
+
+    main {
+      padding: 20px;
+      overflow: auto;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(20, 30, 56, 0.9);
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .header-row {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .header-row h2 {
+      margin: 0;
+      font-size: 1.24rem;
+      line-height: 1.35;
+    }
+
+    .tiny {
+      color: var(--muted);
+      font-size: 0.86rem;
+      margin-top: 6px;
+      line-height: 1.35;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .tab {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+
+    .tab.active {
+      background: rgba(122, 162, 255, 0.2);
+      border-color: rgba(122, 162, 255, 0.6);
+    }
+
+    .panel.hidden { display: none; }
+
+    .md h1, .md h2, .md h3, .md h4 {
+      margin-top: 18px;
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    .md p {
+      margin: 6px 0;
+      color: #f2f6ff;
+      line-height: 1.5;
+    }
+
+    .md ul {
+      margin: 8px 0 8px 18px;
+      padding: 0;
+    }
+
+    .md li {
+      margin: 4px 0;
+      line-height: 1.5;
+    }
+
+    .raw-lines {
+      margin: 0;
+      padding-left: 54px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: var(--code);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+
+    .raw-lines li {
+      padding: 0 10px 0 8px;
+      white-space: pre-wrap;
+      border-left: 1px dashed rgba(122, 162, 255, 0.15);
+      color: #d7e2ff;
+    }
+
+    .raw-lines li::marker { color: #86a9ff; }
+    mark {
+      background: rgba(255, 209, 102, 0.35);
+      color: #fff5d0;
+      padding: 0 2px;
+      border-radius: 4px;
+    }
+
+    .search-results {
+      max-height: 280px;
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(13, 19, 38, 0.9);
+      padding: 8px;
+    }
+
+    .search-hit {
+      border-bottom: 1px dashed rgba(122, 162, 255, 0.2);
+      padding: 6px 4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.83rem;
+      line-height: 1.4;
+      color: #dbe6ff;
+    }
+
+    .search-hit:last-child { border-bottom: 0; }
+
+    .details-list {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .details-list li {
+      margin: 8px 0;
+      line-height: 1.5;
+    }
+
+    .q-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: rgba(17, 25, 48, 0.95);
+    }
+
+    .q-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+      line-height: 1.45;
+    }
+
+    .option {
+      display: block;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      margin-bottom: 7px;
+      cursor: pointer;
+      line-height: 1.4;
+    }
+
+    .option:hover { border-color: rgba(122, 162, 255, 0.7); }
+    .option input { margin-right: 8px; }
+    .option.correct { border-color: rgba(60, 207, 145, 0.7); background: rgba(60, 207, 145, 0.1); }
+    .option.wrong { border-color: rgba(255, 107, 107, 0.7); background: rgba(255, 107, 107, 0.1); }
+
+    .exp {
+      margin-top: 6px;
+      font-size: 0.84rem;
+      padding: 6px 8px;
+      border-radius: 8px;
+      line-height: 1.45;
+      border: 1px solid transparent;
+      color: #dbe6ff;
+      display: none;
+    }
+
+    .exp.show { display: block; }
+    .exp.ok { border-color: rgba(60, 207, 145, 0.6); background: rgba(60, 207, 145, 0.08); }
+    .exp.bad { border-color: rgba(255, 107, 107, 0.6); background: rgba(255, 107, 107, 0.08); }
+    .exp.warn { border-color: rgba(255, 209, 102, 0.6); background: rgba(255, 209, 102, 0.08); }
+
+    .btns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 9px 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .btn.primary {
+      border-color: rgba(122, 162, 255, 0.7);
+      background: rgba(122, 162, 255, 0.2);
+    }
+
+    .quiz-result {
+      margin-top: 10px;
+      border-radius: 10px;
+      padding: 10px;
+      border: 1px solid var(--border);
+      background: rgba(14, 20, 40, 0.9);
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .load-warning {
+      border: 1px solid rgba(255, 209, 102, 0.6);
+      background: rgba(255, 209, 102, 0.12);
+      color: #fff3c4;
+      border-radius: 10px;
+      padding: 10px;
+      line-height: 1.45;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 1020px) {
+      .app { grid-template-columns: 1fr; }
+      aside {
+        position: static;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <h1>Révision interactive — OpSysSec</h1>
+      <div class="sub">Cours + QCM détaillés par chapitre</div>
+      <div id="globalMeta" class="meta"></div>
+      <div id="chapterList" class="chapter-list"></div>
+
+      <div class="tools">
+        <input id="searchInput" class="input" type="text" placeholder="Recherche mot/terme précis..." />
+        <label class="toggle">
+          <input id="rawMode" type="checkbox" />
+          <span>Mode brut avec numéros de ligne</span>
+        </label>
+      </div>
+    </aside>
+
+    <main>
+      <section class="card">
+        <div class="header-row">
+          <div>
+            <h2 id="chapterTitle">Chargement...</h2>
+            <div id="chapterStats" class="tiny"></div>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab active" data-tab="cours">Cours complet</button>
+          <button class="tab" data-tab="details">Points détaillés</button>
+          <button class="tab" data-tab="qcm">QCM chapitre</button>
+        </div>
+      </section>
+
+      <section id="searchPanel" class="card panel hidden">
+        <h3 style="margin-top:0">Résultats de recherche (chapitre courant)</h3>
+        <div id="searchResults" class="search-results"></div>
+      </section>
+
+      <section id="coursPanel" class="card panel">
+        <div id="loadWarning"></div>
+        <div id="coursContent"></div>
+      </section>
+
+      <section id="detailsPanel" class="card panel hidden">
+        <h3 style="margin-top:0">Check-list des détails à mémoriser</h3>
+        <ul id="detailsList" class="details-list"></ul>
+      </section>
+
+      <section id="qcmPanel" class="card panel hidden">
+        <h3 style="margin-top:0">QCM interactif du chapitre</h3>
+        <div id="quizContainer"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const chapterConfigs = [
+      {
+        id: "chap1",
+        file: "chapitre1.md",
+        fallbackTitle: "Chapitre 1 — Introduction à la sécurité des systèmes d'exploitations",
+        details: [
+          "Différencier clairement vulnérabilité (faiblesse) et exploit (méthode d'exploitation).",
+          "Connaître les impacts techniques majeurs : exécution de code, DoS, shell, escalade de privilèges.",
+          "Retenir les causes fréquentes : mots de passe faibles, bugs logiciels, permissions mal configurées, services inutiles.",
+          "Mémoriser les emplacements de persistance malware : scripts de démarrage, services systemd, GRUB/bootloader, fichiers de configuration de boot.",
+          "Connaître les familles d'attaques courantes : malware, brute force, DoS/DDoS, MITM, scans/énumération.",
+          "Savoir expliquer pourquoi la surface d'attaque augmente avec les services exposés et configurations par défaut.",
+          "Maîtriser les objectifs des modèles de sécurité : Bell-LaPadula (confidentialité), Biba (intégrité), Clark-Wilson (intégrité transactionnelle), RBAC, CSM.",
+          "Comprendre que RBAC structure l'accès via rôles/permissions et facilite les politiques de moindre privilège.",
+          "Savoir que la politique de sécurité couvre prévention, détection, traçabilité/audit et réponse aux incidents.",
+          "Retenir les tendances récentes mentionnées : identity-first, vol de tokens, malwares polymorphes/assistés IA."
+        ],
+        quiz: [
+          { q: "Quelle affirmation décrit correctement une vulnérabilité ?", o: ["Une méthode active d'attaque", "Une faiblesse exploitable du système", "Un antivirus obsolète uniquement", "Un incident déjà confirmé"], a: 1, e: "La vulnérabilité est la faiblesse ; l'exploit est la méthode qui l'utilise." },
+          { q: "Quel est l'effet principal d'une attaque DoS ?", o: ["Augmenter la confidentialité", "Saturer les ressources et rendre le service indisponible", "Créer des permissions root", "Signer le bootloader"], a: 1, e: "Le DoS vise la disponibilité (épuisement CPU, RAM, bande passante, etc.)." },
+          { q: "Parmi ces éléments, lequel peut être ciblé pour une persistance avant l'OS ?", o: ["/boot/grub/grub.cfg", "/tmp uniquement", "Le presse-papiers", "Le navigateur seulement"], a: 0, e: "Le chapitre mentionne explicitement la chaîne de démarrage et GRUB." },
+          { q: "Les attaques « identity-first » visent surtout :", o: ["La température CPU", "Le vol de tokens/sessions pour usurper un utilisateur", "Le formatage BIOS", "Le chiffrement RAID"], a: 1, e: "Le vol de jetons de session permet d'usurper l'identité sans mot de passe." },
+          { q: "L'objectif principal du modèle Bell-LaPadula est :", o: ["Intégrité", "Disponibilité", "Confidentialité", "Performance"], a: 2, e: "Bell-LaPadula protège prioritairement la confidentialité." },
+          { q: "L'objectif principal du modèle Biba est :", o: ["Intégrité", "Confidentialité", "Compression des logs", "Virtualisation"], a: 0, e: "Biba est centré sur l'intégrité de l'information." },
+          { q: "Dans RBAC, l'accès est attribué principalement via :", o: ["Adresses MAC", "Rôles et permissions associées", "Niveaux RAID", "Ports USB"], a: 1, e: "RBAC relie utilisateurs -> rôles -> permissions." },
+          { q: "Une bonne politique de sécurité doit inclure :", o: ["Uniquement des firewalls", "Prévention, détection, audit et réponse aux incidents", "Seulement des sauvegardes", "Seulement du chiffrement"], a: 1, e: "Le cours insiste sur l'approche complète du cycle de sécurité." }
+        ]
+      },
+      {
+        id: "chap2p1",
+        file: "chapitre2 (partie1).md",
+        fallbackTitle: "Chapitre 2 (partie 1) — Attaques sur les systèmes d'exploitations",
+        details: [
+          "Savoir distinguer les malwares listés : botnets, RAT, backdoors, rootkits, bootkits, logic bombs, scareware, fileless.",
+          "Retenir la persistance firmware : BIOS/UEFI en SPI Flash => survit au formatage et parfois au changement de disque/OS.",
+          "Comprendre les attaques de la chaîne de boot : MBR/VBR/bootloader, puis noyau.",
+          "Mémoriser des exemples clés : LoJax, MosaicRegressor, Stoned Bootkit, Rovnix, BootHole, BlackLotus.",
+          "Connaître les causes de reflash BIOS compromis : firmware non signé, écriture SPI non protégée, update depuis OS compromis.",
+          "Comprendre les contournements de Secure Boot : clés mal gérées, downgrade vers bootloaders signés mais vulnérables.",
+          "Maîtriser le risque DMA Thunderbolt : accès direct RAM, vol de clés de chiffrement et injection mémoire.",
+          "Connaître les mitigations : mise à jour BIOS/UEFI, Secure Boot actif, mot de passe BIOS, désactivation CSM, restrictions boot externe, Kernel DMA protection.",
+          "Retenir les types d'escalade de privilèges : verticale et horizontale, plus leurs causes fréquentes.",
+          "Connaître les Linux capabilities sensibles : CAP_SYS_ADMIN, CAP_DAC_OVERRIDE, CAP_NET_ADMIN."
+        ],
+        quiz: [
+          { q: "Pourquoi un firmware rootkit BIOS/UEFI est particulièrement persistant ?", o: ["Parce qu'il tourne dans le navigateur", "Parce qu'il est stocké en SPI Flash sur la carte mère", "Parce qu'il dépend du fichier /tmp", "Parce qu'il nécessite SSH"], a: 1, e: "Le firmware n'est pas sur le disque système, donc le formatage ne suffit pas." },
+          { q: "Un bootkit cible prioritairement :", o: ["Le presse-papiers", "La chaîne d'amorçage (MBR/VBR/bootloader)", "Le DNS uniquement", "Le ventilateur CPU"], a: 1, e: "Le bootkit s'exécute avant le chargement normal du noyau." },
+          { q: "L'attaque BootHole est liée à :", o: ["Une faille de downgrade/validation dans le démarrage sécurisé", "Un bug d'imprimante", "Un ransomware cloud", "Une corruption RAID"], a: 0, e: "BootHole concerne GRUB2 et l'écosystème Secure Boot." },
+          { q: "Le risque principal des attaques DMA via Thunderbolt est :", o: ["Lecture/écriture directe en RAM", "Perte des ventilateurs", "Modification de l'heure système", "Compression des logs"], a: 0, e: "DMA permet l'accès mémoire direct, contournant certaines protections." },
+          { q: "Pourquoi désactiver CSM est recommandé avec Secure Boot ?", o: ["Pour activer Legacy BIOS", "Pour forcer le mode UEFI moderne compatible Secure Boot", "Pour désactiver GPT", "Pour autoriser MBR non signé"], a: 1, e: "CSM maintient la compatibilité legacy qui peut réduire l'efficacité du secure boot." },
+          { q: "Exemple d'escalade verticale :", o: ["User A lit les fichiers User B", "Utilisateur standard -> root/admin", "DNS spoofing", "Snapshot vers backup"], a: 1, e: "Verticale = montée de privilège vers un niveau supérieur." },
+          { q: "CAP_DAC_OVERRIDE permet notamment :", o: ["Changer la fréquence CPU", "Bypass des permissions DAC classiques", "Signer DBX", "Désactiver ASLR"], a: 1, e: "Cette capability permet d'ignorer certaines vérifications d'accès basées sur DAC." },
+          { q: "Le malware fileless est caractérisé par :", o: ["Stockage principal en RAM sans fichier persistant évident", "Infection BIOS obligatoire", "Chiffrement RAID", "Usage exclusif de boot USB"], a: 0, e: "Le fileless abuse souvent des processus légitimes et laisse peu de traces disque." }
+        ]
+      },
+      {
+        id: "chap2",
+        file: "chapitre2.md",
+        fallbackTitle: "Chapitre 2 — Attaques sur les systèmes d'exploitations",
+        details: [
+          "Connaître la taxonomie étendue des exploits : mémoire, noyau, pilotes, appels système, persistance, logique/configuration.",
+          "Savoir détailler les causes et impacts de l'élévation de privilèges (failles noyau, SUID, permissions, drivers).",
+          "Mémoriser les catégories de rootkits par niveau : user, kernel, bootkit, hypervisor, firmware, memory.",
+          "Comprendre que le rootkit sert surtout à masquer présence/processus/fichiers/artefacts et maintenir contrôle.",
+          "Retenir les techniques user-mode : hook API, filtrage résultats (processus/fichiers cachés).",
+          "Retenir les techniques kernel-mode : interception syscalls, falsification structures noyau, modules malveillants.",
+          "Connaître les limites de détection par signature face aux malwares polymorphes/inconnus.",
+          "Comparer chkrootkit vs rkhunter : deux outils utiles, mais couverture et profondeur différentes.",
+          "Connaître les effets DoS système : saturation scheduler, fork bomb, indisponibilité globale.",
+          "Retenir que les attaques chainées combinent plusieurs failles pour atteindre des objectifs avancés."
+        ],
+        quiz: [
+          { q: "Le rôle principal d'un rootkit est :", o: ["Sauvegarder les fichiers", "Masquer l'activité malveillante et maintenir l'accès", "Optimiser le réseau", "Mettre à jour le noyau"], a: 1, e: "Un rootkit vise la furtivité et la persistance du contrôle attaquant." },
+          { q: "Un user-mode rootkit opère surtout en :", o: ["Ring 0", "Ring 3 via interception API utilisateur", "Firmware SPI", "Microcode CPU"], a: 1, e: "Il ment aux programmes user-space sans modifier directement le noyau." },
+          { q: "Un kernel-mode rootkit est plus dangereux car il :", o: ["Ne lit jamais la mémoire", "Tourne dans le noyau avec accès très élevé", "Est forcément temporaire", "Ne peut pas cacher les processus"], a: 1, e: "En Ring 0, il peut manipuler profondément les mécanismes OS." },
+          { q: "Un memory rootkit pur :", o: ["Survit toujours au redémarrage", "Réside en RAM et peut disparaître au reboot", "N'utilise jamais injection", "Dépend exclusivement de RAID"], a: 1, e: "Sans mécanisme complémentaire, il est souvent volatil." },
+          { q: "Une fork bomb impacte directement :", o: ["Le scheduler et les ressources processus", "La signature Secure Boot", "Le chiffrement DB", "Le BIOS password"], a: 0, e: "L'explosion de processus monopolise ordonnanceur/ressources." },
+          { q: "Quelle affirmation est correcte sur la détection par signature ?", o: ["Toujours efficace", "Peut échouer sur malwares inconnus ou polymorphes", "Remplace toute analyse comportementale", "Ne sert qu'aux logs"], a: 1, e: "Le cours insiste sur ses limites face aux menaces adaptatives." },
+          { q: "rkhunter, par rapport à chkrootkit, est souvent décrit comme :", o: ["Toujours inutile", "Plus orienté vérifications d'intégrité supplémentaires", "Exclusif Windows", "Un pare-feu réseau"], a: 1, e: "Les deux sont complémentaires, rkhunter ajoute des contrôles d'intégrité/permissions." },
+          { q: "Un chain exploit consiste à :", o: ["Exploiter une seule faille isolée", "Combiner plusieurs vulnérabilités en chaîne", "Désactiver PAM", "Répliquer un RAID"], a: 1, e: "Les attaques avancées combinent plusieurs étapes/fuites/élévations." }
+        ]
+      },
+      {
+        id: "chap3",
+        file: "chapitre3.md",
+        fallbackTitle: "Chapitre 3 — Mécanismes de protections des systèmes d'exploitations",
+        details: [
+          "Retenir la chaîne d'authentification : NSS (résolution user) -> PAM (pile règles /etc/pam.d) -> ouverture session -> systemd-logind.",
+          "Comprendre hash + salt + hash lent (bcrypt/SHA-512) + MFA pour résister aux attaques de mot de passe.",
+          "Maîtriser DAC/MAC/ACL et leurs différences (ACL plus granulaire mais plus complexe).",
+          "Mémoriser les protections mémoire : séparation user/kernel, permissions pages R/W/X, NX.",
+          "Comprendre Stack Canary : valeur sentinelle vérifiée avant retour de fonction.",
+          "Connaître SMEP (kernel n'exécute pas code user) et SMAP (kernel n'accède pas librement mémoire user).",
+          "Maîtriser ASLR : randomisation des zones processus (mmap, heap, stack, libs, base binaire PIE).",
+          "Maîtriser KASLR : randomisation base du noyau/modules au boot pour compliquer les exploits kernel.",
+          "Connaître Secure Boot variables : PK, KEK, DB (autorisé), DBX (révoqué), stockées NVRAM.",
+          "Retenir la chaîne de confiance : UEFI -> bootloader signé -> kernel signé -> modules signés ; DBX vérifié en priorité."
+        ],
+        quiz: [
+          { q: "Le rôle du salt dans les mots de passe est surtout :", o: ["Accélérer brute force", "Éviter les tables pré-calculées/rainbow tables", "Désactiver PAM", "Signer DBX"], a: 1, e: "Le salt rend les empreintes de mots de passe identiques différentes." },
+          { q: "Dans Linux, PAM applique ses règles principalement depuis :", o: ["/etc/fstab", "/etc/pam.d/", "/boot/grub/", "/var/www/"], a: 1, e: "Le cours cite explicitement la pile PAM dans /etc/pam.d/." },
+          { q: "NX (No eXecute) empêche :", o: ["Lecture des logs", "Exécution de code en zone mémoire de données", "Création de comptes", "Montage de partitions"], a: 1, e: "NX bloque l'exécution dans des pages non exécutables (heap/stack selon config)." },
+          { q: "Le Stack Canary sert à :", o: ["Chiffrer le disque", "Détecter un écrasement de pile avant saut malveillant", "Bloquer USB", "Faire du backup différentiel"], a: 1, e: "Si le canary est modifié, l'exécution s'arrête via vérification." },
+          { q: "SMEP signifie que le noyau :", o: ["Peut exécuter librement du code user", "N'exécute pas du code depuis des pages user en mode superviseur", "Désactive ASLR", "N'utilise pas syscalls"], a: 1, e: "SMEP = Supervisor Mode Execution Prevention." },
+          { q: "SMAP signifie que le noyau :", o: ["Ne peut pas accéder sans contrôle à la mémoire user", "N'a plus accès aux fichiers", "Interdit SSH", "Force EFI shell"], a: 0, e: "SMAP limite les accès superviseur aux pages utilisateur." },
+          { q: "ASLR agit principalement sur :", o: ["Le BIOS", "L'espace d'adressage virtuel du processus", "Le RAID firmware", "Le DNS"], a: 1, e: "ASLR randomise les adresses mémoire des zones utilisateur/processus." },
+          { q: "DBX dans Secure Boot contient :", o: ["Les signatures autorisées", "La liste de révocation (éléments interdits)", "Les mots de passe utilisateurs", "Les snapshots"], a: 1, e: "DBX bloque explicitement les binaires/certificats révoqués." },
+          { q: "PK (Platform Key) sert principalement à :", o: ["Vérifier tous les logs", "Définir l'autorité qui contrôle la configuration Secure Boot", "Monter /home", "Lancer systemd"], a: 1, e: "PK est la clé racine de gouvernance des clés Secure Boot." },
+          { q: "Ordre de confiance correct :", o: ["Kernel -> UEFI -> Bootloader -> modules", "UEFI -> Bootloader -> Kernel -> Modules", "Modules -> Kernel -> UEFI", "DB -> DBX -> PK"], a: 1, e: "La chaîne démarre au firmware, puis continue jusqu'aux modules." }
+        ]
+      },
+      {
+        id: "chap4",
+        file: "chapitre4.md",
+        fallbackTitle: "Chapitre 4 — Méthodes d'analyse et d'évaluation de la sécurité",
+        details: [
+          "Distinguer analyse de sécurité (observer/mesurer) et évaluation (qualifier risque/efficacité).",
+          "Connaître les familles d'analyse : statique (sans exécution), dynamique (en exécution), logs, permissions/privilèges.",
+          "Mémoriser des commandes-clés vues : searchsploit, find SUID, journalctl, outils d'audit.",
+          "Comparer audit vs pentest : audit = pas d'attaque ; pentest = preuve d'exploit possible.",
+          "Appliquer la formule de risque : Probabilité × Impact avec interprétation du score (exemple 20 critique).",
+          "Connaître le rôle des benchmarks/référentiels (CIS) pour l'évaluation des mécanismes.",
+          "Comprendre HIDS : collecte host (logs/fichiers/processus), corrélation multi-sources, alertes/rapports/réponses.",
+          "Retenir les limites HIDS : faux positifs, couverture locale, complexité cloud/email, pas équivalent antivirus.",
+          "Maîtriser pipeline Wazuh : agent -> manager (décodage normalisation JSON) -> règles -> alertes -> indexation -> dashboard.",
+          "Distinguer Lynis (audit/recommandations) et linPEAS (perspective exploitation/pentest)."
+        ],
+        quiz: [
+          { q: "L'analyse statique de sécurité implique :", o: ["Exécuter un exploit réel", "Observer sans exécuter le code ciblé", "Redémarrer tous les services", "Modifier le firmware"], a: 1, e: "Statique = analyse sans lancer l'exécution malveillante." },
+          { q: "La commande find / -perm -4000 sert surtout à :", o: ["Lister fichiers SUID", "Créer un backup full", "Activer Secure Boot", "Analyser trafic réseau"], a: 0, e: "Elle permet d'identifier des binaires SUID potentiellement risqués." },
+          { q: "Différence clé audit vs pentest :", o: ["Aucune différence", "Le pentest peut exploiter/attaquer pour preuve", "Audit = exploitation active", "Pentest = lecture seule"], a: 1, e: "Le pentest va jusqu'à démontrer la vulnérabilité exploitable." },
+          { q: "Formule de risque citée :", o: ["Risque = Correctifs / Temps", "Risque = Probabilité × Impact", "Risque = CPU × RAM", "Risque = Logs + IDS"], a: 1, e: "Le chapitre fournit explicitement cette formule." },
+          { q: "Si Probabilité=5 et Impact=4, le score est :", o: ["9", "20", "45", "54"], a: 1, e: "5 × 4 = 20, interprété comme niveau critique dans l'exemple." },
+          { q: "Un HIDS surveille principalement :", o: ["Le firmware GPU uniquement", "Une machine hôte (logs/fichiers/processus)", "Uniquement les DNS externes", "Les snapshots cloud"], a: 1, e: "Host-based IDS = visibilité locale hôte." },
+          { q: "Affirmer « HIDS empêche toutes les attaques » est :", o: ["Vrai", "Faux", "Vrai en cloud seulement", "Vrai si RAID actif"], a: 1, e: "Le cours précise que HIDS détecte surtout ; blocage relève plutôt d'actions complémentaires/HIPS." },
+          { q: "Dans Wazuh, après réception d'un log brut, le manager :", o: ["Ignore le log", "Le normalise/décode avant application des règles", "Formate le disque", "Désactive SSH"], a: 1, e: "Le pipeline convertit d'abord en format exploitable (JSON/champs) puis corrèle." },
+          { q: "Lynis est surtout orienté :", o: ["Audit et recommandations de durcissement", "Force brute SSH", "Injection SQL", "Chiffrement DBX"], a: 0, e: "Lynis produit warnings/suggestions d'audit sécurité." },
+          { q: "linPEAS est surtout orienté :", o: ["Analyse passive uniquement", "Recherche d'opportunités d'exploitation/élévation", "Gestion PK/KEK", "Snapshot COW"], a: 1, e: "linPEAS est un outil offensif d'énumération pentest." }
+        ]
+      },
+      {
+        id: "chap5",
+        file: "chapitre5.md",
+        fallbackTitle: "Chapitre 5 — Méthodes de récupération et reprise après défaillance",
+        details: [
+          "Différencier sauvegarde (backup) et restauration/recovery.",
+          "Maîtriser Full vs Incremental vs Differential : volume, vitesse backup/restauration, dépendances.",
+          "Connaître types par nature de données : file-level, image disque, base de données.",
+          "Connaître types par stockage : local, cloud, offline/air-gapped.",
+          "Comprendre snapshot et Copy-On-Write (capture rapide de l'état, conservation des anciens blocs modifiés).",
+          "Retenir que snapshot n'est pas backup complet : risque partagé si support principal tombe.",
+          "Distinguer RAID (disponibilité matérielle) de backup (récupération logique après perte/corruption/attaque).",
+          "Connaître réplication + haute disponibilité (HA) pour continuité de service.",
+          "Différencier PRA (reprise après incident) et PCA (continuité pendant incident), plus DRaaS (PRA externalisé cloud).",
+          "Maîtriser IR et Forensics : préparation, détection, confinement, éradication/récupération ; disk/memory/log/network forensic ; hardening et patch management."
+        ],
+        quiz: [
+          { q: "Un Full Backup signifie :", o: ["Copie uniquement des fichiers modifiés", "Copie complète des données ciblées", "Copie des métadonnées seulement", "Réplication réseau en direct"], a: 1, e: "Le full recopie tout l'ensemble sélectionné." },
+          { q: "Un Incremental Backup copie :", o: ["Depuis le dernier full uniquement", "Depuis la dernière sauvegarde (quelle qu'elle soit)", "Tout le disque", "Seulement la RAM"], a: 1, e: "L'incrémental se base sur le dernier point de sauvegarde." },
+          { q: "Un Differential Backup copie :", o: ["Les changements depuis le dernier full", "Les changements depuis le dernier incrémental", "Uniquement les logs", "Le firmware BIOS"], a: 0, e: "Le différentiel compare toujours au dernier full." },
+          { q: "Le snapshot repose sur :", o: ["RAID 0", "Copy-On-Write", "Brute force", "Secure Boot"], a: 1, e: "COW conserve les anciens blocs lorsqu'un bloc est modifié." },
+          { q: "Pourquoi snapshot != backup complet ?", o: ["Car il est trop lent", "Car il peut dépendre du même stockage et ne protège pas tous les scénarios", "Car il chiffre tout", "Car il remplace RAID"], a: 1, e: "Snapshot est excellent court terme, pas une stratégie de sauvegarde unique." },
+          { q: "RAID protège surtout contre :", o: ["Mauvaise suppression logique", "Panne disque matérielle", "Vol de tokens", "Erreurs PAM"], a: 1, e: "RAID améliore disponibilité/continuité matérielle, pas tous les cas logiques." },
+          { q: "PRA vs PCA :", o: ["PRA = après incident, PCA = pendant l'incident", "PRA = chiffrement, PCA = logs", "Les deux sont identiques", "PRA = firewall, PCA = IDS"], a: 0, e: "Le chapitre distingue reprise post-incident et continuité pendant incident." },
+          { q: "Dans une phase de containment IR, une action type est :", o: ["iptables -A INPUT -s IP -j DROP", "Désactiver le monitoring", "Supprimer tous les backups", "Changer la carte mère"], a: 0, e: "Confinement = bloquer rapidement la source/propagation de l'attaque." },
+          { q: "La Memory Forensics aide notamment à trouver :", o: ["Des câbles défectueux", "Processus cachés, malware en RAM, clés de chiffrement", "Uniquement des ports ouverts", "Seulement des snapshots"], a: 1, e: "La RAM contient artefacts critiques en temps réel." },
+          { q: "Un risque classique du patch management est :", o: ["Aucun effet secondaire possible", "Interruption de service/downtime après update", "Suppression automatique de DBX", "Impossibilité de journaliser"], a: 1, e: "Le cours mentionne explicitement le risque de downtime et nécessité de planification." }
+        ]
+      }
+    ];
+
+    const state = {
+      activeId: chapterConfigs[0].id,
+      tab: "cours",
+      query: "",
+      rawMode: false,
+      chapters: {},
+      scores: {}
+    };
+
+    const chapterListEl = document.getElementById("chapterList");
+    const globalMetaEl = document.getElementById("globalMeta");
+    const chapterTitleEl = document.getElementById("chapterTitle");
+    const chapterStatsEl = document.getElementById("chapterStats");
+    const loadWarningEl = document.getElementById("loadWarning");
+    const coursContentEl = document.getElementById("coursContent");
+    const detailsListEl = document.getElementById("detailsList");
+    const quizContainerEl = document.getElementById("quizContainer");
+    const searchInputEl = document.getElementById("searchInput");
+    const rawModeEl = document.getElementById("rawMode");
+    const searchPanelEl = document.getElementById("searchPanel");
+    const searchResultsEl = document.getElementById("searchResults");
+
+    const panels = {
+      cours: document.getElementById("coursPanel"),
+      details: document.getElementById("detailsPanel"),
+      qcm: document.getElementById("qcmPanel")
+    };
+
+    function escapeHtml(str) {
+      return str
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function regexEscape(str) {
+      return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    function highlightText(line, q) {
+      const safe = escapeHtml(line);
+      if (!q) return safe || " ";
+      const re = new RegExp(regexEscape(q), "gi");
+      return safe.replace(re, (m) => `<mark>${m}</mark>`) || " ";
+    }
+
+    function extractTitle(text, fallback) {
+      const lines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+      const i = lines.findIndex((l) => /chapitre\s+\d+/i.test(l));
+      if (i === -1) return fallback;
+      const next = lines[i + 1] && !/^#+/.test(lines[i + 1]) ? " " + lines[i + 1] : "";
+      return (lines[i] + next).replace(/\s+/g, " ").trim();
+    }
+
+    function markdownToHtml(md) {
+      const lines = md.split(/\r?\n/);
+      const out = [];
+      let inList = false;
+      let listType = "ul";
+
+      function closeList() {
+        if (inList) {
+          out.push(`</${listType}>`);
+          inList = false;
+        }
+      }
+
+      for (const line of lines) {
+        const t = line.trim();
+        if (!t) {
+          closeList();
+          continue;
+        }
+
+        const heading = t.match(/^(#{1,6})\s*(.*)$/);
+        if (heading) {
+          closeList();
+          const lvl = heading[1].length;
+          out.push(`<h${lvl}>${escapeHtml(heading[2] || "")}</h${lvl}>`);
+          continue;
+        }
+
+        const bullet = t.match(/^([\-*•–])\s*(.*)$/);
+        if (bullet) {
+          if (!inList || listType !== "ul") {
+            closeList();
+            inList = true;
+            listType = "ul";
+            out.push("<ul>");
+          }
+          out.push(`<li>${escapeHtml(bullet[2] || "")}</li>`);
+          continue;
+        }
+
+        const ordered = t.match(/^\d+[.)]\s+(.*)$/);
+        if (ordered) {
+          if (!inList || listType !== "ol") {
+            closeList();
+            inList = true;
+            listType = "ol";
+            out.push("<ol>");
+          }
+          out.push(`<li>${escapeHtml(ordered[1] || "")}</li>`);
+          continue;
+        }
+
+        if (/^[-_=]{3,}$/.test(t)) {
+          closeList();
+          out.push("<hr />");
+          continue;
+        }
+
+        closeList();
+        out.push(`<p>${escapeHtml(t)}</p>`);
+      }
+
+      closeList();
+      return out.join("\n");
+    }
+
+    function renderRaw(text, q) {
+      const lines = text.split(/\r?\n/);
+      return `<ol class="raw-lines">${lines.map((line) => `<li>${highlightText(line, q)}</li>`).join("")}</ol>`;
+    }
+
+    function getActiveChapter() {
+      return state.chapters[state.activeId];
+    }
+
+    function updateGlobalMeta() {
+      const loaded = Object.values(state.chapters).filter((c) => c.loaded).length;
+      const totalLines = Object.values(state.chapters).reduce((a, c) => a + c.lineCount, 0);
+      const quizDone = Object.keys(state.scores).length;
+      globalMetaEl.innerHTML = `Fichiers chargés: <b>${loaded}/${chapterConfigs.length}</b><br>Lignes de cours: <b>${totalLines.toLocaleString("fr-FR")}</b><br>QCM validés: <b>${quizDone}/${chapterConfigs.length}</b>`;
+    }
+
+    function renderChapterList() {
+      chapterListEl.innerHTML = chapterConfigs.map((cfg) => {
+        const c = state.chapters[cfg.id];
+        const score = state.scores[cfg.id];
+        const scoreText = score ? `${score.score}/${score.total}` : "—";
+        const scoreClass = score ? "score-pill score-ok" : "score-pill";
+        return `
+          <button class="chapter-btn ${state.activeId === cfg.id ? "active" : ""}" data-id="${cfg.id}">
+            <div class="chapter-title">${escapeHtml(c.title)}</div>
+            <div class="chapter-meta">
+              <span>${c.lineCount} lignes</span>
+              <span class="${scoreClass}">${scoreText}</span>
+            </div>
+          </button>
+        `;
+      }).join("");
+
+      chapterListEl.querySelectorAll(".chapter-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          state.activeId = btn.dataset.id;
+          renderAll();
+        });
+      });
+    }
+
+    function renderSearchResults(chapter) {
+      const q = state.query.trim();
+      if (!q) {
+        searchPanelEl.classList.add("hidden");
+        searchResultsEl.innerHTML = "";
+        return;
+      }
+
+      const re = new RegExp(regexEscape(q), "i");
+      const hits = chapter.lines
+        .map((line, i) => ({ line, no: i + 1 }))
+        .filter((x) => re.test(x.line))
+        .slice(0, 220);
+
+      searchPanelEl.classList.remove("hidden");
+      if (!hits.length) {
+        searchResultsEl.innerHTML = `<div class="search-hit">Aucun résultat pour <b>${escapeHtml(q)}</b>.</div>`;
+        return;
+      }
+
+      searchResultsEl.innerHTML = hits.map((h) => `
+        <div class="search-hit"><b>L${h.no}:</b> ${highlightText(h.line, q)}</div>
+      `).join("");
+    }
+
+    function renderCoursePanel(chapter) {
+      loadWarningEl.innerHTML = chapter.loaded ? "" : `<div class="load-warning">⚠️ Chargement du fichier <b>${escapeHtml(chapter.file)}</b> impossible via ce navigateur.<br>Ouvre ce dossier avec un petit serveur local (ex: <code>python -m http.server</code>) puis recharge la page.</div>`;
+      if (state.rawMode) {
+        coursContentEl.innerHTML = renderRaw(chapter.text, state.query.trim());
+      } else {
+        coursContentEl.innerHTML = `<div class="md">${markdownToHtml(chapter.text)}</div>`;
+      }
+    }
+
+    function renderDetailsPanel(chapter) {
+      detailsListEl.innerHTML = chapter.details.map((d) => `<li>${escapeHtml(d)}</li>`).join("");
+    }
+
+    function renderQuizPanel(chapter) {
+      const quizHtml = chapter.quiz.map((q, idx) => `
+        <div class="q-card" data-q="${idx}">
+          <div class="q-title">${idx + 1}. ${escapeHtml(q.q)}</div>
+          ${q.o.map((opt, oi) => `
+            <label class="option" data-option="${oi}">
+              <input type="radio" name="q-${idx}" value="${oi}">
+              ${escapeHtml(opt)}
+            </label>
+          `).join("")}
+          <div id="exp-${idx}" class="exp"></div>
+        </div>
+      `).join("");
+
+      const prev = state.scores[state.activeId];
+      const prevText = prev ? `Dernier score: <b>${prev.score}/${prev.total}</b>` : "Aucun score enregistré pour ce chapitre.";
+
+      quizContainerEl.innerHTML = `
+        ${quizHtml}
+        <div class="btns">
+          <button id="checkQuiz" class="btn primary">Corriger le QCM</button>
+          <button id="resetQuiz" class="btn">Réinitialiser</button>
+        </div>
+        <div id="quizResult" class="quiz-result">${prevText}</div>
+      `;
+
+      document.getElementById("checkQuiz").addEventListener("click", () => checkQuiz(chapter));
+      document.getElementById("resetQuiz").addEventListener("click", () => renderQuizPanel(chapter));
+    }
+
+    function checkQuiz(chapter) {
+      let score = 0;
+      let answered = 0;
+      chapter.quiz.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q-${i}"]:checked`);
+        const exp = document.getElementById(`exp-${i}`);
+        const labels = [...document.querySelectorAll(`[data-q="${i}"] .option`)];
+        labels.forEach((l) => l.classList.remove("correct", "wrong"));
+
+        if (!selected) {
+          exp.className = "exp show warn";
+          exp.textContent = "Réponse manquante. " + q.e;
+          return;
+        }
+
+        answered++;
+        const selectedValue = Number(selected.value);
+        labels.forEach((label) => {
+          const oi = Number(label.dataset.option);
+          if (oi === q.a) label.classList.add("correct");
+          if (oi === selectedValue && oi !== q.a) label.classList.add("wrong");
+        });
+
+        if (selectedValue === q.a) {
+          score++;
+          exp.className = "exp show ok";
+          exp.textContent = "Correct. " + q.e;
+        } else {
+          exp.className = "exp show bad";
+          exp.textContent = "Incorrect. " + q.e;
+        }
+      });
+
+      const percent = Math.round((score / chapter.quiz.length) * 100);
+      state.scores[state.activeId] = { score, total: chapter.quiz.length };
+      document.getElementById("quizResult").innerHTML = `Réponses: <b>${answered}/${chapter.quiz.length}</b> • Score: <b>${score}/${chapter.quiz.length}</b> (${percent}%)`;
+      renderChapterList();
+      updateGlobalMeta();
+    }
+
+    function renderTabs() {
+      document.querySelectorAll(".tab").forEach((tab) => {
+        const active = tab.dataset.tab === state.tab;
+        tab.classList.toggle("active", active);
+      });
+      Object.entries(panels).forEach(([k, panel]) => panel.classList.toggle("hidden", k !== state.tab));
+    }
+
+    function renderAll() {
+      const chapter = getActiveChapter();
+      chapterTitleEl.textContent = chapter.title;
+      chapterStatsEl.innerHTML = `${chapter.file} • ${chapter.lineCount} lignes • ${chapter.charCount.toLocaleString("fr-FR")} caractères • ${chapter.quiz.length} questions QCM`;
+      renderTabs();
+      renderSearchResults(chapter);
+      renderCoursePanel(chapter);
+      renderDetailsPanel(chapter);
+      renderQuizPanel(chapter);
+      renderChapterList();
+      updateGlobalMeta();
+    }
+
+    async function loadMarkdown(file) {
+      try {
+        const r = await fetch(encodeURI(file), { cache: "no-store" });
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return { text: await r.text(), loaded: true };
+      } catch (e) {
+        return {
+          text: `Impossible de charger automatiquement le fichier "${file}".\n\nCause probable: ouverture directe en file://.\n\nSolution simple:\n1) Ouvrir un terminal dans ce dossier.\n2) Lancer: python -m http.server 8000\n3) Ouvrir: http://localhost:8000/revision-interactive.html`,
+          loaded: false
+        };
+      }
+    }
+
+    async function init() {
+      const loads = await Promise.all(chapterConfigs.map(async (cfg) => {
+        const res = await loadMarkdown(cfg.file);
+        const lines = res.text.split(/\r?\n/);
+        state.chapters[cfg.id] = {
+          ...cfg,
+          loaded: res.loaded,
+          text: res.text,
+          lines,
+          lineCount: lines.length,
+          charCount: res.text.length,
+          title: extractTitle(res.text, cfg.fallbackTitle)
+        };
+      }));
+
+      if (!loads) return;
+
+      document.querySelectorAll(".tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          state.tab = tab.dataset.tab;
+          renderAll();
+        });
+      });
+
+      searchInputEl.addEventListener("input", (e) => {
+        state.query = e.target.value;
+        renderAll();
+      });
+
+      rawModeEl.addEventListener("change", () => {
+        state.rawMode = rawModeEl.checked;
+        renderAll();
+      });
+
+      renderAll();
+    }
+
+    init();
+  </script>
+</body>
+</html>
