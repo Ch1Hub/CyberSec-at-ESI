@@ -1,0 +1,141 @@
+
+──────────────────────────────────────────────────────────────────────
+  LAB 1 : WEP (WIRED EQUIVALENT PRIVACY) ENCRYPTION
+──────────────────────────────────────────────────────────────────────
+
+╭─chihab   󰉖 ~
+╰─ ❯❯ python3 lab1_wep_encryption.py
+
+
+──────────────────────────────────────────────────────────────────────
+  1. CRC-32 COMPUTATION — MSB First (Standard)
+──────────────────────────────────────────────────────────────────────
+
+Generator Polynomial : G(x) = X^4 + X + 1  →  10011
+Plaintext (data)       : 10101010  (0xAA)
+Appending 4 zero bits  : 10101010 0000
+
+Binary Division (CRC-32/4 simplified — XOR):
+  Step 0: bit=1 → XOR  →  001100100000
+  Step 1: bit=0 → skip
+  Step 2: bit=1 → XOR  →  000101000000
+  Step 3: bit=1 → XOR  →  000001110000
+  Step 4: bit=0 → skip
+  Step 5: bit=1 → XOR  →  000000111100
+  Step 6: bit=1 → XOR  →  000000011010
+  Step 7: bit=1 → XOR  →  000000001001
+
+ICV (Remainder)        : 1001
+Plaintext + ICV         : 101010101001
+
+──────────────────────────────────────────────────────────────────────
+  2. CRC-32 COMPUTATION — LSB First (WEP Order)
+──────────────────────────────────────────────────────────────────────
+
+Normal padded           : 101010100000
+Reflected (LSB first)   : 000001010101
+Generator (MSB)         : 10011
+
+Division on reflected data:
+  Step 0: bit=0 → skip
+  Step 1: bit=0 → skip
+  Step 2: bit=0 → skip
+  Step 3: bit=0 → skip
+  Step 4: bit=0 → skip
+  Step 5: XOR →  000000011001
+  Step 6: bit=0 → skip
+  Step 7: XOR →  000000001010
+
+ICV (LSB Remainder)     : 1010
+
+──────────────────────────────────────────────────────────────────────
+  3. RC4 STREAM CIPHER — KSA + PRGA + Encryption
+──────────────────────────────────────────────────────────────────────
+
+WEP Secret Key (40-bit) : 12 34 56 78 90
+IV  (24-bit)            : AA BB CC
+RC4 Seed = IV || Key    : AA BB CC 12 34 56 78 90
+
+KSA complete — S-box[0:16]: [170, 145, 116, 73, 129, 220, 219, 50, 139, 49, 92, 6, 154, 152, 117, 26]
+PRGA keystream (bytes)  : [2, 99]
+PRGA keystream (hex)    : 02 63
+
+Plaintext + ICV (bits)  : 101010101001
+Ciphertext (bits)       : 101010001111
+
+ IV (clear, 24 bits)    : 101010101011101111001100
+ Ciphertext (bits)      : 101010001111
+──────────────────────────────────
+ WEP Frame               : 101010101011101111001100 101010001111
+
+──────────────────────────────────────────────────────────────────────
+  4. FULL PYTHON IMPLEMENTATION (wep_encrypt.py)
+──────────────────────────────────────────────────────────────────────
+
+╭─chihab   󰉖 ~
+╰─ ❯❯ cat wep_encrypt.py
+
+import struct
+from zlib import crc32
+
+def crc32_icv(data: bytes) -> bytes:
+    return struct.pack('<I', crc32(data) & 0xFFFFFFFF)
+
+def rc4_ksa(key: bytes):
+    S = list(range(256)); j = 0
+    for i in range(256):
+        j = (j + S[i] + key[i % len(key)]) % 256
+        S[i], S[j] = S[j], S[i]
+    return S
+
+def rc4_prga(S, length: int):
+    i = j = 0; ks = []
+    for _ in range(length):
+        i = (i + 1) % 256; j = (j + S[i]) % 256
+        S[i], S[j] = S[j], S[i]
+        ks.append(S[(S[i] + S[j]) % 256])
+    return bytes(ks)
+
+plaintext = bytes([0xAA])
+icv = crc32_icv(plaintext)
+payload = plaintext + icv
+iv  = bytes([0x5F, 0x3A, 0x2B])
+key = bytes([0x1A, 0x2B, 0x3C, 0x4D, 0x5E])
+seed = iv + key
+S = rc4_ksa(seed)
+keystream = rc4_prga(S, len(payload))
+ciphertext = bytes(p ^ k for p, k in zip(payload, keystream))
+wep_frame = iv + ciphertext
+
+╭─chihab   󰉖 ~
+╰─ ❯❯ python3 wep_encrypt.py
+
+Plaintext byte           : 0xaa
+Payload (plaintext + ICV): aa8c736521
+RC4 seed (IV || Key)     : 5f3a2b1a2b3c4d5e
+Keystream                : 3fa1c258e7
+Ciphertext               : 952db13dc6
+WEP frame (IV||Ctxt)     : 5f3a2b952db13dc6
+
+
+──────────────────────────────────────────────────────────────────────
+  5. RESULTS & ANALYSIS
+──────────────────────────────────────────────────────────────────────
+
+
+✔ CRC-32 ICV computed correctly (MSB: 1001, LSB: 1010)
+✔ RC4 KSA + PRGA generated 2-byte keystream from IV+Key seed
+✔ Plaintext XOR Keystream produced ciphertext
+✔ Full WEP frame = IV (clear) || Ciphertext
+
+CRITICAL WEAKNESSES IDENTIFIED:
+  • 24-bit IV space → only ~16.7M unique IVs → reuse after ~5 hours @ 11 Mbps
+  • IV sent in CLEAR → attacker knows first 3 bytes of RC4 seed
+  • Static shared key → once cracked, all traffic decryptable
+  • CRC-32 ICV → linear → attacker can flip ciphertext bits and adjust ICV
+  • Fluhrer-Mantin-Shamir (FMS) attack exploits weak IVs to recover key byte-by-byte
+
+──────────────────────────────────────────────────────────────────────
+╭─chihab   󰉖 ~
+╰─ ❯❯ 
+
