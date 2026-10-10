@@ -1,0 +1,6 @@
+# Phase 6 record (from SIFT VM terminal, 2026-10-03)
+- Workspace: ~/DFIR-TP1/{evidence,acquisition,hashes,mount,logs,reports} created; ls -R verified (all empty).
+- OS: Ubuntu 24.04.4 LTS (noble); kernel Linux siftworkstation 6.8.0-110-generic #110-Ubuntu SMP x86_64.
+- Tools: all 13 found (md5sum, sha256sum, lsblk, fdisk, mount, umount, losetup, blockdev, dd, file, strings, stat).
+- Storage (§7/Q3): main disk vda 488.3G (vda1 1M BIOS boot, vda2 2G /boot, vda3 486.3G LVM with ubuntu--vg-ubuntu--lv 100G mounted /); loop0-loop8 snap devices (chromium, bare, core22/24, cups, gnome-46, mesa, gtk-themes, snapd). No lab evidence devices yet (expected).
+- Screenshots owed: S3 (uname/os-release), S4 (lsblk) — user to save into DFIR-TP1/screenshots/.

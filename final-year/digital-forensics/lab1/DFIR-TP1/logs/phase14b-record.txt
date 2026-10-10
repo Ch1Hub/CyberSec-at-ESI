@@ -1,0 +1,5 @@
+# Phase 14B record (SIFT VM, 2026-10-03)
+- Re-acquired clean copy: 64+0 records, 256MiB, 1.0 GB/s; SHA256 = b8138338927a9ffe2f2dcd3cdc74ea55f090df25f45ba80a7c4620a161f22de9 (restored).
+- RO repeat on /dev/loop9: mount ro,noload OK; touch WRITE_TEST.txt -> "Read-only file system" (blocked); umount + losetup -d OK.
+- Final: acquired b8138338..., source b8138338... — identical.
+- Q12: RW allows writes (hash changes, 14A 3f64152c...); RO blocks writes (hash stable). Distinguishing property = mutability of the exposed evidence.

@@ -1,0 +1,6 @@
+# Phase 11 record (SIFT VM, 2026-10-03)
+- dd if=../evidence/evidence_source.img of=evidence_acquired.img bs=4M conv=sync,noerror: 64+0 in/out, 268435456 bytes (256MiB), 722 MB/s.
+- Sizes: source 256M, acquired 256M — identical (Q8: yes).
+- SHA256 source:   b8138338927a9ffe2f2dcd3cdc74ea55f090df25f45ba80a7c4620a161f22de9
+- SHA256 acquired: b8138338927a9ffe2f2dcd3cdc74ea55f090df25f45ba80a7c4620a161f22de9
+- Match == bit-for-bit identical copy; source untouched (Q9).

@@ -1,0 +1,6 @@
+# Phase 12 record (SIFT VM, 2026-10-03)
+- file: Linux rev 1.0 ext4, UUID=439fdb42-2d8a-4767-98f3-3b33acbdbe61.
+- Loop: /dev/loop9, RO=1 (losetup -l), blockdev --getro = 1.
+- Mount: /dev/loop9 on .../mount/readonly type ext4 ro,relatime,norecovery.
+- Read OK: incident.txt "Incident ID: DFIR-001"; events.log, readme.txt present.
+- Blocked: touch WRITE_TEST.txt -> "Read-only file system"; append incident.txt -> "Read-only file system".

@@ -1,0 +1,4 @@
+# Phase 13-14A record (SIFT VM, 2026-10-03)
+- Phase 13 (§12.7+§13): umount readonly OK; losetup -d /dev/loop9 OK (only snap loop0-8 remain); SHA256 acquired = b8138338927a9ffe2f2dcd3cdc74ea55f090df25f45ba80a7c4620a161f22de9 — UNCHANGED (Q11: blocked writes never reached the image).
+- Phase 14A (RW): mount -o loop,rw acquired on .../mount/source OK; touch WRITE_TEST.txt SUCCEEDED; ls shows WRITE_TEST.txt 0B + original 3 files; umount OK.
+- SHA256 acquired after RW = 3f64152c831d43873c7699d51477fb1a4577e6c35d8f2cd836c8bdc5a782232d — CHANGED vs b8138338 (RW mount permits modification; even a 0-byte file alters filesystem metadata).

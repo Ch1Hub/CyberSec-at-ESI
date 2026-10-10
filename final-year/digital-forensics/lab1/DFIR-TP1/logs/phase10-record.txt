@@ -1,0 +1,9 @@
+# Phase 10 record (SIFT VM, 2026-10-03)
+- test_hash.txt original ("Digital Forensics"):
+  MD5:    8537dc0e6e24682331dbbd34783405af
+  SHA256: 326381febe85b2c75d8f3406ced045c7cbeadb40a062d072e207bba47b5abe2c
+- After append ("Controlled modification"):
+  MD5:    2f41372751f7653531dd43334e6162d6
+  SHA256: fac5706b3069104dca22fbb261e5867425bc12bd79b3c094e4a61ffeae8c93b3
+- Q6: both hashes completamente different after 1-line append (avalanche effect).
+- Verification: md5sum -c -> evidence_source.img: OK; sha256sum -c -> OK (evidence unchanged).

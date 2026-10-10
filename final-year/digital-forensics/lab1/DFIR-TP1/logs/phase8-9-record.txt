@@ -1,0 +1,10 @@
+# Phase 8-9 record (SIFT VM, 2026-10-03)
+- evidence_source.img: 256M, ext4 (mkfs.ext4 -F on image file only).
+- Mounted loop,rw at ~/DFIR-TP1/mount/source (mount line confirmed rw).
+- Files: incident.txt (22B "Incident ID: DFIR-001"), readme.txt (29B "Laboratory forensic dataset."), events.log (67B, 4 log lines) — all root-owned, verified via cat.
+- stat incident.txt: Size 22, Blocks 8, Modify 2026-10-03 19:38:57 UTC, Access 19:40:09.
+- Unmounted cleanly; ls -lh confirms 256M.
+- Q4: 256M (268435456 bytes).
+- Initial hashes (saved to ~/DFIR-TP1/hashes/):
+  MD5:    3f17b1dba66cc6cff2decece55f156d4
+  SHA256: b8138338927a9ffe2f2dcd3cdc74ea55f090df25f45ba80a7c4620a161f22de9
