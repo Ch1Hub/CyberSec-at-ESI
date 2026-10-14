@@ -1,0 +1,341 @@
+This version of µWS is not compatible with your Node.js build:
+
+Error: Cannot find module '../binaries/uws_linux_x64_127.node'
+Require stack:
+- /home/chihab/.npm-global/lib/node_modules/ganache/node_modules/@trufflesuite/uws-js-unofficial/src/uws.js
+- /home/chihab/.npm-global/lib/node_modules/ganache/dist/node/cli.js
+Falling back to a NodeJS implementation; performance may be degraded.
+
+
+ganache v7.9.2 (@ganache/cli: 0.10.2, @ganache/core: 0.10.2)
+Starting RPC server
+
+Available Accounts
+==================
+(0) 0x15aC6d7F4e5C685baBF0b0023Ed0240d7e5b244C (1000 ETH)
+(1) 0xA3924b3099346975959f52AeD7b9D011186CcaF7 (1000 ETH)
+(2) 0x672186AA80089e4c700524E1dE0038A86a8769DF (1000 ETH)
+(3) 0xD1134Ca3f4CAb4be6B4e3389a343BC00F4bF1F82 (1000 ETH)
+(4) 0x76321Fd6b25d5068ab0CB4124FC2376Ff415Be4C (1000 ETH)
+(5) 0x9dF1481b967916275Adbf8659Ea7D664BE1B6b94 (1000 ETH)
+(6) 0x419dEC0AcDaA9C08b84197FC663663564698F4fb (1000 ETH)
+(7) 0xf3933d6F37cFBac67bde1c3CB1ef3972084365E4 (1000 ETH)
+(8) 0x4084e4ca12fb0F8b7F38A84B0809c486D26CBdD8 (1000 ETH)
+(9) 0x05806AeE1A546665D896CaB61798cFCC5738e4F4 (1000 ETH)
+
+Private Keys
+==================
+(0) 0x<REDACTED_GANACHE_TEST_PRIVATE_KEY>
+(1) 0x<REDACTED_GANACHE_TEST_PRIVATE_KEY>
+(2) 0x<REDACTED_GANACHE_TEST_PRIVATE_KEY>
+(3) 0x<REDACTED_GANACHE_TEST_PRIVATE_KEY>
+(4) 0x<REDACTED_GANACHE_TEST_PRIVATE_KEY>
+(5) 0x<REDACTED_GANACHE_TEST_PRIVATE_KEY>
+(6) 0x<REDACTED_GANACHE_TEST_PRIVATE_KEY>
+(7) 0x<REDACTED_GANACHE_TEST_PRIVATE_KEY>
+(8) 0x<REDACTED_GANACHE_TEST_PRIVATE_KEY>
+(9) 0x<REDACTED_GANACHE_TEST_PRIVATE_KEY>
+
+HD Wallet
+==================
+Mnemonic:      <REDACTED_GANACHE_TEST_MNEMONIC>
+Base HD Path:  m/44'/60'/0'/0/{account_index}
+
+Default Gas Price
+==================
+2000000000
+
+BlockGas Limit
+==================
+30000000
+
+Call Gas Limit
+==================
+50000000
+
+Chain
+==================
+Hardfork: shanghai
+Id:       1337
+
+RPC Listening on 127.0.0.1:8545
+eth_blockNumber
+eth_accounts
+eth_blockNumber
+eth_sendTransaction
+
+  Transaction: 0xd0ec8df29271553785c25bbecc3a035f9bf9210f880cd53d4396d2cd8888c9f7
+  Contract created: 0x0a45a17a78c7052c592c624de4e9e50a7cfc8bb5
+  Gas usage: 132931
+  Block number: 1
+  Block time: Wed Oct 14 2026 11:03:47 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_accounts
+eth_blockNumber
+eth_sendTransaction
+
+  Transaction: 0xad663df24dec1eb8b32f83fb935604b73049505184748bba05af31f6a2e24142
+  Contract created: 0x254c624cc2ba95d032b6346703cd52ac2d4c895d
+  Gas usage: 132931
+  Block number: 2
+  Block time: Wed Oct 14 2026 11:05:15 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_blockNumber
+eth_sendTransaction
+
+  Transaction: 0x404c7c4d837d06df40ac7a00258b6026c3baf524db4f52586983d22140c23336
+  Gas usage: 43728
+  Block number: 3
+  Block time: Wed Oct 14 2026 11:05:15 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_blockNumber
+eth_accounts
+eth_sendTransaction
+
+  Transaction: 0xc2a2f5151c9b6cb4729b030f960610dcdd3ff67521baaffa7161756e5b6c7fd0
+  Contract created: 0x96500beb3d368654683181ec68bb08f930770143
+  Gas usage: 117039
+  Block number: 4
+  Block time: Wed Oct 14 2026 11:07:54 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_sendTransaction
+
+  Transaction: 0xa2e392127a13889e73197bbf1d4f3dc26ddb7b0a31e0111f22cebaa1337f0ba0
+  Gas usage: 43718
+  Block number: 5
+  Block time: Wed Oct 14 2026 11:07:54 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_sendTransaction
+
+  Transaction: 0x1d804d4f0b2f0fa5ab77313d06a74f5609da1fce23036df141f1e10229edb1e6
+  Gas usage: 26630
+  Block number: 6
+  Block time: Wed Oct 14 2026 11:07:54 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_sendTransaction
+
+  Transaction: 0xd623f70d4f7310217c8ade5d88a70671d1bfa18b74a59ba712e6e543d387909a
+  Contract created: 0x73c18928be50ce7b8b7aa386eb0d3f1f4c8b2d4e
+  Gas usage: 237845
+  Block number: 7
+  Block time: Wed Oct 14 2026 11:07:54 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_sendTransaction
+
+  Transaction: 0x5a70232ac5134ac7bb696a773977d8fe256bfb35e9546c0ffc263b9f84a355a9
+  Gas usage: 45909
+  Block number: 8
+  Block time: Wed Oct 14 2026 11:07:54 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_sendTransaction
+
+  Transaction: 0xf2cbe335125be378d19231aca059778e70b610a72df5ae62790f36fa639af28d
+  Gas usage: 24090
+  Block number: 9
+  Block time: Wed Oct 14 2026 11:07:54 GMT+0100 (Central European Standard Time)
+  Runtime error: revert
+  Revert reason: Access denied
+
+eth_call
+eth_call
+eth_sendTransaction
+
+  Transaction: 0xbb1001a3878f6b74a823b03ac133832684f448dad03a7e67c8312b7394608667
+  Gas usage: 24090
+  Block number: 10
+  Block time: Wed Oct 14 2026 11:08:20 GMT+0100 (Central European Standard Time)
+  Runtime error: revert
+  Revert reason: Access denied
+
+eth_getTransactionReceipt
+eth_accounts
+eth_sendTransaction
+
+  Transaction: 0x33f74d2858ca7525dfd031de1dd99f62f44bf7100f5a73447e442039ffc50506
+  Contract created: 0x15dafa88f2d716a38cf2f15281ff363f408094c5
+  Gas usage: 333638
+  Block number: 11
+  Block time: Wed Oct 14 2026 11:10:06 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_sendTransaction
+
+  Transaction: 0x4ed862e588fca26ade2cd73e9dfe83423eafef5e115c5fbdab446d7e55e93c44
+  Gas usage: 21208
+  Block number: 12
+  Block time: Wed Oct 14 2026 11:10:06 GMT+0100 (Central European Standard Time)
+  Runtime error: revert
+
+eth_getTransactionReceipt
+eth_getBalance
+eth_sendTransaction
+
+  Transaction: 0xb8c1d700822e634faa6077928cb7b99b4b5edcb3e270e2e2cd0eb4da723a6f13
+  Contract created: 0x6c0265ba66193988a73c85c2da85543436684c5c
+  Gas usage: 316154
+  Block number: 13
+  Block time: Wed Oct 14 2026 11:10:07 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_sendTransaction
+
+  Transaction: 0x2df6f405c539a7aa48ae7a9628ed081b981e945183ce6d7d9f7c18693f026e06
+  Gas usage: 21197
+  Block number: 14
+  Block time: Wed Oct 14 2026 11:10:07 GMT+0100 (Central European Standard Time)
+  Runtime error: revert
+
+eth_getTransactionReceipt
+eth_getBalance
+eth_getBalance
+eth_accounts
+eth_sendTransaction
+
+  Transaction: 0xc946a378d3c5ee6aeddaf7c575d92e9f603a12a306479f76deae3e6b0f8cee09
+  Contract created: 0x8618e37308a135c81f69d17d1494ccd9a14f7eb4
+  Gas usage: 333638
+  Block number: 15
+  Block time: Wed Oct 14 2026 11:11:13 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_sendTransaction
+
+  Transaction: 0x3bd40a425127b743ba48b0695457bfd868d3b0ccb7ade8adafa39e3878830f00
+  Gas usage: 43602
+  Block number: 16
+  Block time: Wed Oct 14 2026 11:11:13 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_getBalance
+eth_sendTransaction
+
+  Transaction: 0x1025eb12f1806c9c7a664c4320a7f8389931e1cba3b6798c40d7e3e0c13c639a
+  Contract created: 0x607c443e34163c5a7777818b5e2f338294db14e6
+  Gas usage: 316154
+  Block number: 17
+  Block time: Wed Oct 14 2026 11:11:13 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_sendTransaction
+
+  Transaction: 0xdbc637cf33eeab75bd4ea556d5ff4e8359776c54daf21f7940a61aacbb2f09dd
+  Gas usage: 86249
+  Block number: 18
+  Block time: Wed Oct 14 2026 11:11:13 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_getBalance
+eth_getBalance
+eth_accounts
+eth_blockNumber
+eth_sendTransaction
+
+  Transaction: 0x848d0669ac2f723f9b419eebf466d9d61f06021a2f242461d73d1190236bd3e3
+  Contract created: 0x8adf393334ae433e38b5824da75367590bfbb644
+  Gas usage: 132931
+  Block number: 19
+  Block time: Wed Oct 14 2026 11:16:33 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_sendTransaction
+
+  Transaction: 0x6978d4bba5560f81e72e24b593922a39271217a3b6e5e732cfc5b2dec2560bdd
+  Gas usage: 43728
+  Block number: 20
+  Block time: Wed Oct 14 2026 11:16:33 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_call
+eth_sendTransaction
+
+  Transaction: 0xa97a456eaceadb4dfe598cd6b39a38efb34c6b38b602ac0f2504241e3439a61e
+  Contract created: 0xd2029fbfaa61e3cbf6824611f46bcb3177c88b6e
+  Gas usage: 117039
+  Block number: 21
+  Block time: Wed Oct 14 2026 11:16:33 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_sendTransaction
+
+  Transaction: 0x3081f8303674a1be4664fc7d0d0c0b65b9cf8a92ddf97074298f042dd6db182f
+  Gas usage: 43718
+  Block number: 22
+  Block time: Wed Oct 14 2026 11:16:33 GMT+0100 (Central European Standard Time)
+
+eth_sendTransaction
+
+  Transaction: 0x21ad8b0a29a4440857f20c5c26101aefd82df4042da3d85d6161d30dd0615c62
+  Gas usage: 26630
+  Block number: 23
+  Block time: Wed Oct 14 2026 11:16:33 GMT+0100 (Central European Standard Time)
+
+eth_call
+eth_sendTransaction
+
+  Transaction: 0x27a840eccab1150daccf63b711958e0e56e6317bb1744b1fbc29957ccdf8dc4e
+  Contract created: 0x9099145887fa9d3ffd34154573a074fa54abb14c
+  Gas usage: 237845
+  Block number: 24
+  Block time: Wed Oct 14 2026 11:16:33 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_sendTransaction
+
+  Transaction: 0xd290c4e237841799f411f6e78a12c797935a7248f7e448e08909219b3926c8c7
+  Gas usage: 45909
+  Block number: 25
+  Block time: Wed Oct 14 2026 11:16:33 GMT+0100 (Central European Standard Time)
+
+eth_call
+eth_call
+eth_sendTransaction
+
+  Transaction: 0x73b3f60c5dc8814727e7407bf204ae150ff05bb5b99b6dbb11c6a80a8adaa2f6
+  Contract created: 0xb20721088df84bc1ac229a415d287420771af21c
+  Gas usage: 333638
+  Block number: 26
+  Block time: Wed Oct 14 2026 11:16:33 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_sendTransaction
+
+  Transaction: 0xb57d2deb7b54715eb2ae9bf2a06c02b64425ff9931ac774da097b666c04602a4
+  Gas usage: 43602
+  Block number: 27
+  Block time: Wed Oct 14 2026 11:16:33 GMT+0100 (Central European Standard Time)
+
+eth_getBalance
+eth_sendTransaction
+
+  Transaction: 0x37426911611713abe22f2d4751fe96f3e8b538a05b7d36531f80164fe3aa9a73
+  Contract created: 0xa51844bf5f43fc8282ed1d51ce7f342ee6bb8b35
+  Gas usage: 316154
+  Block number: 28
+  Block time: Wed Oct 14 2026 11:16:33 GMT+0100 (Central European Standard Time)
+
+eth_getTransactionReceipt
+eth_sendTransaction
+
+  Transaction: 0x06dc59602d4a0ad74d66525e27a62b8b66a2a0247d3744147100c1adcc696ad5
+  Gas usage: 86249
+  Block number: 29
+  Block time: Wed Oct 14 2026 11:16:33 GMT+0100 (Central European Standard Time)
+
+eth_getBalance
+eth_getBalance

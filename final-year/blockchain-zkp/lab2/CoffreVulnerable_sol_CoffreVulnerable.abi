@@ -1,0 +1,1 @@
+[{"inputs":[{"internalType":"uint256","name":"nouvelleValeur","type":"uint256"}],"name":"modify","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"valeur","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]
