@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Lab 1 - Directory Services with Active Directory</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 15mm 20mm 15mm;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+    color: #24292e;
+    font-size: 11pt;
+    padding: 0;
+    margin: 0;
+  }
+  h1 {
+    font-size: 20pt;
+    color: #0366d6;
+    border-bottom: 2px solid #eaecef;
+    padding-bottom: 0.3em;
+    margin-top: 0;
+  }
+  h2 {
+    font-size: 14pt;
+    color: #1f2328;
+    border-bottom: 1px solid #eaecef;
+    padding-bottom: 0.2em;
+    margin-top: 1.5em;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 12pt;
+    color: #24292e;
+    margin-top: 1.2em;
+    page-break-after: avoid;
+  }
+  h4 {
+    font-size: 11pt;
+    page-break-after: avoid;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+  }
+  th, td {
+    border: 1px solid #d0d7de;
+    padding: 6px 10px;
+    text-align: left;
+  }
+  th {
+    background-color: #f6f8fa;
+    font-weight: 600;
+  }
+  tr:nth-child(even) {
+    background-color: #fcfcfc;
+  }
+  code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 85%;
+    background-color: #f0f2f5;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+  }
+  pre {
+    background-color: #f6f8fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    padding: 10px 14px;
+    overflow: auto;
+    font-size: 9pt;
+    line-height: 1.45;
+    page-break-inside: avoid;
+  }
+  pre code {
+    background-color: transparent;
+    padding: 0;
+  }
+  img {
+    max-width: 96%;
+    height: auto;
+    display: block;
+    margin: 10px auto;
+    border: 1px solid #d0d7de;
+    border-radius: 5px;
+    page-break-inside: avoid;
+  }
+  em {
+    display: block;
+    text-align: center;
+    font-size: 9pt;
+    color: #57606a;
+    margin-bottom: 15px;
+  }
+  hr {
+    border: 0;
+    height: 1px;
+    background: #e1e4e8;
+    margin: 1.5em 0;
+  }
+</style>
+</head>
+<body>
+<h1>Lab Report: Directory Services with Active Directory (Lab 1)</h1>
+<p><strong>Course:</strong> Identity and Access Management (IAM)<br />
+<strong>Institution:</strong> Higher School of Computer Science Sidi Bel Abbès (ESI-SBA)<br />
+<strong>Date:</strong> October 20, 2026<br />
+<strong>Environment:</strong> Linux KVM / QEMU (<code>virsh</code>), Windows Server 2022 Standard (<code>DC01</code>), Windows 11 Pro (<code>CLIENT01</code>)<br />
+<strong>Network Subnet:</strong> <code>LAB-NET</code> (<code>192.168.10.0/24</code>) on isolated bridge <code>virbr1</code>  </p>
+<hr />
+<h2>1. Executive Summary &amp; Lab Objectives</h2>
+<p>The purpose of this laboratory is to design, deploy, and validate enterprise-grade Directory Services using Microsoft Active Directory Domain Services (AD DS). This lab covers:
+1. Setting up the forest root domain controller (<code>DC01</code> for <code>esi-sba.local</code>) with integrated DNS, Reverse Lookup Zones, and the Active Directory Recycle Bin.
+2. Structuring identities using the <strong>AGDLP</strong> (Accounts -&gt; Global Groups -&gt; Domain Local Groups -&gt; Permissions) role-based access control paradigm.
+3. Delegating administrative privileges (Help Desk password reset) using Active Directory Access Control Entries (ACEs) on Organizational Units (OUs).
+4. Creating enterprise SMB network shares (HR and Finance) with restrictive ACLs tied strictly to Domain Local groups.
+5. Demonstrating and analyzing <strong>Scenario A</strong>: Kerberos ticket evaluation, PAC group extraction, token persistence across logon sessions, and security principle inheritance.
+6. Enforcing security and desktop baselines using <strong>Group Policy Objects (GPOs)</strong>.
+7. Configuring multi-site replication architecture (<strong>HQ-Site</strong> and <strong>BRANCH-Site</strong>) with custom subnets, site links, and FSMO role inspection.</p>
+<hr />
+<h2>2. Infrastructure &amp; Topology Overview</h2>
+<h3>2.1 Virtual Machines &amp; Network Plan</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">VM Name</th>
+<th style="text-align: left;">Hostname</th>
+<th style="text-align: left;">Operating System</th>
+<th style="text-align: left;">IP Address</th>
+<th style="text-align: left;">Netmask</th>
+<th style="text-align: left;">Preferred DNS</th>
+<th style="text-align: left;">Role in Lab</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>dc01</code></td>
+<td style="text-align: left;"><code>DC01</code></td>
+<td style="text-align: left;">Windows Server 2022 Standard</td>
+<td style="text-align: left;"><code>192.168.10.10</code></td>
+<td style="text-align: left;"><code>255.255.255.0</code></td>
+<td style="text-align: left;"><code>127.0.0.1</code></td>
+<td style="text-align: left;">Primary Domain Controller, AD DS, DNS, GC, FSMO Master</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>win11-lab</code></td>
+<td style="text-align: left;"><code>CLIENT01</code></td>
+<td style="text-align: left;">Windows 11 Pro</td>
+<td style="text-align: left;"><code>192.168.10.50</code></td>
+<td style="text-align: left;"><code>255.255.255.0</code></td>
+<td style="text-align: left;"><code>192.168.10.10</code></td>
+<td style="text-align: left;">Domain-joined client workstation</td>
+</tr>
+<tr>
+<td style="text-align: left;">Host Bridge</td>
+<td style="text-align: left;"><code>virbr1</code></td>
+<td style="text-align: left;">Linux Bridge (<code>lab-net</code>)</td>
+<td style="text-align: left;"><code>192.168.10.1</code></td>
+<td style="text-align: left;"><code>255.255.255.0</code></td>
+<td style="text-align: left;">N/A</td>
+<td style="text-align: left;">Isolated host-only layer-2 virtual switch</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>3. Phase 1 — Forest Root Deployment (<code>DC01.esi-sba.local</code>)</h2>
+<h3>3.1 Network, Hostname, and Timezone Configuration</h3>
+<ul>
+<li><strong>Hostname:</strong> Configured as <code>DC01</code>.</li>
+<li><strong>IP Settings:</strong> Static IPv4 <code>192.168.10.10/24</code>, Gateway: none, DNS: <code>127.0.0.1</code>.</li>
+<li><strong>Time Zone:</strong> Set to <code>(UTC+01:00) West Central Africa</code> (<code>W. Central Africa Standard Time</code>) to ensure Kerberos timestamp synchronization within the 5-minute skew window.</li>
+</ul>
+<h3>3.2 AD DS Installation &amp; Promotion</h3>
+<ul>
+<li>Installed the AD DS role:
+  <code>powershell
+  Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools</code></li>
+<li>Promoted server to the first Domain Controller of a new forest:</li>
+<li><strong>Root Domain:</strong> <code>esi-sba.local</code></li>
+<li><strong>NetBIOS Name:</strong> <code>ESI-SBA</code></li>
+<li><strong>Functional Level:</strong> Windows Server 2016</li>
+<li><strong>DNS Server &amp; Global Catalog (GC):</strong> Enabled</li>
+</ul>
+<h3>3.3 Integrated DNS Reverse Lookup Zone &amp; AD Recycle Bin</h3>
+<ul>
+<li>Configured forest-wide replicated reverse lookup zone for <code>192.168.10.0/24</code>:
+  <code>powershell
+  Add-DnsServerPrimaryZone -NetworkId "192.168.10.0/24" -ReplicationScope "Forest" -DynamicUpdate "Secure"</code></li>
+<li>Enabled the Active Directory Recycle Bin for <code>esi-sba.local</code>:
+  <code>powershell
+  Enable-ADOptionalFeature 'Recycle Bin Feature' -Scope ForestOrConfigurationSet -Target 'esi-sba.local' -Confirm:$false</code></li>
+</ul>
+<h4>Visual Verification (Phase 1):</h4>
+<p><img alt="DC01 Local Server Configuration" src="screenshots/01_server_manager_local_server.png" />
+<em>Figure 1: DC01 Local Server settings, network parameters, and domain controller state.</em></p>
+<p><img alt="DC01 Server Manager Dashboard" src="screenshots/01_server_manager_dashboard.png" />
+<em>Figure 2: Active Directory Domain Services and DNS operational status on DC01.</em></p>
+<hr />
+<h2>4. Phase 2 — Organizational Structure &amp; AGDLP Identity Architecture</h2>
+<h3>4.1 Organizational Unit (OU) Hierarchy</h3>
+<p>The directory was structured with accidental deletion protection:
+- <code>OU=ESI-SBA,DC=esi-sba,DC=local</code>
+  - <code>OU=Users</code> (containing <code>OU=IT</code>, <code>OU=HR</code>, <code>OU=Finance</code>)
+  - <code>OU=Admins</code>
+  - <code>OU=Groups</code>
+  - <code>OU=Workstations</code>
+  - <code>OU=Servers</code>
+  - <code>OU=ServiceAccounts</code>
+  - <code>OU=Disabled</code></p>
+<h3>4.2 Group Design (AGDLP)</h3>
+<ul>
+<li><strong>Global Groups (<code>GG_*</code>)</strong>: Created in <code>OU=Groups</code> to represent departmental memberships:</li>
+<li><code>GG_IT</code></li>
+<li><code>GG_HR</code></li>
+<li><code>GG_Finance</code></li>
+<li><code>GG_Helpdesk</code></li>
+<li><strong>Domain Local Groups (<code>DLG_*</code>)</strong>: Created in <code>OU=Groups</code> to assign resource access:</li>
+<li><code>DLG_Share_HR_RW</code></li>
+<li><code>DLG_Share_Fin_RW</code></li>
+<li><strong>Nesting</strong>:</li>
+<li><code>GG_Finance</code> -&gt; member of <code>DLG_Share_Fin_RW</code></li>
+<li><code>GG_HR</code> -&gt; member of <code>DLG_Share_HR_RW</code></li>
+</ul>
+<h3>4.3 User Accounts</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Account</th>
+<th style="text-align: left;">OU Path</th>
+<th style="text-align: left;">Global Group</th>
+<th style="text-align: left;">Administrative / Lab Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>a.benali</code></td>
+<td style="text-align: left;"><code>OU=IT,OU=Users,OU=ESI-SBA,...</code></td>
+<td style="text-align: left;"><code>GG_IT</code></td>
+<td style="text-align: left;">IT Systems Engineer (Daily user)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>k.meziane</code></td>
+<td style="text-align: left;"><code>OU=IT,OU=Users,OU=ESI-SBA,...</code></td>
+<td style="text-align: left;"><code>GG_Helpdesk</code></td>
+<td style="text-align: left;">Help Desk Technician</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>s.khelifi</code></td>
+<td style="text-align: left;"><code>OU=HR,OU=Users,OU=ESI-SBA,...</code></td>
+<td style="text-align: left;"><code>GG_HR</code></td>
+<td style="text-align: left;">Human Resources Officer</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>m.haddad</code></td>
+<td style="text-align: left;"><code>OU=Finance,OU=Users,OU=ESI-SBA,...</code></td>
+<td style="text-align: left;"><code>GG_Finance</code></td>
+<td style="text-align: left;">Senior Accountant</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>y.merabet</code></td>
+<td style="text-align: left;"><code>OU=Finance,OU=Users,OU=ESI-SBA,...</code></td>
+<td style="text-align: left;"><em>(None initially)</em></td>
+<td style="text-align: left;">New Accountant (Subject of Scenario A)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>adm-a.benali</code></td>
+<td style="text-align: left;"><code>OU=Admins,OU=ESI-SBA,...</code></td>
+<td style="text-align: left;"><code>Domain Admins</code></td>
+<td style="text-align: left;">Dedicated Domain Administrator Account</td>
+</tr>
+</tbody>
+</table>
+<h3>4.4 Help Desk Delegation of Control</h3>
+<p>Delegated password reset permissions over all standard user accounts in <code>OU=Users,OU=ESI-SBA,DC=esi-sba,DC=local</code> to <code>GG_Helpdesk</code>:
+- <strong>Extended Right:</strong> <code>User-Force-Change-Password</code> (<code>{00299570-246d-11d0-a768-00aa006e0529}</code>)
+- <strong>Inheritance:</strong> Descendant <code>User</code> objects (<code>{bf967aba-0de6-11d0-a285-00aa003049e2}</code>).</p>
+<hr />
+<h2>5. Phase 3 — SMB Shares, Client Join &amp; Scenario A Analysis</h2>
+<h3>5.1 Shared Folders and NTFS ACLs</h3>
+<p>Created two secure shares on <code>DC01</code>:
+1. <code>C:\Shares\Finance</code> (Share: <code>Finance</code>):
+   - Inheritance disabled, default permissions stripped.
+   - <code>BUILTIN\Administrators</code>: Full Control
+   - <code>NT AUTHORITY\SYSTEM</code>: Full Control
+   - <code>ESI-SBA\DLG_Share_Fin_RW</code>: Modify / Read / Write
+2. <code>C:\Shares\HR</code> (Share: <code>HR</code>):
+   - <code>BUILTIN\Administrators</code>: Full Control
+   - <code>NT AUTHORITY\SYSTEM</code>: Full Control
+   - <code>ESI-SBA\DLG_Share_HR_RW</code>: Modify / Read / Write</p>
+<h3>5.2 Workstation Domain Join (<code>CLIENT01</code>)</h3>
+<ul>
+<li>Configured static IP <code>192.168.10.50/24</code> with DNS pointing to <code>192.168.10.10</code>.</li>
+<li>Joined <code>CLIENT01</code> to <code>esi-sba.local</code> using administrative credentials <code>ESI-SBA\adm-a.benali</code>.</li>
+<li>Moved computer object <code>CN=CLIENT01,CN=Computers,...</code> to <code>OU=Workstations,OU=ESI-SBA,DC=esi-sba,DC=local</code>.</li>
+</ul>
+<hr />
+<h3>5.3 Scenario A: From Denied Access to Granted Access</h3>
+<p>This scenario traces the identity lifecycle of accountant <strong><code>y.merabet</code></strong> who initially possessed an account without group memberships.</p>
+<pre><code>       [ Account Created: y.merabet ]
+                     │
+                     ▼
+          [ Attempt \\dc01\Finance ] ───────► RESULT: ACCESS DENIED (Error 0x80070005)
+                     │                                (Token lacks DLG_Share_Fin_RW)
+                     ▼
+      [ Added y.merabet -&gt; GG_Finance ]
+                     │
+                     ▼
+        [ Same Session Check: whoami ] ──────► RESULT: GG_Finance ABSENT in token
+        [ Retry \\dc01\Finance       ] ──────► RESULT: STILL DENIED (Cached Kerberos TGT)
+                     │
+                     ▼
+      [ Purge Tickets &amp; Re-logon / Reboot ]
+                     │
+                     ▼
+        [ New Session Check: whoami  ] ──────► RESULT: ESI-SBA\GG_Finance PRESENT
+        [ Access \\dc01\Finance      ] ──────► RESULT: GRANTED! (Created merabetTest.txt)
+</code></pre>
+<h4>Step 1: Before Group Membership (Access Denied)</h4>
+<p>When <code>y.merabet</code> attempts to open <code>\\dc01\Finance</code>, Windows denies access:</p>
+<p><img alt="Scenario A Step 1 Access Denied" src="screenshots/scenarioA_01_access_denied_before_group.png" />
+<em>Figure 3: Initial access attempt to \dc01\Finance by y.merabet resulting in "Windows cannot access \dc01\Finance - You do not have permission".</em></p>
+<h4>Step 2: Token Inspection Before Re-logon</h4>
+<p>Running <code>whoami /groups</code> proves that the user's logon security token does not contain <code>GG_Finance</code> or <code>DLG_Share_Fin_RW</code>:</p>
+<p><img alt="Scenario A Step 2 Whoami Groups" src="screenshots/scenarioA_02_whoami_before_relog.png" />
+<em>Figure 4: whoami /groups on CLIENT01 showing lack of department global group membership in active token.</em></p>
+<h4>Step 3: Access Attempt in Same Session (Still Denied)</h4>
+<p>Even after <code>Add-ADGroupMember -Identity GG_Finance -Members y.merabet</code> was run on <code>DC01</code>, the active session on <code>CLIENT01</code> continues to be denied because the cached Kerberos Ticket-Granting Ticket (TGT) has not been refreshed:</p>
+<p><img alt="Scenario A Step 3 Still Denied Same Session" src="screenshots/scenarioA_03_denied_same_session.png" />
+<em>Figure 5: Re-testing \dc01\Finance in the same logon session fails due to existing Kerberos PAC token cache.</em></p>
+<h4>Step 4: Access Granted After New Logon Session</h4>
+<p>After logging off and signing back in, a new Kerberos TGT and PAC were generated with the new group memberships. <code>whoami /groups</code> now reflects <code>ESI-SBA\GG_Finance</code> and <code>ESI-SBA\DLG_Share_Fin_RW</code>, and the folder opens with full write permissions:</p>
+<p><img alt="Scenario A Step 4 Access Granted" src="screenshots/scenarioA_04_access_granted_test_file.png" />
+<em>Figure 6: whoami /groups showing ESI-SBA\GG_Finance &amp; ESI-SBA\DLG_Share_Fin_RW, with \dc01\Finance accessible and test file merabetTest.txt created.</em></p>
+<h4>Results Matrix</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Moment</th>
+<th style="text-align: left;"><code>\\dc01\Finance</code> Access</th>
+<th style="text-align: left;"><code>GG_Finance</code> in <code>whoami /groups</code></th>
+<th style="text-align: left;">Effective Access on <code>DC01</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Before Group Membership</strong></td>
+<td style="text-align: left;">❌ <strong>Denied</strong> (Dialog error)</td>
+<td style="text-align: left;">❌ Absent</td>
+<td style="text-align: left;">None (Traverse / List denied)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>After Group Membership (Same Session)</strong></td>
+<td style="text-align: left;">❌ <strong>Denied</strong></td>
+<td style="text-align: left;">❌ Absent</td>
+<td style="text-align: left;">✅ Read / Write / Modify</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>After New Logon Session</strong></td>
+<td style="text-align: left;">✅ <strong>Granted</strong> (File created)</td>
+<td style="text-align: left;">✅ <strong>Present</strong> (<code>ESI-SBA\GG_Finance</code>)</td>
+<td style="text-align: left;">✅ Read / Write / Modify</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3>5.4 Phase 3.4 — Departmental Isolation &amp; Opposite Checks</h3>
+<p>To confirm security boundaries, <code>s.khelifi</code> (HR department) logged onto <code>CLIENT01</code>:
+- <strong><code>\\dc01\HR</code></strong>: Opened successfully.
+- <strong><code>\\dc01\Finance</code></strong>: Denied with Windows permission error.</p>
+<p><img alt="Opposite Checks HR Granted Finance Denied" src="screenshots/phase3_4_khelifi_access_HR_ok_Finance_denied.png" />
+<em>Figure 7: Dual validation test under user s.khelifi: \dc01\HR opened successfully on the left, \dc01\Finance denied on the right.</em></p>
+<hr />
+<h2>6. Phase 4 — Group Policy Configuration</h2>
+<p>Two enterprise GPOs were created and linked to <code>OU=Users,OU=ESI-SBA,DC=esi-sba,DC=local</code>:
+1. <strong><code>GPO_U_Wallpaper</code></strong>:
+   - Deployed central wallpaper to <code>\\esi-sba.local\NETLOGON\esi-sba-wallpaper.jpg</code>.
+   - Applied via <code>HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System\Wallpaper</code>.
+2. <strong><code>GPO_U_Removable_Storage</code></strong>:
+   - Enforced restriction <code>HKCU\Software\Policies\Microsoft\Windows\RemovableStorageDevices\Deny_All = 1</code>.
+   - Blocks unauthorized USB mass storage devices across all department users.</p>
+<hr />
+<h2>7. Phase 5 — Multi-Site Replication Topology &amp; FSMO Architecture</h2>
+<h3>7.1 Active Directory Sites &amp; Services Configuration</h3>
+<p>To mirror a distributed enterprise network with a remote branch office:
+- <strong>Default Site Renamed:</strong> <code>Default-First-Site-Name</code> -&gt; <strong><code>HQ-Site</code></strong>
+- <strong>New Site Created:</strong> <strong><code>BRANCH-Site</code></strong>
+- <strong>Subnet Mappings:</strong>
+  - <code>192.168.10.0/25</code> -&gt; Associated with <code>HQ-Site</code>
+  - <code>192.168.10.128/25</code> -&gt; Associated with <code>BRANCH-Site</code>
+- <strong>Inter-Site Link:</strong>
+  - Name: <code>HQ-BRANCH</code>
+  - Included Sites: <code>HQ-Site</code>, <code>BRANCH-Site</code>
+  - Protocol: IP
+  - Replication Cost: <code>100</code>
+  - Replication Frequency: <code>15 minutes</code></p>
+<h3>7.2 Flexible Single Master Operation (FSMO) Role Verification</h3>
+<p>Active Directory role ownership was verified on <code>DC01</code>:</p>
+<pre><code class="language-powershell">Get-ADDomain &quot;esi-sba.local&quot; | Select-Object PDCEmulator, RIDMaster, InfrastructureMaster
+Get-ADForest &quot;esi-sba.local&quot; | Select-Object SchemaMaster, DomainNamingMaster
+</code></pre>
+<p><img alt="FSMO Roles and Subnet Configuration" src="screenshots/phase5_fsmo_roles_sites.png" />
+<em>Figure 8: Active Directory Subnets (/25), Site Links (HQ-BRANCH), and FSMO role ownership verified on DC01.</em></p>
+<p><img alt="Test Replication User Created" src="screenshots/phase5_01_test_repl_created_and_fsmo.png" />
+<em>Figure 9: User test.repl created in OU=IT to observe directory replication upon branch domain controller addition.</em></p>
+<hr />
+<h2>8. Conclusion &amp; Next Steps</h2>
+<p>We have completed the deployment of the Active Directory core services, AGDLP identity hierarchy, network shares with strict ACLs, client onboarding, security policies, and multi-site replication definitions.</p>
+<p>Once additional storage space is freed up on the host machine:
+- <strong>Phase 5.2 &amp; 5.3:</strong> Deploy <code>DC02</code> in <code>BRANCH-Site</code>, test intra-site vs. inter-site replication convergence delays, account revocation latency, and DC failover.
+- <strong>Phase 6:</strong> Deploy <code>DC03</code> (<code>labri-sba.local</code>), configure DNS conditional forwarders, establish the one-way forest trust, and validate cross-forest resource access (<strong>Scenario B</strong>).
+EOF</p>
+</body>
+</html>
