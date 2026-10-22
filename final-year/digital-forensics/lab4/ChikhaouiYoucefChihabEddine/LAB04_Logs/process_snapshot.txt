@@ -1,0 +1,13 @@
+PROCESS SNAPSHOT - fictional target ws-17, captured 2026-10-12T09:25:00+01:00
+This is prepared evidence, not output from the student's SIFT VM.
+
+USER       PID  PPID  %CPU  %MEM  COMMAND
+root         1     0   0.0   0.4  /sbin/init
+root       900     1   0.2   0.8  nginx: master process /usr/sbin/nginx
+www-data   914   900   0.1   0.7  nginx: worker process
+root      1928     1   0.0   0.2  /usr/local/sbin/backup-indexer --scope /srv/training-backups
+root      1960     1   0.0   0.1  /usr/local/sbin/lab-health-check
+root      2001     1   0.0   0.3  /usr/sbin/sshd -D
+student   1984  1860   0.0   0.1  -bash
+
+Analyst note: This snapshot is deliberately limited. It does not establish which process, if any, initiated the firewall event at 09:23.

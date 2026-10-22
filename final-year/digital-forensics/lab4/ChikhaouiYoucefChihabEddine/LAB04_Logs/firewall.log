@@ -1,0 +1,15 @@
+2026-10-12T08:05:01+01:00 sensor=lab-fw src=192.0.2.10 dst=198.51.100.24 proto=TCP dport=443 action=ALLOW rule=UPDATE-HTTPS bytes_out=1200 bytes_in=8600 note=approved_update
+2026-10-12T08:20:18+01:00 sensor=lab-fw src=192.0.2.10 dst=192.0.2.60 proto=TCP dport=8080 action=ALLOW rule=TRAINING-SCANNER bytes_out=800 bytes_in=2400 note=scheduled_scan
+2026-10-12T08:21:00+01:00 sensor=lab-fw src=192.0.2.10 dst=192.0.2.60 proto=TCP dport=22 action=DENY rule=SSH-INBOUND-POLICY bytes_out=0 bytes_in=0 note=scanner_probe
+2026-10-12T08:46:12+01:00 sensor=lab-fw src=192.0.2.10 dst=198.51.100.24 proto=TCP dport=443 action=ALLOW rule=UPDATE-HTTPS bytes_out=1400 bytes_in=9200 note=approved_update
+2026-10-12T09:14:44+01:00 sensor=lab-fw src=192.0.2.45 dst=192.0.2.10 proto=TCP dport=22 action=ALLOW rule=SSH-INBOUND bytes_out=0 bytes_in=1200 note=ssh_authentication
+2026-10-12T09:16:01+01:00 sensor=lab-fw src=192.0.2.45 dst=192.0.2.10 proto=TCP dport=22 action=ALLOW rule=SSH-INBOUND bytes_out=2500 bytes_in=4200 note=ssh_session
+2026-10-12T09:19:59+01:00 sensor=lab-fw src=192.0.2.45 dst=192.0.2.10 proto=TCP dport=8080 action=ALLOW rule=INTERNAL-WEB bytes_out=900 bytes_in=1200 note=admin_route
+2026-10-12T09:23:14+01:00 sensor=lab-fw src=192.0.2.10 dst=203.0.113.77 proto=TCP dport=4444 action=DENY rule=LAB-OUT-07 bytes_out=0 bytes_in=0 note=policy_block
+2026-10-12T09:24:01+01:00 sensor=lab-fw src=192.0.2.10 dst=198.51.100.24 proto=TCP dport=443 action=ALLOW rule=UPDATE-HTTPS bytes_out=1800 bytes_in=12500 note=approved_update
+2026-10-12T09:25:33+01:00 sensor=lab-fw src=192.0.2.10 dst=203.0.113.77 proto=TCP dport=443 action=ALLOW rule=WEB-OUTBOUND bytes_out=640 bytes_in=2100 note=generic_https_policy
+2026-10-12T09:31:17+01:00 sensor=lab-fw src=192.0.2.99 dst=192.0.2.10 proto=TCP dport=22 action=DENY rule=SSH-INBOUND-POLICY bytes_out=0 bytes_in=0 note=single_probe
+2026-10-12T09:40:04+01:00 sensor=lab-fw src=192.0.2.10 dst=198.51.100.24 proto=TCP dport=443 action=ALLOW rule=UPDATE-HTTPS bytes_out=900 bytes_in=6000 note=approved_update
+2026-10-12T09:44:17+01:00 sensor=lab-fw src=192.0.2.10 dst=203.0.113.80 proto=UDP dport=53 action=ALLOW rule=DNS-OUTBOUND bytes_out=90 bytes_in=180 note=training_dns_query
+2026-10-12T09:47:08+01:00 sensor=lab-fw src=192.0.2.10 dst=198.51.100.24 proto=TCP dport=443 action=ALLOW rule=UPDATE-HTTPS bytes_out=600 bytes_in=3700 note=approved_update
+2026-10-12T09:58:12+01:00 sensor=lab-fw src=192.0.2.60 dst=192.0.2.10 proto=TCP dport=80 action=ALLOW rule=TRAINING-SCANNER bytes_out=500 bytes_in=700 note=scheduled_scan_complete

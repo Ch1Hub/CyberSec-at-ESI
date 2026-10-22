@@ -1,0 +1,31 @@
+2026-10-12T08:00:00+01:00 ws-17 systemd[1]: Started Daily apt download activities.
+2026-10-12T08:00:01+01:00 ws-17 CRON[1002]: (root) CMD (/usr/local/sbin/lab-health-check)
+2026-10-12T08:03:18+01:00 ws-17 systemd[1]: Started systemd-timesyncd.service - Network Time Synchronization.
+2026-10-12T08:07:12+01:00 ws-17 systemd[1]: nginx.service: Reload requested by administrator.
+2026-10-12T08:12:00+01:00 ws-17 CRON[1130]: (root) CMD (/usr/local/sbin/rotate-training-logs)
+2026-10-12T08:20:19+01:00 ws-17 audit[1219]: WEB-SCANNER event=probe path=/wp-login.php source=192.0.2.60 result=404
+2026-10-12T08:20:20+01:00 ws-17 nginx[900]: 404 response for /wp-login.php source=192.0.2.60
+2026-10-12T08:24:43+01:00 ws-17 systemd[1]: Started backup-indexer.service - Local training backup indexer.
+2026-10-12T08:24:51+01:00 ws-17 systemd[1]: Finished backup-indexer.service - Local training backup indexer.
+2026-10-12T08:30:00+01:00 ws-17 CRON[1261]: (root) CMD (/usr/local/sbin/daily-metrics)
+2026-10-12T08:45:09+01:00 ws-17 systemd[1]: Started apt-daily.service - Daily apt activities.
+2026-10-12T08:47:42+01:00 ws-17 apt[1370]: Started package metadata refresh.
+2026-10-12T08:48:09+01:00 ws-17 apt[1370]: Package metadata refresh completed successfully.
+2026-10-12T08:50:01+01:00 ws-17 systemd[1]: Finished apt-daily.service - Daily apt activities.
+2026-10-12T09:14:00+01:00 ws-17 sshd[1842]: Connection attempt from 192.0.2.45
+2026-10-12T09:16:06+01:00 ws-17 systemd[1]: Started Session 12 of User student.
+2026-10-12T09:19:58+01:00 ws-17 nginx[900]: Admin route request received; source=192.0.2.45; action=reload_requested
+2026-10-12T09:20:00+01:00 ws-17 systemd[1]: Starting backup-indexer.service - Local training backup indexer.
+2026-10-12T09:20:03+01:00 ws-17 systemd[1]: Started backup-indexer.service - Local training backup indexer.
+2026-10-12T09:20:04+01:00 ws-17 backup-indexer[1928]: Scan started scope=/srv/training-backups mode=read-only
+2026-10-12T09:20:22+01:00 ws-17 backup-indexer[1928]: Scan completed files=42 errors=0
+2026-10-12T09:21:19+01:00 ws-17 systemd[1]: Reloaded nginx.service - A high performance web server.
+2026-10-12T09:22:44+01:00 ws-17 CRON[1961]: (root) CMD (/usr/local/sbin/lab-health-check)
+2026-10-12T09:23:13+01:00 ws-17 kernel: lab-fw notice: outbound rule evaluated for tcp/4444
+2026-10-12T09:24:03+01:00 ws-17 systemd[1]: Started unattended-upgrades.service - Automatic background update.
+2026-10-12T09:24:08+01:00 ws-17 systemd[1]: Finished unattended-upgrades.service - Automatic background update.
+2026-10-12T09:26:05+01:00 ws-17 systemd[1]: Stopped Session 12 of User student.
+2026-10-12T09:40:00+01:00 ws-17 CRON[2091]: (root) CMD (/usr/local/sbin/daily-metrics)
+2026-10-12T09:43:29+01:00 ws-17 backup-indexer[2151]: Index status=healthy last_run=09:20
+2026-10-12T09:55:11+01:00 ws-17 systemd[1]: Started lab-cleanup.service - Training environment cleanup.
+2026-10-12T09:55:19+01:00 ws-17 systemd[1]: Finished lab-cleanup.service - Training environment cleanup.

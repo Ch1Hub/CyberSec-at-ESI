@@ -1,0 +1,31 @@
+2026-10-12T08:01:04+01:00 ws-17 sshd[1102]: Server listening on 0.0.0.0 port 22.
+2026-10-12T08:04:31+01:00 ws-17 sshd[1124]: Accepted publickey for admin from 192.0.2.50 port 50120 ssh2
+2026-10-12T08:04:32+01:00 ws-17 sshd[1124]: pam_unix(sshd:session): session opened for user admin(uid=1000)
+2026-10-12T08:07:09+01:00 ws-17 sudo[1182]: admin : TTY=pts/0 ; PWD=/home/admin ; USER=root ; COMMAND=/usr/bin/systemctl status nginx
+2026-10-12T08:11:52+01:00 ws-17 sshd[1124]: pam_unix(sshd:session): session closed for user admin
+2026-10-12T08:20:13+01:00 ws-17 sshd[1212]: Failed password for invalid user test from 192.0.2.60 port 51201 ssh2
+2026-10-12T08:20:17+01:00 ws-17 sshd[1212]: Failed password for invalid user guest from 192.0.2.60 port 51203 ssh2
+2026-10-12T08:21:02+01:00 ws-17 sshd[1212]: Connection closed by authenticating user root 192.0.2.60 port 51204 [preauth]
+2026-10-12T08:27:44+01:00 ws-17 sshd[1250]: Failed password for invalid user oracle from 192.0.2.60 port 51210 ssh2
+2026-10-12T08:45:06+01:00 ws-17 sshd[1320]: Accepted publickey for admin from 192.0.2.50 port 50309 ssh2
+2026-10-12T08:45:07+01:00 ws-17 sshd[1320]: pam_unix(sshd:session): session opened for user admin(uid=1000)
+2026-10-12T08:47:40+01:00 ws-17 sudo[1361]: admin : TTY=pts/1 ; PWD=/home/admin ; USER=root ; COMMAND=/usr/bin/apt-get update
+2026-10-12T08:52:31+01:00 ws-17 sshd[1320]: pam_unix(sshd:session): session closed for user admin
+2026-10-12T09:14:02+01:00 ws-17 sshd[1842]: Failed password for invalid user admin from 192.0.2.45 port 51020 ssh2
+2026-10-12T09:14:18+01:00 ws-17 sshd[1842]: Failed password for student from 192.0.2.45 port 51022 ssh2
+2026-10-12T09:14:41+01:00 ws-17 sshd[1842]: Failed password for student from 192.0.2.45 port 51024 ssh2
+2026-10-12T09:15:07+01:00 ws-17 sshd[1842]: Connection closed by authenticating user student 192.0.2.45 port 51024 [preauth]
+2026-10-12T09:16:03+01:00 ws-17 sshd[1860]: Accepted password for student from 192.0.2.45 port 51044 ssh2
+2026-10-12T09:16:06+01:00 ws-17 sshd[1860]: pam_unix(sshd:session): session opened for user student(uid=1001)
+2026-10-12T09:18:11+01:00 ws-17 sudo[1901]: student : TTY=pts/0 ; PWD=/home/student ; USER=root ; COMMAND=/usr/bin/systemctl status nginx
+2026-10-12T09:19:03+01:00 ws-17 sudo[1914]: student : TTY=pts/0 ; PWD=/home/student ; USER=root ; COMMAND=/usr/bin/less /var/log/nginx/access.log
+2026-10-12T09:21:18+01:00 ws-17 sudo[1940]: student : TTY=pts/0 ; PWD=/home/student ; USER=root ; COMMAND=/usr/bin/systemctl reload nginx
+2026-10-12T09:24:42+01:00 ws-17 sudo[1972]: student : TTY=pts/0 ; PWD=/home/student ; USER=root ; COMMAND=/usr/bin/id
+2026-10-12T09:26:02+01:00 ws-17 sshd[1860]: pam_unix(sshd:session): session closed for user student
+2026-10-12T09:32:09+01:00 ws-17 sshd[2011]: Failed password for invalid user support from 198.51.100.99 port 52001 ssh2
+2026-10-12T09:32:13+01:00 ws-17 sshd[2011]: Connection closed by invalid user support 198.51.100.99 port 52001 [preauth]
+2026-10-12T09:41:00+01:00 ws-17 sshd[2118]: Accepted publickey for admin from 192.0.2.50 port 50611 ssh2
+2026-10-12T09:41:01+01:00 ws-17 sshd[2118]: pam_unix(sshd:session): session opened for user admin(uid=1000)
+2026-10-12T09:43:22+01:00 ws-17 sudo[2160]: admin : TTY=pts/2 ; PWD=/home/admin ; USER=root ; COMMAND=/usr/bin/systemctl status backup-indexer
+2026-10-12T09:48:58+01:00 ws-17 sshd[2118]: pam_unix(sshd:session): session closed for user admin
+2026-10-12T09:55:31+01:00 ws-17 sshd[2251]: Failed password for invalid user demo from 192.0.2.60 port 53008 ssh2

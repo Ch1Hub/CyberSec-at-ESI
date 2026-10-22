@@ -1,0 +1,21 @@
+CASE CONTEXT - WS-17
+Case ID: LAB04-ORION-2026
+Target host: ws-17
+Target address: 192.0.2.10
+Investigation window: 2026-10-12 08:00-10:00 UTC+01:00
+
+KNOWN GOOD / EXPECTED
+- Admin jump host: 192.0.2.50. No use of this host appears in the central event window.
+- Approved update server: 198.51.100.24, HTTPS/443. Outbound access to this destination is expected during package updates.
+- Authorized web scanner: 192.0.2.60. A scheduled, low-impact training scan is expected between 08:00 and 08:30.
+- backup-indexer.service runs automatically at approximately 09:20 on weekdays. It indexes local training backups; this activity is expected.
+- Monitoring host: 192.0.2.20. Routine requests to /health are expected.
+
+NOT KNOWN / REQUIRES REVIEW
+- 192.0.2.45 is not listed as an authorized administrator or monitoring host.
+- A successful login, by itself, does not prove that a user is malicious. Confirm the account, source, context and other events.
+- A denied firewall connection is not proof that data was exfiltrated.
+- A web request and an SSH event from the same source address may be related, but logs alone may not establish that they were performed by the same person.
+
+TIMESTAMP NOTE
+The timestamps in this exercise use an explicit +01:00 offset. They are synthetic case times. Do not interpret them as events observed on the student's actual SIFT VM.
