@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lab 04 — Vulnerability Analysis | Chikhaoui Youcef Chihab Eddine</title>
+<meta name="author" content="Chikhaoui Youcef Chihab Eddine">
+<meta name="description" content="Ethical Hacking Lab 04 — Vulnerability Analysis: MITRE CWE research and an OpenVAS baseline assessment of a Windows Server 2022 host.">
+<style>
+  @page { size: A4; margin: 0; }
+  :root{
+    --paper:#F6F2E9;
+    --paper2:#FFFDF6;
+    --ink:#14171C;
+    --ink2:#2B2E34;
+    --muted:#6D685E;
+    --line:#D8CFBF;
+    --line2:#E9E2D5;
+    --ember:#E4572E;
+    --ember-dark:#A93418;
+    --teal:#1B7A70;
+    --amber:#B97712;
+    --dark:#0C0F14;
+    --dark2:#141A22;
+    --bone:#F3EDDF;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:#C9C4BA;
+    color:var(--ink);
+    font-family:'Red Hat Text','Open Sans',sans-serif;
+    font-size:9.4pt;
+    line-height:1.55;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  .sheet{
+    width:210mm;
+    height:297mm;
+    background:var(--paper);
+    position:relative;
+    padding:13mm 17mm 15mm;
+    break-after:page;
+    overflow:visible;
+  }
+  .sheet:last-child{break-after:auto}
+  .mono{font-family:'Fira Code',monospace;white-space:nowrap}
+  .small{font-size:8.2pt;line-height:1.5}
+  .muted{color:var(--muted)}
+  .ember{color:var(--ember)}
+
+  /* ---------- running head / foot ---------- */
+  .rh{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    border-bottom:.45pt solid var(--line);
+    padding-bottom:2.4mm;margin-bottom:7.5mm;
+    font-family:'Fira Code',monospace;font-size:6.2pt;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  }
+  .rh b{font-weight:600;color:var(--ink)}
+  .rh .sep{color:var(--ember)}
+  .foot{
+    position:absolute;left:17mm;right:17mm;bottom:8mm;
+    display:flex;justify-content:space-between;align-items:flex-end;
+    border-top:.45pt solid var(--line);
+    padding-top:2.2mm;
+    font-family:'Fira Code',monospace;font-size:6.1pt;
+    letter-spacing:.09em;color:var(--muted);
+  }
+  .foot .pg{font-size:11pt;line-height:1;color:var(--ink);letter-spacing:0}
+
+  /* ---------- section grid ---------- */
+  .grid{display:grid;grid-template-columns:30mm 1fr;column-gap:8mm}
+  .rail{padding-top:.5mm}
+  .rail .num{
+    font-family:'Red Hat Display',sans-serif;font-weight:800;
+    font-size:45pt;line-height:.85;letter-spacing:-.04em;
+    color:transparent;-webkit-text-stroke:.55pt var(--ember);
+  }
+  .rail .tag{
+    margin-top:3.5mm;font-family:'Fira Code',monospace;font-size:6pt;
+    letter-spacing:.15em;text-transform:uppercase;color:var(--muted);
+  }
+  .rail .tick{width:11mm;height:.9mm;background:var(--ember);margin-top:3mm}
+  .col{min-width:0}
+
+  /* ---------- type ---------- */
+  .eyebrow{
+    font-family:'Fira Code',monospace;font-size:6.4pt;font-weight:600;
+    letter-spacing:.17em;text-transform:uppercase;color:var(--ember);
+    margin:0 0 2.3mm;
+  }
+  h2{
+    font-family:'Red Hat Display',sans-serif;font-weight:800;
+    font-size:25pt;line-height:1.01;letter-spacing:-.025em;
+    margin:0 0 4mm;color:var(--ink);
+  }
+  h3{
+    font-family:'Red Hat Display',sans-serif;font-weight:700;
+    font-size:11pt;line-height:1.2;letter-spacing:-.01em;
+    margin:0 0 2mm;
+  }
+  .lead{font-size:11.4pt;line-height:1.45;color:var(--ink);margin:0 0 3.5mm}
+  p{margin:0 0 2.8mm;color:var(--ink2)}
+  .col p:last-child{margin-bottom:0}
+  strong{font-weight:700;color:var(--ink)}
+  .code{
+    font-family:'Fira Code',monospace;font-size:7.9pt;
+    background:#EDE7DA;padding:.5mm 1.2mm;border-radius:.8mm;
+    color:#3A2C25;white-space:nowrap;
+  }
+
+  /* ---------- callouts ---------- */
+  .callout{
+    border-left:1.3mm solid var(--ember);
+    background:#FFF8EA;
+    padding:3mm 4mm;margin:4mm 0;
+    font-size:8.4pt;line-height:1.52;color:var(--ink2);
+  }
+  .callout .lab{
+    display:block;font-family:'Fira Code',monospace;font-size:5.9pt;
+    font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ember);margin-bottom:1.2mm;
+  }
+  .callout p{margin:0}
+  .note{
+    background:var(--dark);color:#E9E2D3;
+    padding:4mm 5mm;margin:4mm 0;
+  }
+  .note .lab{
+    display:block;font-family:'Fira Code',monospace;font-size:5.9pt;
+    letter-spacing:.14em;text-transform:uppercase;color:#F08A63;
+    margin-bottom:1.5mm;
+  }
+  .note p{color:#D8D0C1;margin:0;font-size:8.6pt}
+  .rule{height:.45pt;background:var(--line);margin:4mm 0}
+
+  /* ---------- stats ---------- */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:2.4mm;margin:4mm 0 4.5mm}
+  .stat{
+    border:.5pt solid var(--line);background:var(--paper2);
+    padding:3.2mm 3.2mm 3mm;min-height:24mm;
+  }
+  .stat .n{
+    font-family:'Red Hat Display',sans-serif;font-weight:800;
+    font-size:22pt;line-height:1;letter-spacing:-.03em;color:var(--ink);
+  }
+  .stat .n .u{font-size:11pt;color:var(--ember);margin-left:.7mm}
+  .stat .l{
+    font-family:'Fira Code',monospace;font-size:5.5pt;line-height:1.35;
+    letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+    margin-top:2mm;
+  }
+  .stat.dark{background:var(--dark);border-color:var(--dark)}
+  .stat.dark .n{color:var(--bone)}
+  .stat.dark .l{color:#AFA694}
+  .stat.accent{background:var(--ember);border-color:var(--ember)}
+  .stat.accent .n,.stat.accent .l{color:#FFF5EC}
+
+  /* ---------- two-column panels ---------- */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin:4mm 0}
+  .panel{
+    border-top:1mm solid var(--ink);
+    background:var(--paper2);
+    padding:3.2mm 3.4mm 2.8mm;
+  }
+  .panel.ember{border-top-color:var(--ember)}
+  .panel.teal{border-top-color:var(--teal)}
+  .panel .ptitle{
+    font-family:'Fira Code',monospace;font-size:6pt;font-weight:600;
+    letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
+    margin-bottom:2mm;
+  }
+  .panel h3{font-size:10pt;margin-bottom:1.8mm}
+  .ticks{list-style:none;margin:0;padding:0}
+  .ticks li{
+    position:relative;padding-left:4.2mm;margin:0 0 1.5mm;
+    font-size:8pt;line-height:1.45;color:var(--ink2);
+  }
+  .ticks li:before{
+    content:"";position:absolute;left:0;top:1.25mm;
+    width:1.7mm;height:1.7mm;background:var(--ember);
+  }
+  .ticks.teal li:before{background:var(--teal)}
+  .ticks.muted li:before{background:#A9A092}
+
+  /* ---------- environment / facts ---------- */
+  .facts{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    border-top:.5pt solid var(--line);border-left:.5pt solid var(--line);
+    margin:3.5mm 0;
+  }
+  .fact{
+    border-right:.5pt solid var(--line);border-bottom:.5pt solid var(--line);
+    padding:2.8mm 3mm 2.6mm;background:var(--paper2);
+  }
+  .fact .k{
+    font-family:'Fira Code',monospace;font-size:5.5pt;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:1mm;
+  }
+  .fact .v{font-size:8.6pt;line-height:1.3;color:var(--ink);font-weight:600}
+  .fact .v.mono{font-size:8pt}
+
+  /* ---------- flow ---------- */
+  .flow-wrap{margin:4mm 0 3mm}
+  .flow-label{
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'Fira Code',monospace;font-size:5.9pt;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:2.5mm;
+  }
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:2.4mm}
+  .step{
+    position:relative;border:.5pt solid var(--line);
+    background:var(--paper2);padding:2.8mm 3mm 3mm;min-height:30mm;
+  }
+  .step .sn{
+    font-family:'Fira Code',monospace;font-size:6.2pt;font-weight:600;
+    color:var(--ember);letter-spacing:.08em;
+  }
+  .step .st{
+    font-family:'Red Hat Display',sans-serif;font-weight:700;font-size:9pt;
+    line-height:1.15;margin:1.4mm 0 1.2mm;
+  }
+  .step .sd{font-size:7.1pt;line-height:1.4;color:var(--muted)}
+  .step .status{
+    margin-top:2mm;display:inline-block;font-family:'Fira Code',monospace;
+    font-size:5.2pt;letter-spacing:.09em;text-transform:uppercase;
+    padding:.8mm 1.4mm;background:#E5EFEA;color:#155F56;
+  }
+  .step.pending{border-style:dashed;border-color:#D9A28F;background:#FFF9F4}
+  .step.pending .status{background:#FBE3D8;color:#9A3215}
+  .step.blocked{background:#F0ECE3}
+  .step.blocked .status{background:#E2DCCF;color:#6A6358}
+
+  /* ---------- evidence figures ---------- */
+  figure.ev{
+    margin:3.2mm 0 3.2mm;padding:1.7mm;
+    border:.5pt solid #CFC6B6;background:#FFFFFF;
+    break-inside:avoid;
+  }
+  .ev-bar{
+    display:flex;justify-content:space-between;align-items:center;gap:4mm;
+    background:var(--dark);color:#EDE6D7;
+    margin:-1.7mm -1.7mm 1.7mm;padding:1.7mm 2.4mm;
+    font-family:'Fira Code',monospace;font-size:5.5pt;
+    letter-spacing:.09em;text-transform:uppercase;
+  }
+  .ev-bar .fig{color:#F08A63;font-weight:600;white-space:nowrap}
+  .ev-bar .src{color:#B9B0A1;text-align:right;overflow:hidden;white-space:nowrap}
+  figure.ev img{display:block;width:100%;height:auto}
+  figcaption{
+    font-size:7.2pt;line-height:1.42;color:var(--muted);
+    padding:2mm 1mm .6mm;
+  }
+  figcaption b{
+    font-family:'Fira Code',monospace;font-size:6pt;font-weight:600;
+    letter-spacing:.06em;text-transform:uppercase;color:var(--ember);
+    margin-right:1.2mm;
+  }
+  .w100{width:100mm;margin-left:auto;margin-right:auto}
+  .w105{width:105mm;margin-left:auto;margin-right:auto}
+  .prompt-detail{
+    display:flex;align-items:center;gap:3mm;
+    border-top:.35pt solid var(--line2);margin-top:1.4mm;padding-top:2mm;
+  }
+  figure.ev .prompt-detail img{display:block;width:64mm;height:auto;border:.4pt solid #2A2D33}
+  .prompt-detail .pd{flex:1;min-width:0}
+  .prompt-detail .pd .k{
+    font-family:'Fira Code',monospace;font-size:5.3pt;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ember);margin-bottom:.8mm;
+  }
+  .prompt-detail .pd .v{font-size:7.2pt;line-height:1.35;color:var(--muted)}
+  .w115{width:115mm;margin-left:auto;margin-right:auto}
+  .w122{width:122mm;margin-left:auto;margin-right:auto}
+  .w112{width:112mm;margin-left:auto;margin-right:auto}
+  .w120{width:120mm;margin-left:auto;margin-right:auto}
+  .w125{width:125mm;margin-left:auto;margin-right:auto}
+  .w130{width:130mm;margin-left:auto;margin-right:auto}
+  .w137{width:137mm;margin-left:auto;margin-right:auto}
+
+  /* ---------- CWE profile ---------- */
+  .profile-row{display:grid;grid-template-columns:53mm 1fr;gap:3mm;align-items:start;margin-top:4mm}
+  .profile{
+    background:var(--dark);color:#E9E2D3;padding:3.6mm 3.6mm 3mm;
+    min-height:61mm;
+  }
+  .profile .pid{
+    font-family:'Fira Code',monospace;font-size:6.2pt;letter-spacing:.1em;
+    color:#F08A63;text-transform:uppercase;margin-bottom:2mm;
+  }
+  .profile h3{color:#F7F1E5;font-size:10.5pt;margin-bottom:2mm}
+  .profile .item{margin:0 0 2.2mm}
+  .profile .item .k{
+    font-family:'Fira Code',monospace;font-size:5.3pt;letter-spacing:.1em;
+    text-transform:uppercase;color:#AFA58F;margin-bottom:.7mm;
+  }
+  .profile .item .v{font-size:6.9pt;line-height:1.42;color:#D8D0C1}
+  .profile-row figure.ev{margin:0}
+
+  /* ---------- top 25 ---------- */
+  .top-list{border-top:.5pt solid var(--line);margin:0}
+  .top-list .tr{
+    display:grid;grid-template-columns:7mm 1fr;gap:2mm;
+    padding:1.7mm 0;border-bottom:.4pt solid var(--line2);
+    font-size:8.1pt;line-height:1.3;
+  }
+  .top-list .tn{
+    font-family:'Fira Code',monospace;font-size:6.3pt;font-weight:600;color:var(--ember);
+  }
+  .top-list .tc{color:var(--ink2)}
+  .top-list .tc span{color:var(--muted);font-family:'Fira Code',monospace;font-size:6.4pt;margin-left:1.2mm}
+
+  /* ---------- findings ---------- */
+  .findings{width:100%;border-collapse:collapse;font-size:8.2pt;margin:2.5mm 0 2mm}
+  .findings thead th{
+    background:var(--dark);color:#F0E9DB;
+    font-family:'Fira Code',monospace;font-size:5.7pt;font-weight:500;
+    letter-spacing:.1em;text-transform:uppercase;
+    text-align:left;padding:2.1mm 2.6mm;
+  }
+  .findings tbody td{
+    padding:2.05mm 2.6mm;border-bottom:.45pt solid var(--line);
+    vertical-align:middle;background:var(--paper2);
+  }
+  .findings tbody tr:nth-child(even) td{background:#FCF8EE}
+  .findings .ft{font-weight:700;color:var(--ink);line-height:1.25}
+  .findings .loc{font-family:'Fira Code',monospace;font-size:7.4pt;color:var(--ink2)}
+  .sev{
+    display:inline-block;font-family:'Fira Code',monospace;font-size:5.8pt;
+    font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+    padding:1mm 1.8mm;white-space:nowrap;
+  }
+  .sev.med{background:#F7DEB8;color:#814300}
+  .sev.low{background:#D5EDE6;color:#0D5A52}
+  .sev.high{background:#F6C9BC;color:#902D12}
+  .sevbar{height:1.2mm;background:#E7DFD1;margin-top:1.5mm;width:100%}
+  .sevbar span{display:block;height:100%}
+
+  /* ---------- comparison table ---------- */
+  .compare{width:100%;border-collapse:collapse;font-size:8.2pt;margin:3mm 0}
+  .compare th{
+    background:var(--dark);color:#F0E9DB;
+    font-family:'Fira Code',monospace;font-size:5.7pt;font-weight:500;
+    letter-spacing:.1em;text-transform:uppercase;text-align:left;
+    padding:2.2mm 2.8mm;
+  }
+  .compare td{
+    padding:2.3mm 2.8mm;border-bottom:.45pt solid var(--line);
+    background:var(--paper2);vertical-align:middle;
+  }
+  .compare tr:nth-child(even) td{background:#FCF8EE}
+  .compare .measure{font-weight:700;color:var(--ink);width:42mm}
+  .compare .ok{font-family:'Fira Code',monospace;font-size:7.2pt;color:var(--teal)}
+  .compare .not{
+    width:43mm;text-align:center;vertical-align:middle;
+    background:
+      repeating-linear-gradient(135deg, rgba(228,87,46,.075) 0 2.2mm, transparent 2.2mm 4.4mm),
+      #FBF3E7 !important;
+    border-left:.5pt solid #E7C9B9;
+  }
+  .compare .not b{
+    display:block;font-family:'Fira Code',monospace;font-size:7pt;
+    letter-spacing:.08em;color:var(--ember-dark);margin-bottom:1.4mm;
+  }
+  .compare .not span{font-size:6.8pt;line-height:1.35;color:#8A6C58}
+
+  /* ---------- recommendations ---------- */
+  .recs{display:grid;grid-template-columns:1fr 1fr;gap:2.6mm;margin:3mm 0 4mm}
+  .rec{
+    border:.5pt solid var(--line);background:var(--paper2);
+    padding:3.2mm 3.4mm 3mm;min-height:38mm;position:relative;
+  }
+  .rec .rn{
+    position:absolute;right:3mm;top:2.3mm;
+    font-family:'Red Hat Display',sans-serif;font-weight:800;font-size:17pt;
+    line-height:1;color:#E7DECD;
+  }
+  .rec .cat{
+    font-family:'Fira Code',monospace;font-size:5.2pt;letter-spacing:.11em;
+    text-transform:uppercase;color:var(--ember);margin-bottom:1.5mm;
+  }
+  .rec h3{font-size:9.6pt;margin:0 0 1.4mm;max-width:52mm}
+  .rec p{font-size:7.5pt;line-height:1.44;margin:0;color:var(--muted)}
+  .protocol{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:2.4mm;
+    margin-top:3mm;
+  }
+  .proto{
+    border-top:1mm solid var(--teal);background:var(--paper2);
+    padding:2.8mm 3mm;font-size:7.3pt;line-height:1.4;color:var(--ink2);
+  }
+  .proto .pn{
+    font-family:'Fira Code',monospace;font-size:6pt;color:var(--teal);
+    letter-spacing:.08em;margin-bottom:1.2mm;
+  }
+
+  /* ---------- conclusion / status ---------- */
+  .banner{
+    background:var(--dark);color:var(--bone);
+    padding:5mm 6mm;margin:4mm 0;
+    position:relative;
+  }
+  .banner:before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:1.6mm;background:var(--ember);
+  }
+  .banner .bl{
+    font-family:'Fira Code',monospace;font-size:6pt;letter-spacing:.14em;
+    text-transform:uppercase;color:#F08A63;margin-bottom:1.8mm;
+  }
+  .banner h3{color:#FFF7EA;font-size:13pt;margin-bottom:2mm}
+  .banner p{color:#CFC6B6;font-size:8.3pt;margin:0}
+  .checklist{display:grid;grid-template-columns:1fr 1fr;gap:2mm 5mm;margin-top:3mm}
+  .check{
+    display:grid;grid-template-columns:5mm 1fr;gap:2mm;
+    font-size:7.7pt;line-height:1.4;color:#DDD4C4;
+  }
+  .check .box{
+    width:4mm;height:4mm;border:.5pt solid #8E8475;margin-top:.2mm;
+    position:relative;
+  }
+  .sign{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    border-top:.5pt solid var(--line);padding-top:3mm;margin-top:5mm;
+  }
+  .sign .who .k{
+    font-family:'Fira Code',monospace;font-size:5.7pt;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:1mm;
+  }
+  .sign .who .n{
+    font-family:'Red Hat Display',sans-serif;font-weight:700;font-size:13.5pt;
+    line-height:1.15;color:var(--ink);
+  }
+  .sign .who .r{font-size:7.5pt;color:var(--muted);margin-top:.8mm}
+  .sign .stamp{
+    font-family:'Fira Code',monospace;font-size:6pt;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ember-dark);
+    border:.5pt solid #DCAF9F;padding:2.2mm 2.6mm;text-align:center;
+    line-height:1.5;
+  }
+
+  /* ---------- appendix ---------- */
+  .reg{width:100%;border-collapse:collapse;font-size:7.4pt;margin:2mm 0 4mm}
+  .reg th{
+    background:var(--dark);color:#F0E9DB;
+    font-family:'Fira Code',monospace;font-size:5.4pt;font-weight:500;
+    letter-spacing:.09em;text-transform:uppercase;text-align:left;
+    padding:1.9mm 2.2mm;
+  }
+  .reg td{padding:1.9mm 2.2mm;border-bottom:.4pt solid var(--line);vertical-align:top;background:var(--paper2)}
+  .reg tr:nth-child(even) td{background:#FCF8EE}
+  .reg .fid{font-family:'Fira Code',monospace;font-size:6.4pt;font-weight:600;color:var(--ember);white-space:nowrap}
+  .reg .sec{font-family:'Fira Code',monospace;font-size:6.4pt;color:var(--muted);white-space:nowrap}
+  .meta-grid{
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:2.2mm;
+    border-top:.5pt solid var(--line);border-left:.5pt solid var(--line);
+    margin-top:2mm;
+  }
+  .meta-grid .mg{
+    border-right:.5pt solid var(--line);border-bottom:.5pt solid var(--line);
+    padding:2.3mm 2.6mm;background:var(--paper2);
+  }
+  .mg .k{font-family:'Fira Code',monospace;font-size:5.2pt;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.8mm}
+  .mg .v{font-size:7.6pt;line-height:1.3;font-weight:600;color:var(--ink)}
+  .abbrs{display:grid;grid-template-columns:1fr 1fr;gap:1.4mm 4mm;margin-top:1mm}
+  .abbr{display:grid;grid-template-columns:13mm 1fr;gap:1.5mm;font-size:7.2pt;line-height:1.35;padding:1.1mm 0;border-bottom:.35pt solid var(--line2)}
+  .abbr .a{font-family:'Fira Code',monospace;font-size:6.5pt;font-weight:600;color:var(--ember)}
+  .abbr .d{color:var(--ink2)}
+
+  /* ---------- reading key / scope / closing ---------- */
+  .reading-key{
+    display:flex;align-items:center;gap:4mm;
+    border-top:.5pt solid var(--line);padding-top:2.8mm;margin-top:3mm;
+  }
+  .reading-key .rk-label{
+    font-family:'Fira Code',monospace;font-size:5.6pt;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);white-space:nowrap;
+  }
+  .reading-key .rk-chips{display:flex;gap:1.6mm;align-items:center;white-space:nowrap}
+  .reading-key .rk-note{font-size:7.2pt;line-height:1.4;color:var(--muted);margin-left:auto;max-width:87mm}
+  .scope{
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:2.4mm;margin-top:4mm;
+    border-top:.5pt solid var(--line);padding-top:3mm;
+  }
+  .scope .sc .k{
+    font-family:'Fira Code',monospace;font-size:5.4pt;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ember);margin-bottom:1mm;
+  }
+  .scope .sc .v{font-size:7.3pt;line-height:1.42;color:var(--ink2)}
+  .closing{
+    border-top:1.1mm solid var(--ember);padding-top:3mm;margin-top:4mm;
+    display:grid;grid-template-columns:34mm 1fr;gap:4mm;align-items:start;
+  }
+  .closing .k{
+    font-family:'Fira Code',monospace;font-size:5.8pt;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ember);
+  }
+  .closing .v{
+    font-family:'Red Hat Display',sans-serif;font-weight:600;
+    font-size:12pt;line-height:1.35;color:var(--ink);letter-spacing:-.01em;
+  }
+
+  /* ---------- cover ---------- */
+  .cover{
+    background:var(--dark);color:var(--bone);
+    padding:13mm 17mm 14mm;overflow:hidden;
+  }
+  .cover:before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(243,237,223,.032) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(243,237,223,.032) 1px,transparent 1px);
+    background-size:12mm 12mm;
+  }
+  .cover:after{
+    content:"";position:absolute;right:-38mm;bottom:-52mm;
+    width:150mm;height:150mm;
+    background:radial-gradient(circle,rgba(228,87,46,.28) 0%,rgba(228,87,46,.08) 42%,transparent 70%);
+    pointer-events:none;
+  }
+  .cover > *{position:relative;z-index:2}
+  .ghost04{
+    position:absolute;right:8mm;top:16mm;z-index:1;
+    font-family:'Red Hat Display',sans-serif;font-weight:800;
+    font-size:168pt;line-height:.8;letter-spacing:-.06em;
+    color:transparent;-webkit-text-stroke:.5pt rgba(243,237,223,.13);
+    pointer-events:none;
+  }
+  .cover-top{display:flex;justify-content:space-between;align-items:flex-start}
+  .brand{display:flex;align-items:center;gap:2.4mm}
+  .brand .mark{
+    width:7mm;height:7mm;background:var(--ember);
+    display:grid;place-items:center;
+    font-family:'Red Hat Display',sans-serif;font-weight:800;font-size:9pt;color:#1A0D08;
+  }
+  .brand .bt{font-family:'Fira Code',monospace;font-size:6.4pt;letter-spacing:.14em;text-transform:uppercase;color:#BDB3A2;line-height:1.6}
+  .brand .bt b{display:block;color:var(--bone);font-weight:600}
+  .cover-year{font-family:'Fira Code',monospace;font-size:6.2pt;letter-spacing:.13em;text-align:right;color:#A79D8C;line-height:1.6;text-transform:uppercase}
+  .cover-year b{color:var(--bone);font-weight:500}
+  .cover-main{position:absolute;left:17mm;right:17mm;top:54mm}
+  .cover-eyebrow{
+    font-family:'Fira Code',monospace;font-size:7pt;font-weight:600;
+    letter-spacing:.22em;text-transform:uppercase;color:var(--ember);
+    margin-bottom:3.5mm;
+  }
+  .cover h1{
+    font-family:'Red Hat Display',sans-serif;font-weight:800;
+    font-size:60pt;line-height:.92;letter-spacing:-.04em;
+    margin:0 0 6mm;color:#F8F2E5;
+  }
+  .cover h1 em{font-style:normal;color:var(--ember)}
+  .cover-sub{
+    font-size:11.4pt;line-height:1.5;color:#C9C0B0;max-width:132mm;
+    margin:0;
+  }
+  .cover-author{position:absolute;left:17mm;top:178mm;width:112mm}
+  .cover-author .lbl{
+    font-family:'Fira Code',monospace;font-size:6pt;letter-spacing:.15em;
+    text-transform:uppercase;color:#968C7C;margin-bottom:2.2mm;
+  }
+  .cover-author .name{
+    font-family:'Red Hat Display',sans-serif;font-weight:700;
+    font-size:19pt;line-height:1.12;letter-spacing:-.015em;color:#FBF5E8;
+  }
+  .cover-author .role{font-size:8pt;color:#A99F8E;margin-top:1.8mm}
+  .dial-wrap{position:absolute;right:17mm;top:173mm;width:52mm;text-align:center}
+  .dial{
+    width:39mm;height:39mm;border-radius:50%;
+    background:conic-gradient(var(--amber) 0 33.33%,var(--teal) 33.33% 100%);
+    margin:0 auto 2.5mm;position:relative;
+  }
+  .dial:before{
+    content:"";position:absolute;inset:6.5mm;border-radius:50%;
+    background:var(--dark);
+  }
+  .dial .dcenter{
+    position:absolute;inset:0;display:grid;place-content:center;
+    text-align:center;z-index:2;
+  }
+  .dial .dv{
+    font-family:'Red Hat Display',sans-serif;font-weight:800;font-size:17pt;
+    line-height:1;color:#F8F2E5;
+  }
+  .dial .dl{
+    font-family:'Fira Code',monospace;font-size:4.7pt;letter-spacing:.1em;
+    text-transform:uppercase;color:#B5AB99;margin-top:1mm;
+  }
+  .dial-wrap .cap{
+    font-family:'Fira Code',monospace;font-size:5.3pt;letter-spacing:.09em;
+    text-transform:uppercase;color:#A99F8E;line-height:1.5;
+  }
+  .dial-wrap .cap b{color:var(--bone);font-weight:500}
+  .cover-term{
+    position:absolute;left:17mm;right:17mm;bottom:49mm;
+    display:flex;justify-content:space-between;align-items:center;gap:6mm;
+    border-top:.5pt solid rgba(243,237,223,.16);padding-top:3.2mm;
+  }
+  .term{
+    font-family:'Fira Code',monospace;font-size:7.2pt;color:#CFC5B4;
+    letter-spacing:.02em;
+  }
+  .term .p{color:#6FD3B8}
+  .term .c{color:#F08A63}
+  .status-pill{
+    font-family:'Fira Code',monospace;font-size:5.6pt;letter-spacing:.1em;
+    text-transform:uppercase;color:#F5A98E;
+    border:.5pt solid rgba(228,87,46,.65);
+    padding:1.3mm 2mm;white-space:nowrap;
+  }
+  .cover-meta{
+    position:absolute;left:17mm;right:17mm;bottom:14mm;
+    display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;
+    border-top:.5pt solid rgba(243,237,223,.16);padding-top:4mm;
+  }
+  .cover-meta .cm .k{
+    font-family:'Fira Code',monospace;font-size:5.5pt;letter-spacing:.13em;
+    text-transform:uppercase;color:#8F8575;margin-bottom:1.2mm;
+  }
+  .cover-meta .cm .v{
+    font-size:8.7pt;line-height:1.35;color:#F1EBDD;font-weight:600;
+  }
+  .cover-meta .cm .v.mono{font-family:'Fira Code',monospace;font-size:7.6pt;font-weight:500}
+
+  /* ---------- toc ---------- */
+  .toc{display:grid;grid-template-columns:1fr 1fr;column-gap:8mm;margin-top:2mm}
+  .toc .trow{
+    display:grid;grid-template-columns:7mm 1fr 7mm;align-items:baseline;
+    padding:1.5mm 0;border-bottom:.35pt solid var(--line2);
+    font-size:8.1pt;
+  }
+  .toc .tn{
+    font-family:'Fira Code',monospace;font-size:5.9pt;font-weight:600;color:var(--ember);
+  }
+  .toc .tt{color:var(--ink);line-height:1.3}
+  .toc .tp{
+    font-family:'Fira Code',monospace;font-size:6.4pt;color:var(--muted);text-align:right;
+  }
+  .toc-head{
+    font-family:'Fira Code',monospace;font-size:6pt;letter-spacing:.15em;
+    text-transform:uppercase;color:var(--muted);margin:5mm 0 1mm;
+    border-bottom:.5pt solid var(--ink);padding-bottom:1.4mm;
+  }
+
+  .docstrip{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:3mm;
+    border-top:.5pt solid var(--line);padding-top:2.6mm;margin-top:4mm;
+  }
+  .docstrip .ds .k{
+    font-family:'Fira Code',monospace;font-size:5.3pt;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:.8mm;
+  }
+  .docstrip .ds .v{font-size:7.6pt;line-height:1.35;color:var(--ink);font-weight:600}
+
+  .interp{
+    background:var(--dark);color:var(--bone);
+    padding:4.6mm 5.5mm 4.2mm;margin:0 0 5mm;
+  }
+  .interp .il{
+    font-family:'Fira Code',monospace;font-size:5.9pt;letter-spacing:.15em;
+    text-transform:uppercase;color:#F08A63;margin-bottom:1.8mm;
+  }
+  .interp h3{color:#FFF7EA;font-size:12pt;margin-bottom:2.6mm}
+  .interp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm}
+  .interp-grid .ig .k{
+    font-family:'Fira Code',monospace;font-size:5.7pt;letter-spacing:.08em;
+    color:#F08A63;margin-bottom:.9mm;text-transform:uppercase;
+  }
+  .interp-grid .ig .v{font-size:7.3pt;line-height:1.45;color:#CFC6B6}
+
+  .covernote{
+    font-family:'Fira Code',monospace;font-size:5.7pt;letter-spacing:.08em;
+    color:#948A79;text-transform:uppercase;
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= PAGE 1 — COVER ================= -->
+<section class="sheet cover">
+  <div class="ghost04">04</div>
+  <div class="cover-top">
+    <div class="brand">
+      <div class="mark">EH</div>
+      <div class="bt"><b>Ethical Hacking</b>Laboratory dossier</div>
+    </div>
+    <div class="cover-year"><b>Academic year</b><br>2026 / 2027</div>
+  </div>
+
+  <div class="cover-main">
+    <div class="cover-eyebrow">Lab 04 · Vulnerability Analysis</div>
+    <h1>Vulnerability<br><em>Analysis</em></h1>
+    <p class="cover-sub">An evidence-based assessment of a Windows Server 2022 host, combining MITRE CWE research with an unauthenticated OpenVAS baseline scan.</p>
+  </div>
+
+  <div class="cover-author">
+    <div class="lbl">Prepared by</div>
+    <div class="name">Chikhaoui Youcef<br>Chihab Eddine</div>
+    <div class="role">Author · Ethical Hacking · 2026/2027</div>
+  </div>
+
+  <div class="dial-wrap">
+    <div class="dial">
+      <div class="dcenter">
+        <div class="dv">5.0</div>
+        <div class="dl">max severity</div>
+      </div>
+    </div>
+    <div class="cap"><b>3 displayed findings</b><br>1 Medium · 2 Low</div>
+  </div>
+
+  <div class="cover-term">
+    <div class="term"><span class="p">kali@Ch1Hub</span>:~$ <span class="c">./lab04</span> --report --baseline</div>
+    <div class="status-pill">Firewall-ON comparison · not performed</div>
+  </div>
+
+  <div class="cover-meta">
+    <div class="cm"><div class="k">Target host</div><div class="v mono">192.168.199.126</div></div>
+    <div class="cm"><div class="k">Platform</div><div class="v">Windows Server 2022</div></div>
+    <div class="cm"><div class="k">Scanner</div><div class="v">OpenVAS / GVM</div></div>
+    <div class="cm"><div class="k">Kali host</div><div class="v mono">Ch1Hub</div></div>
+  </div>
+</section>
+
+<!-- ================= PAGE 2 — BRIEF ================= -->
+<section class="sheet">
+  <div class="rh"><div><b>EH</b> <span class="sep">/</span> Lab 04 <span class="sep">/</span> Vulnerability analysis</div><div><b>Chikhaoui Youcef Chihab Eddine</b></div></div>
+
+  <div class="grid">
+    <aside class="rail">
+      <div class="num">00</div>
+      <div class="tick"></div>
+      <div class="tag">Brief</div>
+    </aside>
+    <div class="col">
+      <div class="eyebrow">Reading the dossier</div>
+      <h2>Executive brief</h2>
+      <p class="lead">One Windows Server 2022 host was assessed with OpenVAS while Windows Defender Firewall was disabled. The baseline displayed three findings; the planned Firewall ON comparison was not completed.</p>
+
+      <div class="stats">
+        <div class="stat dark"><div class="n">03</div><div class="l">Findings<br>displayed</div></div>
+        <div class="stat accent"><div class="n">5.0<span class="u">/10</span></div><div class="l">Maximum<br>severity shown</div></div>
+        <div class="stat"><div class="n">01</div><div class="l">Medium<br>finding</div></div>
+        <div class="stat"><div class="n">02</div><div class="l">Low<br>findings</div></div>
+      </div>
+
+      <div class="duo">
+        <div class="panel ember">
+          <div class="ptitle">Supported by the evidence</div>
+          <ul class="ticks">
+            <li>One host completed an unauthenticated Full and Fast scan: <span class="mono">192.168.199.126</span>.</li>
+            <li>The baseline task reached <strong>Done</strong> and displayed three results.</li>
+            <li>One Medium (5.0) and two Low (2.6, 2.1) findings are visible.</li>
+            <li>Domain, Private and Public firewall profiles were disabled for the baseline.</li>
+          </ul>
+        </div>
+        <div class="panel teal">
+          <div class="ptitle">Outside the evidence</div>
+          <ul class="ticks teal">
+            <li>No Firewall ON scan was completed, so no comparison exists.</li>
+            <li>No Critical or High finding appears among the three displayed results.</li>
+            <li>Findings are scanner observations, not exploit confirmations.</li>
+            <li>No conclusion is drawn about the firewall's effect on detection.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="toc-head">Contents</div>
+      <div class="toc">
+        <div>
+          <div class="trow"><div class="tn">01</div><div class="tt">Objective and environment</div><div class="tp">03</div></div>
+          <div class="trow"><div class="tn">02</div><div class="tt">MITRE CWE research</div><div class="tp">04</div></div>
+          <div class="trow"><div class="tn">03</div><div class="tt">CWE Top 25 review</div><div class="tp">05</div></div>
+          <div class="trow"><div class="tn">04</div><div class="tt">OpenVAS setup and methodology</div><div class="tp">06</div></div>
+          <div class="trow"><div class="tn">05</div><div class="tt">Initial scan — firewall OFF</div><div class="tp">07</div></div>
+        </div>
+        <div>
+          <div class="trow"><div class="tn">06</div><div class="tt">Firewall comparison — evidence review</div><div class="tp">08</div></div>
+          <div class="trow"><div class="tn">07</div><div class="tt">Recommendations</div><div class="tp">09</div></div>
+          <div class="trow"><div class="tn">08</div><div class="tt">Conclusion</div><div class="tp">10</div></div>
+          <div class="trow"><div class="tn">A</div><div class="tt">Evidence register and sources</div><div class="tp">11</div></div>
+        </div>
+      </div>
+
+      <div class="reading-key">
+        <div class="rk-label">Reading key</div>
+        <div class="rk-chips"><span class="sev med">5.0 · Medium</span><span class="sev low">2.6 · Low</span><span class="sev low">2.1 · Low</span></div>
+        <div class="rk-note">Severity values are reproduced from OpenVAS. A scanner finding is not proof of successful exploitation.</div>
+      </div>
+
+      <div class="docstrip">
+        <div class="ds"><div class="k">Author</div><div class="v">Chikhaoui Youcef Chihab Eddine</div></div>
+        <div class="ds"><div class="k">Course</div><div class="v">Ethical Hacking</div></div>
+        <div class="ds"><div class="k">Academic year</div><div class="v">2026 / 2027</div></div>
+        <div class="ds"><div class="k">Status</div><div class="v">Incomplete — Firewall ON phase</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div>Vulnerability analysis · Windows Server 2022 · 192.168.199.126</div><div class="pg">02</div></div>
+</section>
+
+<!-- ================= PAGE 3 — SECTION 1 ================= -->
+<section class="sheet">
+  <div class="rh"><div><b>EH</b> <span class="sep">/</span> Lab 04 <span class="sep">/</span> Vulnerability analysis</div><div><b>Chikhaoui Youcef Chihab Eddine</b></div></div>
+
+  <div class="grid">
+    <aside class="rail">
+      <div class="num">01</div>
+      <div class="tick"></div>
+      <div class="tag">Context</div>
+    </aside>
+    <div class="col">
+      <div class="eyebrow">Objective and environment</div>
+      <h2>What the lab set out to measure</h2>
+      <p class="lead">The laboratory has two connected aims: understand how MITRE CWE classifies software weaknesses, and measure what OpenVAS can see on a Windows Server 2022 host before and after Windows Defender Firewall is enabled.</p>
+
+      <p>The intended experiment is a like-for-like comparison. The baseline scan is run with the firewall disabled; the second scan is run with the firewall enabled, using the same target and scan configuration. Only the first of those measurements was completed.</p>
+
+      <div class="callout">
+        <span class="lab">Address provenance</span>
+        <p>The lab sheet supplies example VM addresses. This report instead uses <span class="mono">192.168.199.126</span>, the address that appears in the supplied scan results. Scanning was unauthenticated and used the Full and Fast configuration.</p>
+      </div>
+
+      <div class="facts">
+        <div class="fact"><div class="k">Target host</div><div class="v mono">192.168.199.126</div></div>
+        <div class="fact"><div class="k">Platform</div><div class="v">Windows Server 2022</div></div>
+        <div class="fact"><div class="k">Scanner</div><div class="v">OpenVAS / GVM on Ch1Hub</div></div>
+        <div class="fact"><div class="k">Scan mode</div><div class="v">Unauthenticated</div></div>
+        <div class="fact"><div class="k">Configuration</div><div class="v">Full and Fast</div></div>
+        <div class="fact"><div class="k">Baseline firewall</div><div class="v">Domain, Private and Public disabled</div></div>
+      </div>
+
+      <div class="flow-wrap">
+        <div class="flow-label"><span>Experiment map</span><span>Status at time of writing</span></div>
+        <div class="flow">
+          <div class="step">
+            <div class="sn">01</div><div class="st">Frame the weakness classes</div>
+            <div class="sd">MITRE CWE research, including CWE-284 and the 2025 Top 25.</div>
+            <span class="status">Complete</span>
+          </div>
+          <div class="step">
+            <div class="sn">02</div><div class="st">Baseline scan</div>
+            <div class="sd">Firewall OFF. Unauthenticated Full and Fast scan of one host.</div>
+            <span class="status">Complete</span>
+          </div>
+          <div class="step pending">
+            <div class="sn">03</div><div class="st">Comparison scan</div>
+            <div class="sd">Firewall ON. Same target and configuration as the baseline.</div>
+            <span class="status">Not performed</span>
+          </div>
+          <div class="step blocked">
+            <div class="sn">04</div><div class="st">Interpret the difference</div>
+            <div class="sd">Compare findings only after both scans exist.</div>
+            <span class="status">Blocked by 03</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="note">
+        <span class="lab">Assessment boundary</span>
+        <p>No exploitation is claimed. Reported items are limited to what the scanner displayed and to the screenshots supplied with the laboratory material.</p>
+      </div>
+
+      <div class="scope">
+        <div class="sc"><div class="k">In scope</div><div class="v">CWE framing, GVM setup, the firewall OFF baseline, and scanner-visible results.</div></div>
+        <div class="sc"><div class="k">Not in scope</div><div class="v">Exploitation, the firewall ON scan, and proof that the host is vulnerable.</div></div>
+        <div class="sc"><div class="k">Evidence base</div><div class="v">Seven captured figures, registered in Appendix A.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div>Vulnerability analysis · Windows Server 2022 · 192.168.199.126</div><div class="pg">03</div></div>
+</section>
+
+<!-- ================= PAGE 4 — SECTION 2 ================= -->
+<section class="sheet">
+  <div class="rh"><div><b>EH</b> <span class="sep">/</span> Lab 04 <span class="sep">/</span> Vulnerability analysis</div><div><b>Chikhaoui Youcef Chihab Eddine</b></div></div>
+
+  <div class="grid">
+    <aside class="rail">
+      <div class="num">02</div>
+      <div class="tick"></div>
+      <div class="tag">Research</div>
+    </aside>
+    <div class="col">
+      <div class="eyebrow">MITRE CWE research</div>
+      <h2>Naming weakness classes</h2>
+      <p class="lead">MITRE CWE was used to build a vocabulary for weakness classes before looking at scanner output. The database describes categories; it does not assert that a particular host is vulnerable.</p>
+
+      <p>The CWE site was used to review SMB-related search results, and CWE-284, <em>Improper Access Control</em>, was opened for review. The entry describes weaknesses in how access to a resource is restricted, together with consequences and mitigations. This framing matters: a CWE entry can help name a class of weakness, but only target-specific evidence can support a claim about the target.</p>
+
+      <figure class="ev w105">
+        <div class="ev-bar"><span class="fig">Evidence / Fig 01</span><span class="src">cwe.mitre.org — search results</span></div>
+        <img src="assets/fig01-cwe-search.png" alt="MITRE CWE search results including CWE-284">
+        <figcaption><b>Figure 1</b>MITRE CWE search results, including CWE-284 and other security weakness categories.</figcaption>
+      </figure>
+
+      <div class="profile-row">
+        <div class="profile">
+          <div class="pid">CWE-284 / profile</div>
+          <h3>Improper Access Control</h3>
+          <div class="item"><div class="k">Description</div><div class="v">The product does not restrict, or incorrectly restricts, access to a resource from an unauthorized actor.</div></div>
+          <div class="item"><div class="k">Consequences</div><div class="v">Compromise can include gaining privileges, reading sensitive information, executing commands, or evading detection.</div></div>
+          <div class="item"><div class="k">Mitigations</div><div class="v">Manage privileges and trust zones explicitly; apply separation of privilege.</div></div>
+        </div>
+        <figure class="ev">
+          <div class="ev-bar"><span class="fig">Evidence / Fig 02</span><span class="src">cwe.mitre.org — CWE-284</span></div>
+          <img src="assets/fig02-cwe-284.png" alt="CWE-284 Improper Access Control definition page">
+          <figcaption><b>Figure 2</b>CWE-284 description, consequences and mitigations.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div>Vulnerability analysis · Windows Server 2022 · 192.168.199.126</div><div class="pg">04</div></div>
+</section>
+
+<!-- ================= PAGE 5 — SECTION 3 ================= -->
+<section class="sheet">
+  <div class="rh"><div><b>EH</b> <span class="sep">/</span> Lab 04 <span class="sep">/</span> Vulnerability analysis</div><div><b>Chikhaoui Youcef Chihab Eddine</b></div></div>
+
+  <div class="grid">
+    <aside class="rail">
+      <div class="num">03</div>
+      <div class="tick"></div>
+      <div class="tag">Reference</div>
+    </aside>
+    <div class="col">
+      <div class="eyebrow">CWE Top 25 review</div>
+      <h2>A prioritized reference, not a finding list</h2>
+      <p class="lead">The 2025 CWE Top 25 was reviewed as requested. It is a prioritized reference for commonly dangerous software weaknesses, not a finding list for the assessed host.</p>
+
+      <p>The list is useful for prioritization and for naming weakness classes consistently. It does not replace target-specific evidence, and its rankings are not a prediction that a given system contains those weaknesses.</p>
+
+      <figure class="ev w130">
+        <div class="ev-bar"><span class="fig">Evidence / Fig 03</span><span class="src">cwe.mitre.org — 2025 Top 25</span></div>
+        <img src="assets/fig03-cwe-top25.png" alt="2025 CWE Top 25 Most Dangerous Software Weaknesses">
+        <figcaption><b>Figure 3</b>2025 CWE Top 25 Most Dangerous Software Weaknesses, as reviewed on cwe.mitre.org.</figcaption>
+      </figure>
+
+      <div class="duo">
+        <div class="panel">
+          <div class="ptitle">Top five entries · 2025</div>
+          <div class="top-list">
+            <div class="tr"><div class="tn">01</div><div class="tc">Cross-site Scripting <span>CWE-79</span></div></div>
+            <div class="tr"><div class="tn">02</div><div class="tc">SQL Injection <span>CWE-89</span></div></div>
+            <div class="tr"><div class="tn">03</div><div class="tc">Cross-Site Request Forgery <span>CWE-352</span></div></div>
+            <div class="tr"><div class="tn">04</div><div class="tc">Missing Authorization <span>CWE-862</span></div></div>
+            <div class="tr"><div class="tn">05</div><div class="tc">Out-of-bounds Write <span>CWE-787</span></div></div>
+          </div>
+        </div>
+        <div class="panel ember">
+          <div class="ptitle">How to read the ranking</div>
+          <ul class="ticks">
+            <li>It offers a prioritized reference of commonly dangerous weakness classes.</li>
+            <li>It is independent of this laboratory's target and scan.</li>
+            <li>It is contextual material, not evidence that the host contains a listed weakness.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div>Vulnerability analysis · Windows Server 2022 · 192.168.199.126</div><div class="pg">05</div></div>
+</section>
+
+<!-- ================= PAGE 6 — SECTION 4 ================= -->
+<section class="sheet">
+  <div class="rh"><div><b>EH</b> <span class="sep">/</span> Lab 04 <span class="sep">/</span> Vulnerability analysis</div><div><b>Chikhaoui Youcef Chihab Eddine</b></div></div>
+
+  <div class="grid">
+    <aside class="rail">
+      <div class="num">04</div>
+      <div class="tick"></div>
+      <div class="tag">Method</div>
+    </aside>
+    <div class="col">
+      <div class="eyebrow">OpenVAS setup and methodology</div>
+      <h2>Preparation, captured twice</h2>
+      <p class="lead">Two preparation checks are documented: the GVM installation on the Kali host, and the firewall state on the Windows target.</p>
+
+      <p>The Kali terminal output records a successful <span class="code">gvm-check-setup</span> run (GVM 25.04.0). The OpenVAS dashboard records the initial task in the Done state. A PowerShell capture documents that Domain, Private and Public profiles were disabled for the baseline.</p>
+
+      <div class="flow">
+        <div class="step" style="min-height:20mm"><div class="sn">01</div><div class="st">Verify the scanner</div><div class="sd"><span class="mono">gvm-check-setup</span> on Kali host <span class="mono">Ch1Hub</span>.</div></div>
+        <div class="step" style="min-height:20mm"><div class="sn">02</div><div class="st">Disable the firewall</div><div class="sd">Domain, Private and Public profiles set to False.</div></div>
+        <div class="step" style="min-height:20mm"><div class="sn">03</div><div class="st">Run the baseline</div><div class="sd">Unauthenticated Full and Fast scan of one host.</div></div>
+        <div class="step" style="min-height:20mm"><div class="sn">04</div><div class="st">Capture evidence</div><div class="sd">Record task status and displayed findings.</div></div>
+      </div>
+
+      <figure class="ev w100">
+        <div class="ev-bar"><span class="fig">Evidence / Fig 04</span><span class="src">Kali host Ch1Hub — gvm-check-setup</span></div>
+        <img src="assets/fig04-gvm-check.png" alt="gvm-check-setup diagnostics on Kali Linux">
+        <figcaption><b>Figure 4</b>GVM installation and setup diagnostics on the Kali host <span class="mono">Ch1Hub</span>; the terminal prompt shows the hostname.</figcaption>
+        <div class="prompt-detail">
+          <img src="assets/fig04-prompt-detail.png" alt="Terminal prompt detail showing the Kali hostname Ch1Hub">
+          <div class="pd"><div class="k">Prompt detail</div><div class="v">The Kali prompt records the hostname <span class="mono">Ch1Hub</span>.</div></div>
+        </div>
+      </figure>
+
+      <figure class="ev w112">
+        <div class="ev-bar"><span class="fig">Evidence / Fig 05</span><span class="src">Windows PowerShell — firewall profiles</span></div>
+        <img src="assets/fig05-powershell.png" alt="PowerShell showing firewall profiles disabled">
+        <figcaption><b>Figure 5</b>PowerShell evidence that Domain, Private and Public firewall profiles were disabled for the baseline.</figcaption>
+      </figure>
+    </div>
+  </div>
+  <div class="foot"><div>Vulnerability analysis · Windows Server 2022 · 192.168.199.126</div><div class="pg">06</div></div>
+</section>
+
+<!-- ================= PAGE 7 — SECTION 5 ================= -->
+<section class="sheet">
+  <div class="rh"><div><b>EH</b> <span class="sep">/</span> Lab 04 <span class="sep">/</span> Vulnerability analysis</div><div><b>Chikhaoui Youcef Chihab Eddine</b></div></div>
+
+  <div class="grid">
+    <aside class="rail">
+      <div class="num">05</div>
+      <div class="tick"></div>
+      <div class="tag">Baseline</div>
+    </aside>
+    <div class="col">
+      <div class="eyebrow">Initial OpenVAS scan — firewall OFF</div>
+      <h2>The completed baseline</h2>
+      <p class="lead">The baseline task, “Lab04 - Initial assessment - Firewall OFF”, was an unauthenticated Full and Fast assessment of one host. It reached Done.</p>
+
+      <p>The report lists three findings on <span class="mono">192.168.199.126</span> and records a maximum severity of 5.0 (Medium). Counts reflect only the three results visible in the supplied screenshots.</p>
+
+      <div class="facts" style="grid-template-columns:repeat(4,1fr);margin-top:2mm">
+        <div class="fact"><div class="k">Task</div><div class="v" style="font-size:7.6pt">Lab04 - Initial assessment - Firewall OFF</div></div>
+        <div class="fact"><div class="k">Status</div><div class="v">Done · 1 host</div></div>
+        <div class="fact"><div class="k">Configuration</div><div class="v">Unauthenticated · Full and Fast</div></div>
+        <div class="fact"><div class="k">Max severity</div><div class="v">5.0 · Medium</div></div>
+      </div>
+
+      <figure class="ev w130">
+        <div class="ev-bar"><span class="fig">Evidence / Fig 06</span><span class="src">OpenVAS — tasks dashboard</span></div>
+        <img src="assets/fig06-openvas-task.png" alt="OpenVAS completed baseline task">
+        <figcaption><b>Figure 6</b>Completed baseline task with Medium maximum severity (5.0).</figcaption>
+      </figure>
+
+      <figure class="ev w130">
+        <div class="ev-bar"><span class="fig">Evidence / Fig 07</span><span class="src">OpenVAS — report results</span></div>
+        <img src="assets/fig07-openvas-results.png" alt="OpenVAS results showing three findings">
+        <figcaption><b>Figure 7</b>Three displayed baseline findings for host 192.168.199.126.</figcaption>
+      </figure>
+
+      <div class="eyebrow" style="margin-top:4mm">Displayed findings</div>
+      <table class="findings">
+        <thead><tr><th style="width:34mm">Severity</th><th>Finding</th><th style="width:32mm">Affected location</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="sev med">5.0 · Medium</span><div class="sevbar"><span style="width:100%;background:#D58A18"></span></div></td>
+            <td><div class="ft">DCE/RPC and MSRPC Services Enumeration Reporting</div></td>
+            <td><div class="loc">135/tcp</div></td>
+          </tr>
+          <tr>
+            <td><span class="sev low">2.6 · Low</span><div class="sevbar"><span style="width:52%;background:#2A8C80"></span></div></td>
+            <td><div class="ft">TCP Timestamps Information Disclosure</div></td>
+            <td><div class="loc">general/tcp</div></td>
+          </tr>
+          <tr>
+            <td><span class="sev low">2.1 · Low</span><div class="sevbar"><span style="width:42%;background:#2A8C80"></span></div></td>
+            <td><div class="ft">ICMP Timestamp Reply Information Disclosure</div></td>
+            <td><div class="loc">general/icmp</div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="foot"><div>Vulnerability analysis · Windows Server 2022 · 192.168.199.126</div><div class="pg">07</div></div>
+</section>
+
+<!-- ================= PAGE 8 — INTERPRETATION + SECTION 6 ================= -->
+<section class="sheet">
+  <div class="rh"><div><b>EH</b> <span class="sep">/</span> Lab 04 <span class="sep">/</span> Vulnerability analysis</div><div><b>Chikhaoui Youcef Chihab Eddine</b></div></div>
+
+  <div class="interp">
+    <div class="il">05 — Interpretation</div>
+    <h3>Scanner-reported, not exploit-confirmed</h3>
+    <div class="interp-grid">
+      <div class="ig"><div class="k">RPC enumeration</div><div class="v">Exposes information about reachable RPC services and can assist reconnaissance.</div></div>
+      <div class="ig"><div class="k">Timestamp disclosure</div><div class="v">TCP and ICMP replies may reveal timing-related host information.</div></div>
+      <div class="ig"><div class="k">Evidence boundary</div><div class="v">These are scanner-reported observations, not proof of successful exploitation. No Critical or High findings appear among the three displayed results.</div></div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <aside class="rail">
+      <div class="num">06</div>
+      <div class="tick"></div>
+      <div class="tag">Comparison</div>
+    </aside>
+    <div class="col">
+      <div class="eyebrow">Firewall comparison — evidence review</div>
+      <h2>The comparison that is missing</h2>
+      <p class="lead">The planned second OpenVAS scan with Windows Defender Firewall enabled was not completed because of insufficient time during the laboratory session. No Firewall ON results are available.</p>
+
+      <p>The supplied completed task and report screenshots document only the Firewall OFF baseline. The table therefore records a missing measurement, not an observed absence of findings.</p>
+
+      <table class="compare">
+        <thead><tr><th>Measure</th><th>Firewall OFF · documented</th><th>Firewall ON</th></tr></thead>
+        <tbody>
+          <tr><td class="measure">Completed scan</td><td><span class="ok">Yes · Done</span></td><td class="not" rowspan="6"><b>Not performed</b><span>time constraints</span></td></tr>
+          <tr><td class="measure">Target host</td><td><span class="mono">192.168.199.126</span></td></tr>
+          <tr><td class="measure">Displayed findings</td><td>3</td></tr>
+          <tr><td class="measure">Medium findings</td><td>1</td></tr>
+          <tr><td class="measure">Low findings</td><td>2</td></tr>
+          <tr><td class="measure">Maximum displayed score</td><td><strong>5.0</strong></td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <span class="lab">What this does — and does not — mean</span>
+        <p>This is a limitation of the practical work, not evidence that the firewall has no effect. A valid comparison would require enabling Windows Defender Firewall and running a separate, completed scan with the same target and scan configuration. Any change in reported findings would also need to be interpreted in light of possible changes in scanner visibility.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div>Vulnerability analysis · Windows Server 2022 · 192.168.199.126</div><div class="pg">08</div></div>
+</section>
+
+<!-- ================= PAGE 9 — SECTION 7 ================= -->
+<section class="sheet">
+  <div class="rh"><div><b>EH</b> <span class="sep">/</span> Lab 04 <span class="sep">/</span> Vulnerability analysis</div><div><b>Chikhaoui Youcef Chihab Eddine</b></div></div>
+
+  <div class="grid">
+    <aside class="rail">
+      <div class="num">07</div>
+      <div class="tick"></div>
+      <div class="tag">Action</div>
+    </aside>
+    <div class="col">
+      <div class="eyebrow">Recommendations</div>
+      <h2>Six actions supported by the baseline</h2>
+      <p class="lead">The baseline supports a focused set of actions. They prioritize exposure reduction, routine hygiene, and a repeatable way to close the missing comparison.</p>
+
+      <div class="recs">
+        <div class="rec"><div class="rn">01</div><div class="cat">Exposure</div><h3>Constrain RPC exposure</h3><p>Limit RPC exposure to trusted hosts and the network segments that require it.</p></div>
+        <div class="rec"><div class="rn">02</div><div class="cat">Hardening</div><h3>Reduce service surface</h3><p>Assess unnecessary Windows services and remove or disable what the role does not require.</p></div>
+        <div class="rec"><div class="rn">03</div><div class="cat">Hygiene</div><h3>Apply current patches</h3><p>Keep the Windows Server 2022 target current with security updates.</p></div>
+        <div class="rec"><div class="rn">04</div><div class="cat">Analysis</div><h3>Interpret disclosures in context</h3><p>Review information-disclosure findings alongside the services and configuration that produce them.</p></div>
+        <div class="rec"><div class="rn">05</div><div class="cat">Policy</div><h3>Keep the firewall on</h3><p>Retain Windows Defender Firewall enabled except for isolated baseline measurements.</p></div>
+        <div class="rec"><div class="rn">06</div><div class="cat">Evidence</div><h3>Validate and preserve</h3><p>Validate significant findings and preserve both scan reports for a like-for-like comparison.</p></div>
+      </div>
+
+      <div class="eyebrow">Suggested re-test protocol</div>
+      <h3 style="font-size:13pt;margin-bottom:1mm">Close the missing measurement</h3>
+      <p class="small muted" style="margin-bottom:2mm">These steps reproduce the Firewall ON half of the experiment; they do not imply a result.</p>
+      <div class="protocol">
+        <div class="proto"><div class="pn">STEP 01</div>Enable Windows Defender Firewall on the target.</div>
+        <div class="proto"><div class="pn">STEP 02</div>Confirm the profile state with <span class="code">Get-NetFirewallProfile</span>.</div>
+        <div class="proto"><div class="pn">STEP 03</div>Run a distinct OpenVAS scan against <span class="mono">192.168.199.126</span> with the same configuration.</div>
+        <div class="proto"><div class="pn">STEP 04</div>Record its findings and compare them with the documented baseline.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div>Vulnerability analysis · Windows Server 2022 · 192.168.199.126</div><div class="pg">09</div></div>
+</section>
+
+<!-- ================= PAGE 10 — SECTION 8 ================= -->
+<section class="sheet">
+  <div class="rh"><div><b>EH</b> <span class="sep">/</span> Lab 04 <span class="sep">/</span> Vulnerability analysis</div><div><b>Chikhaoui Youcef Chihab Eddine</b></div></div>
+
+  <div class="grid">
+    <aside class="rail">
+      <div class="num">08</div>
+      <div class="tick"></div>
+      <div class="tag">Close</div>
+    </aside>
+    <div class="col">
+      <div class="eyebrow">Conclusion</div>
+      <h2>The baseline is documented.<br>The comparison is not.</h2>
+      <p class="lead">The CWE research and initial OpenVAS assessment were completed and documented. The initial scan displayed three findings on Windows Server 2022, with a maximum severity of Medium (5.0). The second assessment with Windows Defender Firewall enabled could not be performed because of time constraints.</p>
+
+      <p>For that reason, this report makes no conclusion about the firewall's effect on vulnerability detection.</p>
+
+      <div class="stats" style="grid-template-columns:repeat(3,1fr);margin-top:4mm">
+        <div class="stat dark"><div class="n">03</div><div class="l">Displayed<br>findings</div></div>
+        <div class="stat"><div class="n">5.0<span class="u">/10</span></div><div class="l">Maximum<br>severity</div></div>
+        <div class="stat"><div class="n">00</div><div class="l">Firewall-ON<br>scans available</div></div>
+      </div>
+
+      <div class="banner">
+        <div class="bl">Open item · time constraints</div>
+        <h3>Work not completed</h3>
+        <p>The Firewall ON portion of the lab remains incomplete. If the exercise is resumed, the following steps would produce the missing evidence.</p>
+        <div class="checklist">
+          <div class="check"><div class="box"></div><div>Enable Windows Defender Firewall on <span class="mono">192.168.199.126</span>.</div></div>
+          <div class="check"><div class="box"></div><div>Confirm its status using <span class="mono">Get-NetFirewallProfile</span>.</div></div>
+          <div class="check"><div class="box"></div><div>Perform a distinct OpenVAS scan against the same target.</div></div>
+          <div class="check"><div class="box"></div><div>Record its findings for comparison with the baseline.</div></div>
+        </div>
+      </div>
+
+      <div class="closing">
+        <div class="k">Evidence boundary</div>
+        <div class="v">A missing scan is not a null result. The Firewall ON comparison remains open until a separate, completed scan against the same target and configuration exists.</div>
+      </div>
+
+      <div class="sign">
+        <div class="who">
+          <div class="k">Prepared by</div>
+          <div class="n">Chikhaoui Youcef Chihab Eddine</div>
+          <div class="r">Author · Ethical Hacking · Academic Year 2026/2027</div>
+        </div>
+        <div class="stamp">Report status<br><strong>Incomplete</strong><br>Firewall ON not performed</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div>Vulnerability analysis · Windows Server 2022 · 192.168.199.126</div><div class="pg">10</div></div>
+</section>
+
+<!-- ================= PAGE 11 — APPENDIX ================= -->
+<section class="sheet">
+  <div class="rh"><div><b>EH</b> <span class="sep">/</span> Lab 04 <span class="sep">/</span> Vulnerability analysis</div><div><b>Chikhaoui Youcef Chihab Eddine</b></div></div>
+
+  <div class="grid">
+    <aside class="rail">
+      <div class="num">A</div>
+      <div class="tick"></div>
+      <div class="tag">Appendix</div>
+    </aside>
+    <div class="col">
+      <div class="eyebrow">Appendix A</div>
+      <h2>Evidence register and sources</h2>
+      <p class="lead">The report relies on the following captured figures. Each is a screenshot reproduced from the supplied laboratory evidence.</p>
+
+      <table class="reg">
+        <thead><tr><th style="width:14mm">Fig.</th><th>Evidence</th><th>What it supports</th><th style="width:12mm">Section</th></tr></thead>
+        <tbody>
+          <tr><td class="fid">01</td><td>MITRE CWE search results</td><td>SMB-related search results and the CWE-284 entry</td><td class="sec">§2</td></tr>
+          <tr><td class="fid">02</td><td>CWE-284 definition page</td><td>Description, consequences and mitigations</td><td class="sec">§2</td></tr>
+          <tr><td class="fid">03</td><td>2025 CWE Top 25</td><td>Prioritized weakness reference</td><td class="sec">§3</td></tr>
+          <tr><td class="fid">04</td><td><span class="mono">gvm-check-setup</span> output</td><td>GVM 25.04.0 installation diagnostics on Kali host <span class="mono">Ch1Hub</span></td><td class="sec">§4</td></tr>
+          <tr><td class="fid">05</td><td>PowerShell firewall output</td><td>Domain, Private and Public profiles disabled</td><td class="sec">§4</td></tr>
+          <tr><td class="fid">06</td><td>OpenVAS task dashboard</td><td>Completed baseline; maximum severity 5.0</td><td class="sec">§5</td></tr>
+          <tr><td class="fid">07</td><td>OpenVAS report results</td><td>Three findings on <span class="mono">192.168.199.126</span></td><td class="sec">§5</td></tr>
+        </tbody>
+      </table>
+
+      <div class="duo" style="margin-top:2mm">
+        <div class="panel ember">
+          <div class="ptitle">Source material</div>
+          <p class="small" style="margin:0">Lab Sheet N° 4 — <em>Vulnerability Analysis</em> (2026/2027), and the screenshots in the supplied Google Doc “Lab04 Report Ethical Hacking.”</p>
+        </div>
+        <div class="panel">
+          <div class="ptitle">Limits of the evidence</div>
+          <p class="small" style="margin:0">All findings are limited to the supplied screenshots. No Firewall ON scan exists to compare, and no exploitation is claimed; findings remain scanner-reported observations.</p>
+        </div>
+      </div>
+
+      <div class="eyebrow" style="margin-top:4mm">Document control</div>
+      <div class="meta-grid">
+        <div class="mg"><div class="k">Author</div><div class="v">Chikhaoui Youcef Chihab Eddine</div></div>
+        <div class="mg"><div class="k">Course</div><div class="v">Ethical Hacking</div></div>
+        <div class="mg"><div class="k">Academic year</div><div class="v">2026 / 2027</div></div>
+        <div class="mg"><div class="k">Report</div><div class="v">Lab 04 — Vulnerability Analysis</div></div>
+        <div class="mg"><div class="k">Target</div><div class="v">192.168.199.126 · Windows Server 2022</div></div>
+        <div class="mg"><div class="k">Status</div><div class="v">Firewall ON comparison not performed</div></div>
+      </div>
+
+      <div class="eyebrow" style="margin-top:4mm">Abbreviations</div>
+      <div class="abbrs">
+        <div class="abbr"><div class="a">CWE</div><div class="d">Common Weakness Enumeration</div></div>
+        <div class="abbr"><div class="a">GVM</div><div class="d">Greenbone Vulnerability Management</div></div>
+        <div class="abbr"><div class="a">RPC</div><div class="d">Remote Procedure Call</div></div>
+        <div class="abbr"><div class="a">MSRPC</div><div class="d">Microsoft Remote Procedure Call</div></div>
+        <div class="abbr"><div class="a">TCP</div><div class="d">Transmission Control Protocol</div></div>
+        <div class="abbr"><div class="a">ICMP</div><div class="d">Internet Control Message Protocol</div></div>
+      </div>
+
+      <div class="sign" style="margin-top:4mm">
+        <div class="who">
+          <div class="k">Prepared by</div>
+          <div class="n">Chikhaoui Youcef Chihab Eddine</div>
+          <div class="r">Author · Ethical Hacking · 2026/2027</div>
+        </div>
+        <div class="covernote">Lab 04 · Evidence-based report</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><div>Vulnerability analysis · Windows Server 2022 · 192.168.199.126</div><div class="pg">11</div></div>
+</section>
+
+</body>
+</html>
