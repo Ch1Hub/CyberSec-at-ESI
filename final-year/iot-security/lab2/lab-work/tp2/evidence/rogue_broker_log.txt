@@ -1,0 +1,8 @@
+1794915557: mosquitto version 2.1.2 running
+1794915559: New connection from 127.0.0.1:46175 on port 8884.
+1794915559: OpenSSL Error while trying to get the error[0]: error:0A000418:SSL routines::tlsv1 alert unknown ca
+1794915559: Client 127.0.0.1 [127.0.0.1:46175] disconnected: Protocol error.
+1794915559: New connection from 127.0.0.1:59443 on port 8884.
+1794915559: New client connected from 127.0.0.1:59443 as demo-insecure (p4, c1, k10).
+1794915559: Client demo-insecure negotiated TLSv1.2 cipher ECDHE-RSA-AES256-GCM-SHA384
+1794915560: Client demo-insecure [127.0.0.1:59443] disconnected.

@@ -1,0 +1,29 @@
+                Certificate Length: 789
+                Certificate […]: 30820311308201f9a0030201020214045f876feed4b915f38701d5c86ba55c16d61644300d06092a864886f70d01010b05003011310f300d06035504030c0643412d4c6162301e170d3236313131373131333432385a170d3239303231393131333432385a301431123010060355
+                        issuer: rdnSequence (0)
+                            rdnSequence: 1 item (id-at-commonName=CA-Lab)
+                                RDNSequence item: 1 item (id-at-commonName=CA-Lab)
+                                    RelativeDistinguishedName item (id-at-commonName=CA-Lab)
+                                        Object Id: 2.5.4.3 (id-at-commonName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: CA-Lab
+                        validity
+                            notBefore: utcTime (0)
+                                utcTime: 2026-11-17 11:34:28 (UTC)
+                            notAfter: utcTime (0)
+                                utcTime: 2029-02-19 11:34:28 (UTC)
+                        subject: rdnSequence (0)
+                            rdnSequence: 1 item (id-at-commonName=localhost)
+                                RDNSequence item: 1 item (id-at-commonName=localhost)
+                                    RelativeDistinguishedName item (id-at-commonName=localhost)
+                                        Object Id: 2.5.4.3 (id-at-commonName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: localhost
+                            Extension (id-ce-subjectAltName)
+                                Extension Id: 2.5.29.17 (id-ce-subjectAltName)
+                                GeneralNames: 2 items
+                                    GeneralName: dNSName (2)
+                                        dNSName: localhost
+                                    GeneralName: iPAddress (7)
+                                        iPAddress: localhost (127.0.0.1)
+                            Extension (id-ce-subjectKeyIdentifier)

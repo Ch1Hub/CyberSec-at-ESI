@@ -1,0 +1,61 @@
+Connecting to 127.0.0.1
+depth=1 CN=CA-Lab
+verify error:num=19:self-signed certificate in certificate chain
+verify return:1
+depth=1 CN=CA-Lab
+verify return:1
+depth=0 CN=localhost
+verify return:1
+CONNECTED(00000003)
+---
+Certificate chain
+ 0 s:CN=localhost
+   i:CN=CA-Lab
+   a:PKEY: rsaEncryption, 2048 (bit); sigalg: RSA-SHA256
+   v:NotBefore: Nov 17 11:34:28 2026 GMT; NotAfter: Feb 19 11:34:28 2029 GMT
+ 1 s:CN=CA-Lab
+   i:CN=CA-Lab
+   a:PKEY: rsaEncryption, 2048 (bit); sigalg: RSA-SHA256
+   v:NotBefore: Nov 17 11:34:28 2026 GMT; NotAfter: Nov 14 11:34:28 2036 GMT
+---
+Server certificate
+-----BEGIN CERTIFICATE-----
+MIIDETCCAfmgAwIBAgIUBF+Hb+7UuRXzhwHVyGulXBbWFkQwDQYJKoZIhvcNAQEL
+BQAwETEPMA0GA1UEAwwGQ0EtTGFiMB4XDTI2MTExNzExMzQyOFoXDTI5MDIxOTEx
+MzQyOFowFDESMBAGA1UEAwwJbG9jYWxob3N0MIIBIjANBgkqhkiG9w0BAQEFAAOC
+AQ8AMIIBCgKCAQEAuGZiawyihe41WvNdU1JufQjQivV4nvY/JaiXl2Tzu2JbrPn9
+Co13X3nzswK92AepKhkSIqzDDNFg0ibC+Juqd7vsooS9nFGXDph3G0q/mn81WPzl
+4FWwNpT9Lvr2tQi0UQlSO/OO+cwGJMmhOtNHhuXLaW/CIZaj/oVbKEexb+LiOS+D
+edCDurLe8ntkU3g92/tDtF55lzKHvk5Q0bdMpzXtIaunPN+uBn9KqxO69okivJ2Z
+q2cfAiMkmLTo2Ps+V+uRxYPB+Skk8jY+6oFLBJJ0E4t5GWCsNETxfGfRp0Xfa5pg
+rQD10cXjIQkp8OsJVD7M5d6HCtK9mKqxwdyAFwIDAQABo14wXDAaBgNVHREEEzAR
+gglsb2NhbGhvc3SHBH8AAAEwHQYDVR0OBBYEFPblb/NErmK2Jg7kJvk/apmouIqb
+MB8GA1UdIwQYMBaAFCK96/vOZyv/3d0PuJjejGtnChqnMA0GCSqGSIb3DQEBCwUA
+A4IBAQAU/wtBcbqssBCOAvFpmfjPo7k0pQssLNO03c1CUgqhdzmbH6HG80Gu4+iZ
+Urv1YA+mNidMtN0ymJuC7M1a20qcEfBtrro0bglvAysaOg4rduNYRLWhj4E3O/CQ
+NEP9F9kIBadWvHvvEyimza0o45ngU7sysnncsKemb1avHc8UBzclVhW+gidOVdHR
+OhNChAoYiwsoAEvOvIhbVFDrXYx9p1LL+QDbnTdLKO/E5JGAG4LpZNDoaoZ18XXW
+7l6eIoRkMUow0Tn1UD/1sJpXuMUU/uT7Tyobo7HQw27Wn4RFpeQjL/nJ1DiJybkW
+kuBNvmQyXc2lN89iaCpim8vhnrob
+-----END CERTIFICATE-----
+subject=CN=localhost
+issuer=CN=CA-Lab
+---
+No client certificate CA names sent
+Peer signing digest: SHA256
+Peer signature type: RSA-PSS
+Server Temp Key: X25519, 253 bits
+---
+SSL handshake has read 2147 bytes and written 400 bytes
+Verification error: self-signed certificate in certificate chain
+---
+New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384
+Server public key is 2048 bit
+This TLS version forbids renegotiation.
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+Early data was not sent
+Verify return code: 19 (self-signed certificate in certificate chain)
+---
+DONE

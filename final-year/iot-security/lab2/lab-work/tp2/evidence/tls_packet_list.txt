@@ -1,0 +1,4 @@
+6	Client Hello (SNI=localhost)
+8	Server Hello, Certificate, Server Key Exchange, Server Hello Done
+10	Client Key Exchange, Change Cipher Spec, Encrypted Handshake Message
+11	New Session Ticket, Change Cipher Spec, Encrypted Handshake Message

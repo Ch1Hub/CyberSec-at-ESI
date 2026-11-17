@@ -1,0 +1,10 @@
+$ openssl verify -CAfile certs/ca.crt certs/broker.crt
+certs/broker.crt: OK
+
+$ openssl x509 -in certs/broker.crt -noout -subject -issuer -dates -ext subjectAltName
+subject=CN=localhost
+issuer=CN=CA-Lab
+notBefore=Nov 17 11:34:28 2026 GMT
+notAfter=Feb 19 11:34:28 2029 GMT
+X509v3 Subject Alternative Name: 
+    DNS:localhost, IP Address:127.0.0.1

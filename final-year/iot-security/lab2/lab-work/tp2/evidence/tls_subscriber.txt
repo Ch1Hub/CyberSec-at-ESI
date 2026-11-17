@@ -1,0 +1,4 @@
+capteurs/esp01/temp 20.0
+capteurs/esp01/temp 20.7
+capteurs/esp01/temp 21.4
+capteurs/esp01/temp 22.1

@@ -1,0 +1,2 @@
+mode insecure : vérification du certificat DÉSACTIVÉE
+CONNEXION ACCEPTÉE : fausse mesure 99 publiée sur le broker usurpateur
