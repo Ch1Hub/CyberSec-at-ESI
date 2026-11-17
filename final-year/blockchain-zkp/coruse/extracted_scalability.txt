@@ -1,0 +1,270 @@
+--- SLIDE 1 ---
+Blockchain Scalability 
+K.SEHIMI Phd Candidate ESI-SBA
+F.BENDAOUD PhD-HDR ESI-SBA
+Emergent Security Technologies
+2026-2027
+Cybersecurity
+
+--- SLIDE 2 ---
+1. Blockchain Performance and the Scalability Trilemma
+2. Layer 1 Scalability Solutions 
+3. Layer 2 Scalability Solutions 
+4. Conclusion
+Course Map
+
+--- SLIDE 3 ---
+Blockchain Performance and the Scalability Trilemma
+
+
+--- SLIDE 4 ---
+Introduction to Blockchain Scalability
+- A blockchain may operate correctly under a small workload but struggle as demand 
+increases. 
+- Performance describes how a system behaves under a particular workload and configuration.
+- Scalability describes its ability to support increasing workloads while maintaining acceptable 
+performance and system guarantees.
+- Growth may involve more transactions, users, validators, smart-contract execution, or stored 
+state.
+- Increasing capacity should not create unacceptable losses in security, decentralization, reliability, 
+or cost.
+
+
+--- SLIDE 5 ---
+Blockchain Performance Metrics 
+These are blockchain performance key metrics : 
+Metric Meaning
+Transaction Throughput Number of valid transactions successfully committed per 
+unit of time. 
+Transaction Latency Time between transaction submission and a defined 
+completion event. 
+Time To Finality Time until the transaction reaches the protocol’s finality 
+criterion. 
+Success rate Proportion of submitted transactions that complete 
+successfully. 
+
+--- SLIDE 6 ---
+Why Are Blockchains Difficult to Scale? 
+- Replicated processing: many validating nodes verify the same transactions instead of dividing the 
+workload among themselves.
+- Propagation delay: transactions and blocks require time to spread through the peer-to-peer network.
+- Consensus overhead: participants must exchange information or wait for protocol conditions before 
+accepting an ordered history.
+- Limited block capacity: only a bounded amount of transaction data and computation can be included in 
+each block.
+- State growth: increasing usage enlarges the ledger and current state, making storage, synchronization, 
+and validation more demanding.
+
+--- SLIDE 7 ---
+Why Are Blockchains Difficult to Scale? 
+
+
+--- SLIDE 8 ---
+A Simple Scalability Experiment 
+More transactions per block
+More bandwidth required
+More data to verify and store
+Potentially longer propagation time
+Higher node requirements
+More blocks per minute
+Less time for propagation
+Less time for veriﬁcation
+Greater coordination pressure
+Potentially more competing blocks in 
+chain-based protocols
+
+
+--- SLIDE 9 ---
+The Blockchain Trilemma 
+- A decentralized network can only achieve two 
+out of three fundamental properties 
+simultaneously. 
+- Decentralized + Secure: Low speed and 
+high fees due to massive consensus 
+requirements (e.g., Bitcoin, Ethereum).
+- Secure + Scalable: Sacrifices 
+decentralization by relying on fewer, 
+high-powered validators
+
+
+--- SLIDE 10 ---
+Layer 1 Scalability Solutions 
+
+--- SLIDE 11 ---
+What Is Layer 1 Scaling? 
+- Layer 1 (L1) is the base blockchain protocol, such as Bitcoin or Ethereum 
+Mainnet.
+- Layer 1 scaling improves the capacity or efficiency of the base blockchain 
+itself.
+- Main objectives: 
+- Process more transactions or computation.
+-  Reduce communication and execution overhead.
+- Limit the resources required from validating nodes.
+- Preserve the required security and decentralization guarantees.
+
+--- SLIDE 12 ---
+Increasing Block Capacity 
+- A blockchain can increase its nominal capacity by permitting more work per 
+block or by producing blocks more frequently.
+Parameter change Intended benefit Possible pressure 
+Larger data limit More transaction data per 
+block 
+More bandwidth and 
+storage 
+Shorter block interval More opportunities for 
+transaction inclusion 
+Less time for propagation 
+and validation 
+
+--- SLIDE 13 ---
+Transaction and Execution Optimization 
+- Instead of only increasing limits, a blockchain can perform the same useful work using 
+less data transmission or repeated processing.
+- Transaction batching : Combines several payments or operations into one transaction.
+- Compact block relay : Sends short transaction identifiers instead of retransmitting all 
+transaction data. 
+- State caching :  Keeps frequently accessed state in memory to reduce repeated 
+database reads.
+Examples:
+- One Bitcoin transaction can contain several outputs and pay several recipients.
+- Compact block relay allows a receiving node to reconstruct a block using transactions 
+already present in its mempool.
+
+
+--- SLIDE 14 ---
+Blockchain Sharding 
+- Sharding partitions blockchain data or processing so 
+that every participant does not have to handle the 
+entire workload.
+General principle
+● The blockchain is divided into multiple shards.
+● Each shard handles a portion of the transactions, data, or 
+state.
+● Groups of validators are assigned to different shards.
+● A coordination mechanism connects the shards into one 
+system.
+Sharding reduces replicated work, but introduces 
+cross-shard coordination and security challenges. 
+
+
+--- SLIDE 15 ---
+Layer 2 Scalability Solutions 
+
+--- SLIDE 16 ---
+What Is Layer 2? 
+- Layer 2 (L2) is an additional protocol built on top of a base blockchain, to increase transaction 
+capacity or reduce user costs.
+- General principle
+- User operations are processed outside the normal L1 execution path.
+- Layer 2 combines or summarizes many operations.
+- Layer 1 is used for functions such as settlement, data publication, proof verification, or 
+dispute resolution.
+- The exact guarantees depend on the architecture of the Layer 2 system.
+Layer 2 reduces the amount of work that Layer 1 must perform for each user operation.
+
+
+--- SLIDE 17 ---
+Payment and State Channels
+- A channel allows a defined group of participants to exchange signed state updates 
+without publishing every update on the blockchain.
+Channel lifecycle
+1. Open: participants lock assets in an L1 transaction or smart contract.
+2. Update: participants exchange and sign new states off-chain.
+3. Close: the latest agreed state is submitted to Layer 1.
+4. Settle: the locked assets are distributed according to the final state.
+5. Dispute: Layer 1 arbitrates if a participant submits an old or invalid state.
+Many interactions may occur while requiring only a small number of on-chain 
+transactions.
+Example : Bitcoin lightning network 
+
+
+--- SLIDE 18 ---
+Rollup Architecture 
+- A rollup executes transactions outside Layer 1 but publishes information to Layer 1 so that the 
+rollup state can be verified or challenged.
+Simplified transaction flow
+1. Users submit transactions to the Layer 2 network.
+2. A sequencer orders transactions and provides an initial execution result.
+3. Transactions are grouped and compressed into a batch.
+4. Batch data and a state commitment are submitted to Layer 1.
+5. An L1 smart contract accepts the new state according to the rollup’s verification rules.
+Components : 
+Sequencer: Receives, orders, and usually executes L2 transactions
+Batch publisher: Publishes compressed transaction data to L1
+L2 nodes: Reconstruct and verify the L2 state
+L1 contracts: Manage deposits, withdrawals, commitments, and verification
+Proof or dispute system: Determines whether proposed state transitions are accepted 
+
+--- SLIDE 19 ---
+Optimistic Rollups 
+- An optimistic rollup treats a proposed state transition as valid unless it is successfully challenged. 
+General process
+1. Transactions are executed outside Layer 
+1.
+2. The operator publishes transaction data 
+and a state commitment.
+3. Other participants can independently 
+execute the transactions.
+4. A disputed state claim can be challenged 
+using a fault proof, also called a fraud 
+proof.
+5. Layer 1 resolves the dispute according to 
+the rollup protocol.
+
+
+--- SLIDE 20 ---
+Validity Rollups and ZK-Rollups 
+- A validity rollup submits a cryptographic proof showing that a batch produced a correct state 
+transition. 
+General process
+1. Transactions are ordered and executed outside Layer 1.
+2. The rollup computes a new state commitment.
+3. A prover generates a validity proof for the batch.
+4. An L1 verifier contract checks the proof.
+5. The state update is accepted only if the proof verifies.
+Layer 1 can verify the result of many transactions without re-executing each transaction individually. 
+
+--- SLIDE 21 ---
+Deposits, Withdrawals, and Finality 
+Moving assets between Layer 1 and Layer 2 requires communication between the two systems.
+Deposit: L1 → L2
+1. The user locks or deposits an asset in an L1 bridge contract.
+2. The deposit event is recognized by the L2 system.
+3. The corresponding balance becomes available on L2.
+Withdrawal: L2 → L1
+1. The user initiates a withdrawal on L2.
+2. The L2 transaction is included in a batch.
+3. The state transition is accepted according to the rollup’s verification mechanism.
+4. The user proves that the withdrawal belongs to the accepted L2 state.
+5. The L1 contract releases the asset.
+Optimistic-rollup withdrawals wait for the challenge mechanism, whereas validity-rollup state updates can 
+be accepted after the L1 verifier validates the proof. 
+Denial of Sequencing (DoS)  - The "DoubleUp Roll" Attack 
+
+
+--- SLIDE 22 ---
+Conclusion 
+
+--- SLIDE 23 ---
+Conclusion
+What have we learned?
+● Blockchain performance must be evaluated using throughput, latency, finality, success rate, and 
+resource usage.
+● Replicated validation, block propagation, consensus, and state growth create scalability limitations.
+● The scalability trilemma highlights the tension between scalability, security, and decentralization.
+● Layer 1 solutions improve the capacity or efficiency of the base blockchain.
+● Layer 2 solutions process or aggregate activity outside the normal Layer 1 execution path while 
+relying on Layer 1 for selected guarantees.
+
+
+--- SLIDE 24 ---
+Useful Ressources
+- Song, Han, Zhongche Qu, and Yihao Wei. "Advancing blockchain scalability: An introduction to layer 
+1 and layer 2 solutions." 2024 IEEE 2nd International Conference on Sensors, Electronics and 
+Computer Engineering (ICSECE). IEEE, 2024. 
+- https://ethereum.org/developers/docs/scaling/optimistic-rollups/ - Ethereum Rollups
+- https://ethereum.org/developers/docs/scaling/zk-rollups/ - Ethereum ZK-Rollup
+- https://www.lfdecentralizedtrust.org/learn/publications/blockchain-performance-metrics - 
+Hyperledger Fabric Performance
+
+

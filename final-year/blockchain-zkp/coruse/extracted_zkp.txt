@@ -1,0 +1,260 @@
+--- SLIDE 1 ---
+Zero-Knowledge Proofs
+K.SEHIMI Phd Candidate ESI-SBA
+F.BENDAOUD PhD-HDR ESI-SBA
+Emergent Security Technologies
+2026-2027
+Cybersecurity
+
+--- SLIDE 2 ---
+● Start from intuitive examples: age verification, and challenge–response protocols.
+● Distinguish interactive and non-interactive zero-knowledge proofs.  
+● Understand the formal objects: public statement, private witness, relation, proof, 
+and verifier. 
+● Follow the zk-SNARK pipeline: circuit → R1CS → polynomial identity → 
+cryptographic proof. 
+● See how a developer can use zk-Snarks
+● explore ZKP applications
+Learning Objectives
+
+--- SLIDE 3 ---
+Motivation
+
+--- SLIDE 4 ---
+Traditional verification :
+- The verifier asks to see the underlying 
+data or recompute the full operation. 
+-  Sensitive evidence is copied, stored, 
+and potentially leaked. 
+- Trust is placed in the verifier’s handling 
+of the data. 
+What problem does a zero-knowledge proof solve? 
+Zero-knowledge verification:
+- The prover sends a proof derived from 
+the hidden evidence. 
+- The verifier checks the claim without 
+receiving the witness. 
+- Correctness is enforced 
+cryptographically rather than by data 
+disclosure. 
+Prove the Claim not the data
+
+--- SLIDE 5 ---
+Prove “I am at least 18” without revealing the birth date 
+- Public statement: the user satisfies the age policy for a 
+specific service and date.
+- Private witness: the birth date, credential signature, and any 
+secret authentication data. 
+- The proof should reveal only “policy satisfied,” not the exact 
+date of birth. 
+- The public inputs must bind the proof to the intended context, 
+such as the service, policy version, and session. 
+Statement = what may be public 
+Witness = the secret evidence 
+
+--- SLIDE 6 ---
+Foundations
+
+--- SLIDE 7 ---
+Statements, witnesses, and the relation R(x, w) 
+Public statement x 
+- The claim that the verifier is allowed to 
+know. 
+- Examples: a hash, a Merkle root, a 
+threshold, a public output, a policy 
+identifier. 
+Private witness w 
+- The secret data that makes the 
+statement true. 
+- Examples: a password, credential, 
+private key, path in a Merkle tree, or 
+computation trace. 
+The prover convinces the verifier that  ∃ w such that R(x, w) = 1. 
+
+--- SLIDE 8 ---
+The three guarantees of a zero-knowledge proof 
+Completeness :  If the statement is true and both parties follow the protocol, the verifier 
+accepts. 
+Soundness :  A prover without a valid witness cannot make the verifier accept, except with 
+negligible probability. 
+Zero knowledge : The verifier learns nothing beyond the fact that the statement is true.
+Privacy without soundness is useless; soundness without privacy is not zero knowledge. 
+
+--- SLIDE 9 ---
+Types of ZKP
+
+--- SLIDE 10 ---
+Interactive zero knowledge: challenge and response 
+- The prover enters one branch of the cave while the 
+verifier waits outside. 
+- The verifier randomly asks the prover to return through 
+branch A or branch B. 
+- A prover who knows the secret door password can 
+always comply. 
+- A prover who guessed the initial branch succeeds only 
+when the challenge matches the guess. 
+One round convinces only probabilistically. 
+A B
+
+--- SLIDE 11 ---
+Why repetition makes cheating unlikely 
+- Each fresh challenge removes another factor of uncertainty.  
+- The argument assumes challenges are unpredictable and independent. 
+- Cryptographic protocols choose parameters so the remaining error is negligible. 
+
+
+--- SLIDE 12 ---
+The generic three-move Σ-protocol pattern 
+- The verifier checks an algebraic relation involving public statement,commitment, 
+challenge, and response. 
+- The response proves consistency with a witness without revealing the witness. 
+- Schnorr Protocol is the classic example of this pattern 
+
+
+--- SLIDE 13 ---
+Schnorr Example
+
+
+--- SLIDE 14 ---
+Non-interactive zero knowledge: one proof, many verifiers 
+- The prover publishes a single proof instead of participating in a live conversation. 
+- Any verifier with the public parameters and statement can check the proof later. 
+- This model fits blockchains, APIs, documents, and asynchronous systems. 
+
+
+--- SLIDE 15 ---
+ZK-SNARKS
+
+--- SLIDE 16 ---
+Succinct :    Proofs are small and verification is much cheaper than repeating the computation. 
+Decode the acronym 
+Zero Knowledge : The witness remains hidden. 
+Non-interactive :  After setup, the prover sends one proof. 
+Argument :   Soundness is computational, based on cryptographic assumptions. 
+Knowledge : A valid prover is understood to possess a witness, formalized through extraction 
+
+--- SLIDE 17 ---
+The high-level pipeline 
+- The computation is rewritten as algebra over a finite field. 
+- The witness contains private inputs and every intermediate wire value. 
+- The proof compresses satisfaction of many constraints into a few group 
+elements. 
+Compile and set up once; generate and verify many proofs 
+
+--- SLIDE 18 ---
+- pk and vk are public proving/verification data. 
+- The circuit and verification key must match the intended application 
+statement. 
+- Preparation may use trusted or transparent parameters; this is 
+scheme-dependent. 
+Three operations: prepare, prove, verify 
+
+
+--- SLIDE 19 ---
+Prove knowledge of x 
+- Public Input : y = 35           Private witness :  x = 3
+- The verifier knows y and the circuit definition. 
+- The prover knows x and demonstrates that the circuit accepts. 
+- The proof should not reveal x or the intermediate values x² and x³. 
+
+
+--- SLIDE 20 ---
+Step 1: express the computation as an arithmetic circuit 
+- Circuit operations are additions and multiplications in a finite field Fₚ
+- Every wire carries a field element; comparisons and bit operations require 
+explicit constraints. 
+- The witness records the value of every wire: inputs, outputs, and intermediate 
+results. 
+- The circuit checks equations; it does not “run ordinary code” in the usual CPU 
+sense. 
+
+
+--- SLIDE 21 ---
+Step 2 R1CS: one multiplication of linear combinations 
+- z is the witness vector containing 1, public inputs, private inputs, and 
+intermediate wires. 
+- Each row i selects three linear combinations of z. 
+- One row enforces one rank-1 constraint: left × right = output. 
+- Addition is absorbed inside the linear combinations; multiplication creates the 
+constraint boundary. 
+
+
+--- SLIDE 22 ---
+R1CS worked example for y = x³ + x + 5 
+- For x = 3 and y = 35, the witness is [1, 35, 3, 9, 27]. 
+- A wrong intermediate value breaks at least one constraint. 
+- The final proof attests that all rows are satisfied simultaneously. 
+
+
+--- SLIDE 23 ---
+Step 3 : compress all constraints into one polynomial identity 
+- Each R1CS row becomes an evaluation point of interpolation polynomials. 
+- T(X) vanishes at every constraint point. 
+- If all constraints are satisfied, U(X)V(X) − W(X) is divisible by T(X). 
+- The quotient H(X) exists only when the complete witness satisfies the system. 
+
+
+--- SLIDE 24 ---
+Step 4 : evaluate at a hidden point τ 
+- Setup samples secret values such as τ and publishes structured group 
+encodings. 
+- The prover combines those encodings according to the witness and circuit 
+polynomials. 
+- Because τ stays hidden, the prover cannot freely invent arbitrary evaluations. 
+- The verifier checks encoded algebraic relations rather than receiving the 
+witness. 
+
+--- SLIDE 25 ---
+Applications
+
+--- SLIDE 26 ---
+zk-rollups 
+- A rollup executes many transactions outside the base 
+chain. 
+- The prover generates a validity proof for the resulting 
+state transition. 
+- An on-chain verifier accepts the batch only when the 
+proof is valid. 
+- Succinct verification lets one proof represent a large 
+amount of computation. 
+
+
+--- SLIDE 27 ---
+Private Transactions
+- Represent hidden notes with public commitments that bind their contents. 
+- Prove membership and the required spending authorisation without revealing the chosen note.
+- Prove that bounded input values equal bounded output values plus the fee. 
+- Publish correctly derived nullifiers; the ledger rejects repeated nullifiers to prevent double-spending. 
+
+--- SLIDE 28 ---
+Developer point of view
+
+--- SLIDE 29 ---
+Using gnark
+- Define the circuit in Go with frontend.API operations and assertions.
+- Choose which inputs are public; keep secret inputs private by default.
+- Compile the circuit, prepare the backend parameters, then build a witness.
+- Use the library to produce and verify a proof
+
+
+--- SLIDE 30 ---
+gnark example: define the relation
+- Mul builds multiplication constraints; AssertIsEqual enforces the final equality.
+- Computing x³ alone would not enforce that it equals the claimed public output
+
+
+--- SLIDE 31 ---
+gnark + Groth16: compile and prepare keys
+- Groth16 uses R1CS and circuit-specific proving/verification keys 
+
+
+--- SLIDE 32 ---
+What to remember 
+- A ZKP establishes a public statement without exposing extra information about its witness. 
+- Interactive and non-interactive protocols differ in how prover and verifier communicate. 
+- zk-SNARKs add succinctness and an argument-of-knowledge guarantee. 
+- Circuits and constraints define the claim; the proof system supplies cryptographic 
+enforcement. 
+- Privacy, data authenticity, replay protection and application correctness require deliberate 
+design. 
+

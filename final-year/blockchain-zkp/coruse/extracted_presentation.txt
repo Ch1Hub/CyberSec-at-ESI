@@ -1,0 +1,601 @@
+--- SLIDE 1 ---
+
+
+--- SLIDE 2 ---
+● Explain blockchain technology, including its architecture, cryptographic primitives, 
+and core mechanisms for enabling trust without centralised authority .
+● Explain different types of blockchain and their use cases.
+ 
+● Explain the role of consensus algorithms (PoW, PoS, BFT, ..)
+●  Explain different blockchain platforms/protocols  (Bitcoin, Ethereum, Fabric …)
+● Explain how smart contracts works and their role.
+● Explore the use case of blockchain in Healthcare
+Learning Objectives
+
+--- SLIDE 3 ---
+1. Introduction to Blockchain
+2. Blockchain Architecture: Bitcoin Case Study
+3. Types of Blockchain
+4. Consensus Algorithms
+5. Blockchain Platforms
+6. Smart Contract
+7. Blockchain Beyond Cryptocurrency
+Course Map
+
+--- SLIDE 4 ---
+Introduction to Blockchain
+
+--- SLIDE 5 ---
+- In 1991, Stuart Haber and W. Scott Stornetta published How to Time-Stamp a Digital 
+Document. Their work involved a cryptographic system that links digital documents together in 
+an tamper-evident chain.
+- In 1997, Adam Back created an algorithm that made it difficult for spammers to send large 
+volumes of emails by requiring senders to include a computationally expensive string of 
+characters in the email.
+- In 2008, Satoshi Nakamoto announced the Bitcoin white paper.
+- Bitcoin combined hash-linked blocks, digital signatures, a peer-to-peer network, proof of work, 
+and economic incentives, to answer this question : 
+ Introduction to Blockchain
+How can participants maintain a shared transaction history 
+and prevent someone from spending the same money twice, 
+without a central authority?
+
+--- SLIDE 6 ---
+The Double spending problem
+- Double spending is an attempt to spend the same digital funds more than once.
+- Example: Alice owns 5 BTC but creates two conflicting payments.
+- Transaction A: Alice → Bob: 5 BTC.
+- Transaction B: Alice → Carol: the same 5 BTC.
+- Both payments cannot be accepted in the same valid transaction history.
+- Without a central authority, how can the network agree on which payment to accept?
+
+
+--- SLIDE 7 ---
+- A blockchain is a shared digital ledger that 
+records transactions in blocks linked together 
+using cryptographic hashes.
+- Distributed: copies of the ledger are 
+maintained across multiple network nodes.
+- Tamper-evident: cryptographic links make 
+changes to previously recorded data 
+detectable.
+- Consensus-based: participants follow a 
+protocol to agree on the accepted 
+transaction history.
+What is a Blockchain ?
+
+
+--- SLIDE 8 ---
+Centralized vs Distributed Trust
+a. Centralized
+ b. Decentralized (P2P)
+- One authority validates transactions and 
+maintains the authoritative ledger.
+- Participants trust that authority to maintain 
+accurate records.
+- Full nodes independently verify transactions 
+and blocks using shared rules.
+- A consensus protocol enables agreement on 
+the accepted transaction history.
+
+--- SLIDE 9 ---
+Decentralization
+- Decentralization means sharing control among independent participants rather than relying on 
+a single authority.
+- Decentralization concerns who controls the system, not simply how many computers it uses.
+ Control Distributed across nodes
+Censorship Transactions are censorship-resistant
+Transparency Public and auditable
+Failure Risk No single point of failure
+Trust Model Trustless, verified by consensus
+Benefits of decentralization
+
+--- SLIDE 10 ---
+Distributed Ledger Technology (DLT)
+- A distributed ledger is a shared, replicated and synchronized database among multiple 
+participants.
+- Each node has a complete and up-to-date copy of transactions history
+ 
+- Blockchain is a type of DLT, but not every DLT is a blockchain.
+ 
+- Alternatives to blockchain are : DAG based ledger, hashgraph ..
+
+
+--- SLIDE 11 ---
+Cryptographic hash functions
+- A cryptographic hash function 
+transforms data into a fixed-length value 
+called a hash or digest.
+- Deterministic digest : The same input 
+produces the same fixed-length output.
+- Preimage resistance : A digest should 
+not reveal a feasible way to recover a 
+matching input.
+- Collision resistance : Finding two 
+digest of the same input should be 
+infeasible.
+
+
+--- SLIDE 12 ---
+Digital signatures 
+- Signing: the signer uses a private key, which 
+must remain secret.
+- Verification: others check the signature using 
+the public key and the signed data.
+- Integrity: changes to the signed data cause 
+verification to fail.
+ 
+- Common Algorithms are RSA, ECDSA, …
+A digital signature allows others to verify that data was signed using the 
+private key corresponding to a public key.
+
+--- SLIDE 13 ---
+Merkle trees
+A Merkle tree is a tree of cryptographic hashes that represents a 
+collection of data using a single root hash.
+- Leaf nodes: contain the hashes of individual 
+data items.
+- Internal nodes: contain the hash of their 
+children’s concatenated hashes. 
+- Merkle root: the top-level hash, providing a 
+compact cryptographic commitment to the 
+entire collection
+
+--- SLIDE 14 ---
+P2P Network
+- Connections: each node communicates with a 
+subset of the network.
+- Propagation: transactions and blocks spread from 
+peer to peer using gossip protocol.
+In a P2P network, nodes exchange information directly with connected 
+peers rather than through a central relay server.
+
+--- SLIDE 15 ---
+Blockchain Architecture: Bitcoin Case Study
+
+--- SLIDE 16 ---
+The Bitcoin network
+- Launch Date: The Bitcoin network officially went live on January 3, 2009, when Satoshi 
+Nakamoto mined the Genesis Block.
+ 
+- Global Infrastructure: The decentralized network count  over 960k blocks and is maintained 
+by up to 100,000 active nodes worldwide.
+- Current Value: Reflecting its massive growth, a single Bitcoin is currently trading at 
+$85,000USD
+- Fun fact: (Bitcoin Pizza Day) On May 22, 2010, the first real-world transaction took place 
+when 10,000 BTC was traded for two pizzas (a meal now worth over $853 million).
+
+
+--- SLIDE 17 ---
+Bitcoin Architecture: Main Roles
+Wallets: 
+● Generate keys: They create the private and public cryptographic key pairs.
+● Sign transactions: They use private keys to sign and authorize new transactions.
+Full Nodes: 
+● Store history: They maintain a complete, up-to-date copy of the entire blockchain.
+● Enforce rules: They independently validate transactions and blocks against consensus 
+protocols.
+Miners: 
+● Provide hash power: They dedicate computational energy to secure the network through 
+Proof of Work (PoW).
+● Package blocks: They collect pending transactions from the mempool into candidate 
+blocks.
+● Earn rewards: They solve cryptographic puzzles to mint new Bitcoin and claim 
+transaction fees
+
+
+--- SLIDE 18 ---
+Bitcoin Transactions: The UTXO Model
+- A UTXO (Unspent Transaction Output) is an output of a previous transaction that has not yet 
+been spent.
+- Each transaction consumes one or more UTXOs as inputs.
+- Each transaction creates new UTXOs as outputs.
+- UTXOs must be spent entirely in  single transaction.
+- Transaction fee: the difference between the total input value and the total output value.
+
+
+--- SLIDE 19 ---
+Anatomy of a block
+Field Purpose
+version Block version information.
+previousBlockHash Links to the previous block’s 
+header.
+merkleRoot Cryptographically commits to 
+the block’s transactions.
+timestamp The block time reported by the 
+miner.
+bits Encodes the proof-of-work 
+target.
+nonce A value miners vary when 
+searching for a valid hash.
+
+--- SLIDE 20 ---
+Anatomy of a block
+Transaction data contains the transaction count and 
+an ordered list of transactions. 
+The first transaction is the coinbase transaction, 
+through which the miner can claim the block subsidy 
+and transaction fees. 
+
+
+--- SLIDE 21 ---
+Bitcoin Transaction Lifecycle
+1. Create and sign: The wallet selects UTXOs, creates the payment outputs, and signs the 
+transaction. 
+2. Broadcast and validate: Full nodes check the transaction. Eligible transactions enter their 
+local mempools and are relayed to peers. 
+3. Include and mine: A miner includes the transaction in a candidate block, finds a valid proof of 
+work, and broadcasts the block. 
+4. Verify and accept the block: Full nodes independently validate the block and follow the valid 
+chain with the most accumulated proof of work. 
+5. Accumulate confirmations: Inclusion in the active chain gives one confirmation. Each 
+subsequent block adds another.
+A mempool is a node’s local collection of unconﬁrmed transaction
+
+--- SLIDE 22 ---
+Mining and Proof of Work
+Miners search for a block header whose hash satisfies the proof-of-work target:
+SHA256(SHA256(Block header)) ≤ Target 
+- Prepare: assemble transactions into a candidate block.
+- Search: vary the nonce and other adjustable data to generate new header hashes.
+- Broadcast: publish the block when a valid proof of work is found.
+Finding a proof is computationally expensive; checking it is inexpensive. 
+
+--- SLIDE 23 ---
+Mining Difficulty Adjustment
+- Bitcoin adjusts mining difficulty to target an average block interval of 10 minutes.
+- Adjustment interval: every 2,016 blocks, approximately two weeks.
+- Blocks produced too quickly: the target decreases, making mining harder.
+- Blocks produced too slowly: the target increases, making mining easier.
+The target block time of 10 minutes on the Bitcoin Network was chosen by creator Satoshi 
+Nakamoto as a deliberate tradeoff between network security and transaction propagation 
+speed
+
+--- SLIDE 24 ---
+Temporary Forks and Chain Selection
+Two miners may produce different valid blocks that extend the same previous block.
+- The network is now temporarily split into 
+two competing branches of equal length
+- The chain with the most accumulated 
+Proof-of-Work (the "heaviest" chain) is 
+accepted as the true ledger
+- The losing block from the split becomes a 
+"stale block" (sometimes called an orphan 
+block) and is completely discarded by the 
+network.
+
+--- SLIDE 25 ---
+Types of Blockchain
+
+--- SLIDE 26 ---
+How Do We Classify Blockchains?
+- Read access: Who can view the ledger?
+- Transaction submission: Who can submit transactions?
+- Consensus participation: Who can participate in producing and agreeing on blocks?
+- Governance: Who controls membership and changes to the rules?
+
+--- SLIDE 27 ---
+Permissionless vs Permissioned
+- Permissionless
+Participants can join block production or consensus without approval from an administrator, subject 
+to the protocol’s requirements.
+- Permissioned
+Participation in block production or consensus is restricted to authorized entities.
+Permissioned does not necessarily mean privately readable: a ledger can be public while its 
+validator set is restricted.
+
+--- SLIDE 28 ---
+Public Permissionless Blockchains
+A network that combines public ledger access with open participation.
+- Public verification: anyone can inspect the ledger and independently check its 
+rules.
+- Open participation: users do not need an administrator’s approval to participate.
+- Resource-based protection: mechanisms such as proof of work or proof of 
+stake limit consensus influence.
+Examples: Bitcoin and Ethereum Mainnet.
+
+--- SLIDE 29 ---
+Private Permissioned Blockchains
+A blockchain whose participation and administration are controlled by one organization.
+- Membership: the organization decides which participants may join. 
+- Permissions: reading and transaction submission follow its access policies.
+- Governance: the organization controls operational decisions and rule changes.
+
+--- SLIDE 30 ---
+Consortium Blockchains
+A blockchain governed jointly by several organizations.
+- Shared operation: approved organizations operate the network.
+- Shared governance: agreed policies define membership and decision-making.
+- Controlled access: ledger visibility may be restricted or public.
+Example : Hyperledger Fabric
+
+--- SLIDE 31 ---
+Comparing Deployment Models
+Model Consensus participation Governance Read access
+Public permissionless Open Coordination among 
+independent 
+participants
+Public
+Private permissioned Approved 
+participants
+One organization Defined by policy
+Consortium 
+permissioned
+Approved 
+participants
+Several 
+organizations
+Defined by policy
+
+--- SLIDE 32 ---
+Consensus Algorithms
+
+--- SLIDE 33 ---
+Validation vs Consensus
+Validation Consensus
+Checks whether a transaction or block satisfies 
+the rules.
+Establishes the accepted ordering and history.
+Evaluates signatures, spending conditions, 
+and state transitions.
+Resolves competing proposals and 
+coordinates participants.
+
+--- SLIDE 34 ---
+Consensus requirements
+A consensus protocol must address two fundamental requirements:
+- Safety: Correct participants do not commit conflicting decisions.
+- Liveness: The system eventually makes progress.
+
+
+--- SLIDE 35 ---
+Crash Faults vs. Byzantine Faults
+- Crash Fault Tolerance (CFT): handles failures without assuming malicious behavior.
+- Byzantine Fault Tolerance (BFT): handles a bounded number of arbitrarily faulty 
+participants.
+Fault Model Possible Behavior
+Crash Fault A participant stops operating or responding.
+Byzantine Fault A participant behaves arbitrarily, including 
+sending contradictory or deliberately 
+misleading messages.
+
+--- SLIDE 36 ---
+Proof of Work Algorithm
+- A Hash Is Also a Number : A SHA-256 digest contains 256 bits, which can be interpreted as 
+an unsigned integer.
+- PoW condition is : h  ≤ T
+- Example: 
+let’s use 16-bit hashes = 2^16 
+possibilities
+Max : 65535
+If we choose target = 4095
+we would have Only 4,096 of the 
+65,536 possible values satisfy 
+this target.
+Miners do not search for one speciﬁc hash, they search for any hash within the 
+acceptable range.
+
+--- SLIDE 37 ---
+Proof of Work Algorithm
+- In Bitcoin, miners calculate:
+ h = SHA256(SHA256(Block header))
+- They vary the nonce to test different candidate headers.
+Nonce Resulting hash PoW check 
+0 0x8A31 Fails: above target
+1 0xD204 Fails: above target
+2 0x02F7 Passes: below target
+
+--- SLIDE 38 ---
+Proof of Work Algorithm
+- Difficulty of finding a valid nonce is adjusted so the network takes approx. 10 min to mine a 
+block.
+- Difficulty is adjusting by lowering or increasing the target.
+- Bitcoin network’s hash power can reach to 1 billion TH/s.
+
+
+--- SLIDE 39 ---
+ASIC Miner
+- ASIC stands for Application-Specific Integrated Circuit: a chip designed for a particular task 
+rather than general-purpose computing.
+- Specialized circuits perform mining hashes much more efficiently than general-purpose 
+hardware.
+- The ASIC below is an Antminer S19j Pro  with a power of 100TH/s
+
+
+--- SLIDE 40 ---
+Proof of Stake Algorithm
+- Proof of Stake (PoS) links participation and influence to cryptocurrency committed as stake, 
+rather than competitive hashing.
+- Users lock up a specific amount of cryptocurrency as a security deposit in the network.
+- A deterministic algorithm chooses a validator to block and verify the next transactions.
+- The larger the amount of coins staked, the higher the chances of being selected.
+- The selected validator checks the block, adds it to the ledger, and earns transaction fees.
+- Malicious validators or those who approve invalid transactions lose a portion of their staked 
+coins.
+Currently used in Ethereum 
+
+--- SLIDE 41 ---
+Practical Byzantine Fault Tolerance
+PBFT replicates a service among known participants despite Byzantine faults.
+For the standard configuration : 
+ n = 3f + 1
+Here, n is the number of replicas and f is the maximum tolerated number of Byzantine replicas. 
+used in Hyperledger Fabric
+Replicas Byzantine faults tolerated
+4 1
+7 2
+
+--- SLIDE 42 ---
+Practical Byzantine Fault Tolerance
+Pre-prepare → Prepare → Commit
+- Pre-prepare: the primary proposes a request and its sequence number.
+- Prepare: replicas establish agreement on that proposal.
+- Commit: prepared replicas exchange commit messages.
+
+
+--- SLIDE 43 ---
+Blockchain Platforms
+
+--- SLIDE 44 ---
+Ethereum: A Programmable Public Blockchain
+- Ethereum is a public, decentralized blockchain platform that enables developers to build and 
+run decentralized applications (dApps)
+- Proposed by Vitalik Buterin in 2013, then developed with a team of co-founders
+- Native cryptocurrency: Ether (ETH), used to pay transaction fees and smart-contract 
+execution costs (gas).
+- Ethereum allows developers to deploy smart contracts: programs stored on the blockchain 
+and executed by the Ethereum Virtual Machine (EVM)
+
+
+--- SLIDE 45 ---
+Besu Ethereum client
+- Besu is an open source Ethereum client written in Java. It runs on public and private 
+networks.
+- Public networks: Run Besu as an execution client on Ethereum Mainnet and Ethereum 
+public testnets, such as Hoodi, Ephemery, and Sepolia.
+- Private network: supports independently configured Ethereum-compatible deployments.
+A permissioned Besu network can use QBFT (an evolution of PBFT), with an authorized validator 
+set
+https://docs.besu-eth.org/
+
+--- SLIDE 46 ---
+Hyperledger Fabric: A Permissioned Framework
+- Hyperledger Fabric is a modular framework for building permissioned blockchain networks.
+- Identified participants: organizations establish membership and access policies.
+- Configurable architecture: identity, endorsement, and transaction ordering are separate 
+concerns.
+- Business applications: chaincode (smart contract) implement rules for managing shared 
+records and assets.
+Fabric does not require a native cryptocurrency to operate. 
+
+--- SLIDE 47 ---
+Hyperledger Fabric: Main Components 
+Component Role
+Client applications Submit signed transaction proposals and 
+query the ledger. 
+Peers Maintain ledgers; endorsing peers also 
+execute smart contracts. 
+Orederers Establishes transaction order and packages 
+transactions into blocks. 
+Membership Service Providers (MSP) Define how identities are recognized and 
+associated with organizations and roles. 
+
+--- SLIDE 48 ---
+Hyperledger Fabric: Transaction Processing Model 
+- Execute and endorse: selected peers simulate the transaction and sign its proposed results.
+- Order: the ordering service establishes a sequence and creates blocks.
+- Validate and commit: peers check endorsements and state-version conflicts, then apply valid 
+updates.
+
+
+--- SLIDE 49 ---
+Hyperledger Fabric: Channels
+- a Channel is a private, permissioned "subnet" of communication between two or more specific 
+network members for conducting confidential transactions
+- Each channel maintains its own separate ledger 
+
+
+--- SLIDE 50 ---
+Smart Contracts
+
+--- SLIDE 51 ---
+What Is a Smart Contract? 
+- A smart contract is executable code that defines rules for interacting with a blockchain’s 
+shared state. 
+- Conditions: determine whether an operation is permitted.
+- State changes: update information such as ownership, balances, or status.
+- Enforcement: the platform accepts results according to its execution and validation rules.
+
+--- SLIDE 52 ---
+Smart Contracts as State Machines 
+- A contract defines how an operation transforms the application’s state:
+ S’ = F(S, transaction)
+Example : 
+owner[Asset7] = Alice   -  Alice request a transfer to Bob  -  owner[Asset7] = Bob  
+- The contract checks that the caller is authorized before changing the recorded owner.
+- Deterministic execution means that the same starting state, inputs, and execution context 
+produce the same result.
+
+--- SLIDE 53 ---
+Inside an Ethereum Smart Contract 
+- State Variables : Store data that persists across transactions. 
+- Functions : Define operations that callers can request. 
+- Events :  Produce logs that external applications can observe. 
+pragma solidity ^0.8.20;
+contract Counter {
+    uint256 public count;
+    event Incremented(address indexed caller, uint256 value);
+    function increment() external {
+        count += 1;
+        emit Incremented(msg.sender, count);
+    }
+}
+
+
+--- SLIDE 54 ---
+Smart Contract Deployment
+● Write: implement the contract in a language such as Solidity.
+● Compile: generate deployment bytecode and an Application Binary Interface (ABI).
+● Deploy: submit a contract-creation transaction; successful creation establishes the contract’s 
+address and runtime code.
+● Interact: use the address and ABI to encode calls and interpret results.
+
+--- SLIDE 55 ---
+Ethereum virtual machine (EVM)
+● The Ethereum Virtual Machine (EVM) is a decentralized virtual environment that executes 
+code consistently and securely across all Ethereum nodes.
+● Stack-based: executes instructions called opcodes, operating on a stack of 256-bit values.
+● Deterministic: the same starting state, inputs, and execution context produce the same 
+result.
+● Gas-metered: execution consumes gas, limiting the computational work a transaction can 
+perform.
+Smart-contract source code → Compilation → Bytecode → EVM execution
+
+--- SLIDE 56 ---
+Decentralized Application (dApps)
+● A decentralized application (dApp) 
+combines smart contracts with 
+software that lets users interact with 
+them.
+
+
+--- SLIDE 57 ---
+Blockchain Beyond Cryptocurrencies
+
+--- SLIDE 58 ---
+Beyond Digital Money 
+ Blockchain applications can coordinate shared records and business processes, not just 
+cryptocurrency payments.
+● Shared history: Maintain records across independent organizations.
+● Tamper evidence : Make unauthorized changes to recorded information detectable.
+● Programmable rules: Define who may perform operations and under which conditions.
+A transaction can register a certificate, record a shipment, or update an access permission, 
+not only transfer money. 
+ 
+
+--- SLIDE 59 ---
+Blockchain-based Electronic Health Record
+- An electronic health record (EHR) is the digital version of the patient’s health record which 
+includes highly sensitive.
+- A blockchain-based Electronic Health Record (EHR) system replaces traditional, centralized 
+medical databases with a decentralized, tamper-proof distributed ledger. private information 
+on history, diagnosis, and treatment
+- Patient health files are typically stored off-chain using decentralized storage
+- Only cryptographic hashes and metadata pointers are stored directly on the blockchain 
+network
+
+--- SLIDE 60 ---
+Blockchain-based Electronic Health Record
+- Smart contract can implement access controls, the ledger keep an immutable log 
+
+
+--- SLIDE 61 ---
+Useful Ressources
+- Nakamoto, Satoshi. "Bitcoin whitepaper." URL: https://bitcoin. org/bitcoin. pdf-(: 17.07. 2019) 
+9 (2008): 15.
+- Antonopoulos, Andreas M. Mastering Bitcoin: Programming the Open Blockchain. 2nd ed., 
+O'Reilly Media, 2017
+- Bitcoin Developer. Bitcoin Project, developer.bitcoin.org 
+- .Shahnaz, U. Qamar and A. Khalid, "Using Blockchain for Electronic Health Records," in IEEE 
+Access, vol. 7,
+
