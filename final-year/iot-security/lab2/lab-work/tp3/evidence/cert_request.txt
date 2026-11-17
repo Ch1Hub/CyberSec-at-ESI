@@ -1,0 +1,25 @@
+    TLSv1.2 Record Layer: Handshake Protocol: Certificate Request
+        Content Type: Handshake (22)
+        Version: TLS 1.2 (0x0303)
+        Length: 73
+        Handshake Protocol: Certificate Request
+            Handshake Type: Certificate Request (13)
+            Length: 69
+            Certificate types count: 3
+            Certificate types (3 types)
+                Certificate type: RSA Sign (1)
+                Certificate type: DSS Sign (2)
+                Certificate type: ECDSA Sign (64)
+            Signature Hash Algorithms Length: 40
+            Signature Hash Algorithms (20 algorithms)
+                Signature Algorithm: ecdsa_secp256r1_sha256 (0x0403)
+                    Signature Hash Algorithm Hash: SHA256 (4)
+                    Signature Hash Algorithm Signature: ECDSA (3)
+                Signature Algorithm: ecdsa_secp384r1_sha384 (0x0503)
+                    Signature Hash Algorithm Hash: SHA384 (5)
+                    Signature Hash Algorithm Signature: ECDSA (3)
+                Signature Algorithm: ecdsa_secp521r1_sha512 (0x0603)
+                    Signature Hash Algorithm Hash: SHA512 (6)
+                    Signature Hash Algorithm Signature: ECDSA (3)
+                Signature Algorithm: ed25519 (0x0807)
+                    Signature Hash Algorithm Hash: Unknown (8)

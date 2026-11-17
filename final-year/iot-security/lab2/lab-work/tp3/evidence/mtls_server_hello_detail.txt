@@ -1,0 +1,366 @@
+Frame 8: Packet, 2110 bytes on wire (16880 bits), 2110 bytes captured (16880 bits) on interface lo, id 0
+    Section number: 1
+    Interface id: 0 (lo)
+        Interface name: lo
+        Interface description: Loopback
+    Encapsulation type: Ethernet (1)
+    Arrival Time: Nov 17, 2026 12:37:54.818541041 CET
+    UTC Arrival Time: Nov 17, 2026 11:37:54.818541041 UTC
+    Epoch Arrival Time: 1794915474.818541041
+    [Time shift for this packet: 0.000000000 seconds]
+    [Time delta from previous captured frame: 985.009 microseconds]
+    [Time since reference or first frame: 1.258377 milliseconds]
+    Frame Number: 8
+    Frame Length: 2110 bytes (16880 bits)
+    Capture Length: 2110 bytes (16880 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp:tls:x509sat:x509sat:x509ce:x509ce:x509ce:x509sat:x509sat:x509ce:x509ce:x509ce:x509sat]
+    Character encoding: ASCII (0)
+Ethernet II, Src: 00:00:00_00:00:00 (00:00:00:00:00:00), Dst: 00:00:00_00:00:00 (00:00:00:00:00:00)
+    Destination: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+    [Stream index: 0]
+Internet Protocol Version 4, Src: localhost (127.0.0.1), Dst: localhost (127.0.0.1)
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 2096
+    Identification: 0xa89c (43164)
+    010. .... = Flags: 0x2, Don't fragment
+        0... .... = Reserved bit: Not set
+        .1.. .... = Don't fragment: Set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0x8c29 [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: localhost (127.0.0.1)
+    Destination Address: localhost (127.0.0.1)
+    [Stream index: 0]
+Transmission Control Protocol, Src Port: secure-mqtt (8883), Dst Port: 45733 (45733), Seq: 1, Ack: 207, Len: 2044
+    Source Port: secure-mqtt (8883)
+    Destination Port: 45733 (45733)
+    [Stream index: 1]
+    [Stream Packet Number: 6]
+    [Conversation completeness: Incomplete, DATA (15)]
+        ..0. .... = RST: Absent
+        ...0 .... = FIN: Absent
+        .... 1... = Data: Present
+        .... .1.. = ACK: Present
+        .... ..1. = SYN-ACK: Present
+        .... ...1 = SYN: Present
+        [Completeness Flags: ··DASS]
+    [TCP Segment Len: 2044]
+    Sequence Number: 1    (relative sequence number)
+    Sequence Number (raw): 4184383893
+    [Next Sequence Number: 2045    (relative sequence number)]
+    Acknowledgment Number: 207    (relative ack number)
+    Acknowledgment number (raw): 3451135338
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Accurate ECN: Not set
+        .... 0... .... = Congestion Window Reduced: Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 64
+    [Calculated window size: 65536]
+    [Window size scaling factor: 1024]
+    Checksum: 0x0625 [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 3108027164, TSecr 3102897921
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 3108027164
+            Timestamp echo reply: 3102897921
+    [Timestamps]
+        [Time since first frame in this TCP stream: 1.176873 milliseconds]
+        [Time since previous frame in this TCP stream: 985.009 microseconds]
+    [SEQ/ACK analysis]
+        [iRTT: 25.424 microseconds]
+        [Bytes in flight: 2044]
+        [Bytes sent since last PSH flag: 2044]
+    [Client Contiguous Streams: 1]
+    [Server Contiguous Streams: 1]
+    TCP payload (2044 bytes)
+Transport Layer Security
+    [Stream index: 0]
+    TLSv1.2 Record Layer: Handshake Protocol: Server Hello
+        Content Type: Handshake (22)
+        Version: TLS 1.2 (0x0303)
+        Length: 65
+        Handshake Protocol: Server Hello
+            Handshake Type: Server Hello (2)
+            Length: 61
+            Version: TLS 1.2 (0x0303)
+            Random: 5e212b9041725c6e0c9d8e51252fd03f01820dd457083727444f574e47524401
+                GMT Unix Time: Jan 17, 2020 04:35:44.000000000 CET
+                Random Bytes: 41725c6e0c9d8e51252fd03f01820dd457083727444f574e47524401
+            Session ID Length: 0
+            Cipher Suite: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (0xc030)
+            Compression Method: null (0)
+            Extensions Length: 21
+            Extension: renegotiation_info (len=1)
+                Type: renegotiation_info (65281)
+                Length: 1
+                Renegotiation Info extension
+                    Renegotiation info extension length: 0
+            Extension: ec_point_formats (len=4)
+                Type: ec_point_formats (11)
+                Length: 4
+                EC point formats Length: 3
+                Elliptic curves point formats (3)
+                    EC point format: uncompressed (0)
+                    EC point format: ansiX962_compressed_prime (1)
+                    EC point format: ansiX962_compressed_char2 (2)
+            Extension: session_ticket (len=0)
+                Type: session_ticket (35)
+                Length: 0
+                Session Ticket: <MISSING>
+            Extension: extended_master_secret (len=0)
+                Type: extended_master_secret (23)
+                Length: 0
+            [JA3S Fullstring: 771,49200,65281-11-35-23]
+            [JA3S: ec74a5c51106f0419184d0dd08fb05bc]
+    TLSv1.2 Record Layer: Handshake Protocol: Certificate
+        Content Type: Handshake (22)
+        Version: TLS 1.2 (0x0303)
+        Length: 1577
+        Handshake Protocol: Certificate
+            Handshake Type: Certificate (11)
+            Length: 1573
+            Certificates Length: 1570
+            Certificates (1570 bytes)
+                Certificate Length: 789
+                Certificate […]: 30820311308201f9a0030201020214045f876feed4b915f38701d5c86ba55c16d61644300d06092a864886f70d01010b05003011310f300d06035504030c0643412d4c6162301e170d3236313131373131333432385a170d3239303231393131333432385a301431123010060355
+                    signedCertificate
+                        version: v3 (2)
+                        serialNumber: 0x045f876feed4b915f38701d5c86ba55c16d61644
+                        signature (sha256WithRSAEncryption)
+                            Algorithm Id: 1.2.840.113549.1.1.11 (sha256WithRSAEncryption)
+                        issuer: rdnSequence (0)
+                            rdnSequence: 1 item (id-at-commonName=CA-Lab)
+                                RDNSequence item: 1 item (id-at-commonName=CA-Lab)
+                                    RelativeDistinguishedName item (id-at-commonName=CA-Lab)
+                                        Object Id: 2.5.4.3 (id-at-commonName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: CA-Lab
+                        validity
+                            notBefore: utcTime (0)
+                                utcTime: 2026-11-17 11:34:28 (UTC)
+                            notAfter: utcTime (0)
+                                utcTime: 2029-02-19 11:34:28 (UTC)
+                        subject: rdnSequence (0)
+                            rdnSequence: 1 item (id-at-commonName=localhost)
+                                RDNSequence item: 1 item (id-at-commonName=localhost)
+                                    RelativeDistinguishedName item (id-at-commonName=localhost)
+                                        Object Id: 2.5.4.3 (id-at-commonName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: localhost
+                        subjectPublicKeyInfo
+                            algorithm (rsaEncryption)
+                                Algorithm Id: 1.2.840.113549.1.1.1 (rsaEncryption)
+                            Padding: 0
+                            subjectPublicKey […]: 3082010a0282010100b866626b0ca285ee355af35d53526e7d08d08af5789ef63f25a8979764f3bb625bacf9fd0a8d775f79f3b302bdd807a92a191222acc30cd160d226c2f89baa77bbeca284bd9c51970e98771b4abf9a7f3558fce5e055b03694fd2efaf6b508b451095
+                                RSA Public Key
+                                    modulus: 0x00b866626b0ca285ee355af35d53526e7d08d08af5789ef63f25a8979764f3bb625bacf9…
+                                    publicExponent: 65537
+                        extensions: 3 items
+                            Extension (id-ce-subjectAltName)
+                                Extension Id: 2.5.29.17 (id-ce-subjectAltName)
+                                GeneralNames: 2 items
+                                    GeneralName: dNSName (2)
+                                        dNSName: localhost
+                                    GeneralName: iPAddress (7)
+                                        iPAddress: localhost (127.0.0.1)
+                            Extension (id-ce-subjectKeyIdentifier)
+                                Extension Id: 2.5.29.14 (id-ce-subjectKeyIdentifier)
+                                SubjectKeyIdentifier: f6e56ff344ae62b6260ee426f93f6a99a8b88a9b
+                            Extension (id-ce-authorityKeyIdentifier)
+                                Extension Id: 2.5.29.35 (id-ce-authorityKeyIdentifier)
+                                AuthorityKeyIdentifier
+                                    keyIdentifier: 22bdebfbce672bffdddd0fb898de8c6b670a1aa7
+                    algorithmIdentifier (sha256WithRSAEncryption)
+                        Algorithm Id: 1.2.840.113549.1.1.11 (sha256WithRSAEncryption)
+                    Padding: 0
+                    encrypted […]: 14ff0b4171baacb0108e02f16999f8cfa3b934a50b2c2cd3b4ddcd42520aa177399b1fa1c6f341aee3e89952bbf5600fa636274cb4dd32989b82eccd5adb4a9c11f06daeba346e096f032b1a3a0e2b76e35844b5a18f81373bf0903443fd17d90805a756bc7bef1328a6cdad28e399
+                Certificate Length: 775
+                Certificate […]: 30820303308201eba003020102021411b71471e1678601f0d4a3b9a7fde4edf031ed3d300d06092a864886f70d01010b05003011310f300d06035504030c0643412d4c6162301e170d3236313131373131333432385a170d3336313131343131333432385a3011310f300d060355
+                    signedCertificate
+                        version: v3 (2)
+                        serialNumber: 0x11b71471e1678601f0d4a3b9a7fde4edf031ed3d
+                        signature (sha256WithRSAEncryption)
+                            Algorithm Id: 1.2.840.113549.1.1.11 (sha256WithRSAEncryption)
+                        issuer: rdnSequence (0)
+                            rdnSequence: 1 item (id-at-commonName=CA-Lab)
+                                RDNSequence item: 1 item (id-at-commonName=CA-Lab)
+                                    RelativeDistinguishedName item (id-at-commonName=CA-Lab)
+                                        Object Id: 2.5.4.3 (id-at-commonName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: CA-Lab
+                        validity
+                            notBefore: utcTime (0)
+                                utcTime: 2026-11-17 11:34:28 (UTC)
+                            notAfter: utcTime (0)
+                                utcTime: 2036-11-14 11:34:28 (UTC)
+                        subject: rdnSequence (0)
+                            rdnSequence: 1 item (id-at-commonName=CA-Lab)
+                                RDNSequence item: 1 item (id-at-commonName=CA-Lab)
+                                    RelativeDistinguishedName item (id-at-commonName=CA-Lab)
+                                        Object Id: 2.5.4.3 (id-at-commonName)
+                                        DirectoryString: uTF8String (4)
+                                            uTF8String: CA-Lab
+                        subjectPublicKeyInfo
+                            algorithm (rsaEncryption)
+                                Algorithm Id: 1.2.840.113549.1.1.1 (rsaEncryption)
+                            Padding: 0
+                            subjectPublicKey […]: 3082010a0282010100a758c89e255759ff1bd6bc2833c81ff12e3e64c856da78db0f28c71070fd15f478e18ef68ec83f9f16e89c601f0b267083b51d5a1a3c6269878de24304b0b60fe09e4dfb807ee20147039d5c0f0304811ccf8378e0302e6853339d67b71a2dc8ff456
+                                RSA Public Key
+                                    modulus: 0x00a758c89e255759ff1bd6bc2833c81ff12e3e64c856da78db0f28c71070fd15f478e18e…
+                                    publicExponent: 65537
+                        extensions: 3 items
+                            Extension (id-ce-subjectKeyIdentifier)
+                                Extension Id: 2.5.29.14 (id-ce-subjectKeyIdentifier)
+                                SubjectKeyIdentifier: 22bdebfbce672bffdddd0fb898de8c6b670a1aa7
+                            Extension (id-ce-authorityKeyIdentifier)
+                                Extension Id: 2.5.29.35 (id-ce-authorityKeyIdentifier)
+                                AuthorityKeyIdentifier
+                                    keyIdentifier: 22bdebfbce672bffdddd0fb898de8c6b670a1aa7
+                            Extension (id-ce-basicConstraints)
+                                Extension Id: 2.5.29.19 (id-ce-basicConstraints)
+                                critical: True
+                                BasicConstraintsSyntax
+                                    cA: True
+                    algorithmIdentifier (sha256WithRSAEncryption)
+                        Algorithm Id: 1.2.840.113549.1.1.11 (sha256WithRSAEncryption)
+                    Padding: 0
+                    encrypted […]: 96942b38d8f7b029f820c861c09a10464562913b3fad5af7ffd76fbb00d3d271c622d6f62b14d9e7ca00608c8d44f50c4dfa5dee59d900ca48922a3132d833972053d8517a2a8acaae8e1ff02b62703d07ecf41380be9293df163828a59a4ef056f2abcdb0e00c135f441d70e80a95
+    TLSv1.2 Record Layer: Handshake Protocol: Server Key Exchange
+        Content Type: Handshake (22)
+        Version: TLS 1.2 (0x0303)
+        Length: 300
+        Handshake Protocol: Server Key Exchange
+            Handshake Type: Server Key Exchange (12)
+            Length: 296
+            EC Diffie-Hellman Server Params
+                Curve Type: named_curve (0x03)
+                Named Curve: x25519 (0x001d)
+                Pubkey Length: 32
+                Pubkey: 8ad29c2ac20166602fa11027a9c9b41775dd01740752771c93176396bb7bf84e
+                Signature Algorithm: rsa_pss_rsae_sha256 (0x0804)
+                    Signature Hash Algorithm Hash: Unknown (8)
+                    Signature Hash Algorithm Signature: Unknown (4)
+                Signature Length: 256
+                Signature […]: 588e3de7dab838259916f699c2eeda4d5cc724ebcb6369fb678f8792a4ddf281f04d1cf1273126c71ca1d8c1e779b226fdd4d1a715ecc0bbf506af025cd4a92ed19982e7e6e3c0fcd6d385b30c441306d10f5854b24403d594bb0cdcefd948e18f67c0ab2266f6d7ae7696e4733d16
+    TLSv1.2 Record Layer: Handshake Protocol: Certificate Request
+        Content Type: Handshake (22)
+        Version: TLS 1.2 (0x0303)
+        Length: 73
+        Handshake Protocol: Certificate Request
+            Handshake Type: Certificate Request (13)
+            Length: 69
+            Certificate types count: 3
+            Certificate types (3 types)
+                Certificate type: RSA Sign (1)
+                Certificate type: DSS Sign (2)
+                Certificate type: ECDSA Sign (64)
+            Signature Hash Algorithms Length: 40
+            Signature Hash Algorithms (20 algorithms)
+                Signature Algorithm: ecdsa_secp256r1_sha256 (0x0403)
+                    Signature Hash Algorithm Hash: SHA256 (4)
+                    Signature Hash Algorithm Signature: ECDSA (3)
+                Signature Algorithm: ecdsa_secp384r1_sha384 (0x0503)
+                    Signature Hash Algorithm Hash: SHA384 (5)
+                    Signature Hash Algorithm Signature: ECDSA (3)
+                Signature Algorithm: ecdsa_secp521r1_sha512 (0x0603)
+                    Signature Hash Algorithm Hash: SHA512 (6)
+                    Signature Hash Algorithm Signature: ECDSA (3)
+                Signature Algorithm: ed25519 (0x0807)
+                    Signature Hash Algorithm Hash: Unknown (8)
+                    Signature Hash Algorithm Signature: Unknown (7)
+                Signature Algorithm: ed448 (0x0808)
+                    Signature Hash Algorithm Hash: Unknown (8)
+                    Signature Hash Algorithm Signature: Unknown (8)
+                Signature Algorithm: rsa_pss_pss_sha256 (0x0809)
+                    Signature Hash Algorithm Hash: Unknown (8)
+                    Signature Hash Algorithm Signature: Unknown (9)
+                Signature Algorithm: rsa_pss_pss_sha384 (0x080a)
+                    Signature Hash Algorithm Hash: Unknown (8)
+                    Signature Hash Algorithm Signature: Unknown (10)
+                Signature Algorithm: rsa_pss_pss_sha512 (0x080b)
+                    Signature Hash Algorithm Hash: Unknown (8)
+                    Signature Hash Algorithm Signature: Unknown (11)
+                Signature Algorithm: rsa_pss_rsae_sha256 (0x0804)
+                    Signature Hash Algorithm Hash: Unknown (8)
+                    Signature Hash Algorithm Signature: Unknown (4)
+                Signature Algorithm: rsa_pss_rsae_sha384 (0x0805)
+                    Signature Hash Algorithm Hash: Unknown (8)
+                    Signature Hash Algorithm Signature: Unknown (5)
+                Signature Algorithm: rsa_pss_rsae_sha512 (0x0806)
+                    Signature Hash Algorithm Hash: Unknown (8)
+                    Signature Hash Algorithm Signature: Unknown (6)
+                Signature Algorithm: rsa_pkcs1_sha256 (0x0401)
+                    Signature Hash Algorithm Hash: SHA256 (4)
+                    Signature Hash Algorithm Signature: RSA (1)
+                Signature Algorithm: rsa_pkcs1_sha384 (0x0501)
+                    Signature Hash Algorithm Hash: SHA384 (5)
+                    Signature Hash Algorithm Signature: RSA (1)
+                Signature Algorithm: rsa_pkcs1_sha512 (0x0601)
+                    Signature Hash Algorithm Hash: SHA512 (6)
+                    Signature Hash Algorithm Signature: RSA (1)
+                Signature Algorithm: SHA224 ECDSA (0x0303)
+                    Signature Hash Algorithm Hash: SHA224 (3)
+                    Signature Hash Algorithm Signature: ECDSA (3)
+                Signature Algorithm: SHA224 RSA (0x0301)
+                    Signature Hash Algorithm Hash: SHA224 (3)
+                    Signature Hash Algorithm Signature: RSA (1)
+                Signature Algorithm: SHA224 DSA (0x0302)
+                    Signature Hash Algorithm Hash: SHA224 (3)
+                    Signature Hash Algorithm Signature: DSA (2)
+                Signature Algorithm: SHA256 DSA (0x0402)
+                    Signature Hash Algorithm Hash: SHA256 (4)
+                    Signature Hash Algorithm Signature: DSA (2)
+                Signature Algorithm: SHA384 DSA (0x0502)
+                    Signature Hash Algorithm Hash: SHA384 (5)
+                    Signature Hash Algorithm Signature: DSA (2)
+                Signature Algorithm: SHA512 DSA (0x0602)
+                    Signature Hash Algorithm Hash: SHA512 (6)
+                    Signature Hash Algorithm Signature: DSA (2)
+            Distinguished Names Length: 21
+            Distinguished Names (21 bytes)
+                Distinguished Name Length: 19
+                Distinguished Name: (id-at-commonName=CA-Lab)
+                    RDNSequence item: 1 item (id-at-commonName=CA-Lab)
+                        RelativeDistinguishedName item (id-at-commonName=CA-Lab)
+                            Object Id: 2.5.4.3 (id-at-commonName)
+                            DirectoryString: uTF8String (4)
+                                uTF8String: CA-Lab
+    TLSv1.2 Record Layer: Handshake Protocol: Server Hello Done
+        Content Type: Handshake (22)
+        Version: TLS 1.2 (0x0303)
+        Length: 4
+        Handshake Protocol: Server Hello Done
+            Handshake Type: Server Hello Done (14)
+            Length: 0
+

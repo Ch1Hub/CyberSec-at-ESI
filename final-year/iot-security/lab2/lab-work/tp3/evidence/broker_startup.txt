@@ -1,0 +1,11 @@
+1794915724: Info: running mosquitto as user id: 1000.
+1794915724: mosquitto version 2.1.2 starting
+1794915724: Config loaded from /mosquitto/config/mosquitto.conf.
+1794915724: Bridge support available.
+1794915724: Persistence support available.
+1794915724: TLS support available.
+1794915724: TLS-PSK support available.
+1794915724: Websockets support available.
+1794915724: Plugin builtin-security has registered to receive 'basic-auth' events.
+1794915724: Opening ipv4 listen socket on port 8883.
+1794915724: mosquitto version 2.1.2 running

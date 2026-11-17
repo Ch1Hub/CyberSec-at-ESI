@@ -1,0 +1,8 @@
+6	Client Hello (SNI=localhost)
+8	Server Hello, Certificate, Server Key Exchange, Certificate Request, Server Hello Done
+10	Certificate, Client Key Exchange, Change Cipher Spec, Encrypted Handshake Message
+11	Alert (Level: Fatal, Description: Handshake Failure)
+
+Alertes TLS :
+11	40	2
+Application Data : 0

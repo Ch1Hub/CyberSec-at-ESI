@@ -1,0 +1,25 @@
+Wi-Fi : connecté au réseau IOT-LAB (simulation)
+Horloge : synchronisée (NTP simulé par l'hôte)
+MODE TEST : aucun certificat client chargé
+Traceback (most recent call last):
+  File "/home/chihab/Documents/study/cys3CS/iotSec/lab2/lab-work/tp3/esp8266_mtls_sim.py", line 68, in <module>
+    main()
+    ~~~~^^
+  File "/home/chihab/Documents/study/cys3CS/iotSec/lab2/lab-work/tp3/esp8266_mtls_sim.py", line 54, in main
+    client.connect(BROKER, PORT, keepalive=30)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/chihab/.local/lib/python3.13/site-packages/paho/mqtt/client.py", line 1435, in connect
+    return self.reconnect()
+           ~~~~~~~~~~~~~~^^
+  File "/home/chihab/.local/lib/python3.13/site-packages/paho/mqtt/client.py", line 1598, in reconnect
+    self._sock = self._create_socket()
+                 ~~~~~~~~~~~~~~~~~~~^^
+  File "/home/chihab/.local/lib/python3.13/site-packages/paho/mqtt/client.py", line 4612, in _create_socket
+    sock = self._ssl_wrap_socket(sock)
+  File "/home/chihab/.local/lib/python3.13/site-packages/paho/mqtt/client.py", line 4671, in _ssl_wrap_socket
+    ssl_sock.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib64/python3.13/ssl.py", line 1372, in do_handshake
+    self._sslobj.do_handshake()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+ssl.SSLError: [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] ssl/tls alert handshake failure (_ssl.c:1032)

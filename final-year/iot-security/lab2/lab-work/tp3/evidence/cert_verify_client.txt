@@ -1,0 +1,13 @@
+$ openssl req -newkey rsa:2048 -nodes -keyout esp01.key -out esp01.csr \
+    -subj "/CN=esp01-client/O=IOT-LAB"
+$ openssl x509 -req -in esp01.csr -CA ca.crt -CAkey ca.key -CAcreateserial \
+    -out esp01.crt -days 825
+
+$ openssl verify -CAfile ca.crt esp01.crt
+certs/esp01.crt: OK
+
+$ openssl x509 -in esp01.crt -noout -subject -issuer -dates
+subject=CN=esp01-client, O=IOT-LAB
+issuer=CN=CA-Lab
+notBefore=Nov 17 11:37:06 2026 GMT
+notAfter=Feb 19 11:37:06 2029 GMT

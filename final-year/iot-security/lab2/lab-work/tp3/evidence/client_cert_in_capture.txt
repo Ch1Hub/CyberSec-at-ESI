@@ -1,0 +1,16 @@
+125:                        issuer: rdnSequence (0)
+131:                                            uTF8String: CA-Lab
+133:                            notBefore: utcTime (0)
+135:                            notAfter: utcTime (0)
+137:                        subject: rdnSequence (0)
+138:                            rdnSequence: 2 items (id-at-organizationName=IOT-LAB,id-at-commonName=esp01-client)
+139:                                RDNSequence item: 1 item (id-at-commonName=esp01-client)
+140:                                    RelativeDistinguishedName item (id-at-commonName=esp01-client)
+143:                                            uTF8String: esp01-client
+148:                                            uTF8String: IOT-LAB
+176:                        issuer: rdnSequence (0)
+182:                                            uTF8String: CA-Lab
+184:                            notBefore: utcTime (0)
+186:                            notAfter: utcTime (0)
+188:                        subject: rdnSequence (0)
+194:                                            uTF8String: CA-Lab
