@@ -1,0 +1,6 @@
+Wi-Fi : connecté au réseau IOT-LAB (simulation)
+CONNACK : Success
+PUBLISH capteurs/esp01/temp = 20.0
+PUBLISH capteurs/esp01/temp = 20.7
+PUBLISH capteurs/esp01/temp = 21.4
+PUBLISH capteurs/esp01/temp = 22.1

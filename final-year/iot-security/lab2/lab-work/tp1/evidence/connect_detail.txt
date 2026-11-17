@@ -1,0 +1,263 @@
+Frame 4: Packet, 98 bytes on wire (784 bits), 98 bytes captured (784 bits) on interface lo, id 0
+    Section number: 1
+    Interface id: 0 (lo)
+        Interface name: lo
+        Interface description: Loopback
+    Encapsulation type: Ethernet (1)
+    Arrival Time: Nov 17, 2026 12:33:16.397349760 CET
+    UTC Arrival Time: Nov 17, 2026 11:33:16.397349760 UTC
+    Epoch Arrival Time: 1794915196.397349760
+    [Time shift for this packet: 0.000000000 seconds]
+    [Time delta from previous captured frame: 100.424 microseconds]
+    [Time since reference or first frame: 135.383 microseconds]
+    Frame Number: 4
+    Frame Length: 98 bytes (784 bits)
+    Capture Length: 98 bytes (784 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp:mqtt]
+    Character encoding: ASCII (0)
+Ethernet II, Src: 00:00:00_00:00:00 (00:00:00:00:00:00), Dst: 00:00:00_00:00:00 (00:00:00:00:00:00)
+    Destination: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+    [Stream index: 0]
+Internet Protocol Version 4, Src: localhost (127.0.0.1), Dst: localhost (127.0.0.1)
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 84
+    Identification: 0x8b4b (35659)
+    010. .... = Flags: 0x2, Don't fragment
+        0... .... = Reserved bit: Not set
+        .1.. .... = Don't fragment: Set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0xb156 [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: localhost (127.0.0.1)
+    Destination Address: localhost (127.0.0.1)
+    [Stream index: 0]
+Transmission Control Protocol, Src Port: 46014 (46014), Dst Port: mqtt (1883), Seq: 1, Ack: 1, Len: 32
+    Source Port: 46014 (46014)
+    Destination Port: mqtt (1883)
+    [Stream index: 0]
+    [Stream Packet Number: 4]
+    [Conversation completeness: Incomplete, ESTABLISHED (7)]
+        ..0. .... = RST: Absent
+        ...0 .... = FIN: Absent
+        .... 0... = Data: Absent
+        .... .1.. = ACK: Present
+        .... ..1. = SYN-ACK: Present
+        .... ...1 = SYN: Present
+        [Completeness Flags: ···ASS]
+    [TCP Segment Len: 32]
+    Sequence Number: 1    (relative sequence number)
+    Sequence Number (raw): 2198774366
+    [Next Sequence Number: 33    (relative sequence number)]
+    Acknowledgment Number: 1    (relative ack number)
+    Acknowledgment number (raw): 1105667825
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Accurate ECN: Not set
+        .... 0... .... = Congestion Window Reduced: Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 64
+    [Calculated window size: 65536]
+    [Window size scaling factor: 1024]
+    Checksum: 0xfe48 [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 3069440824, TSecr 3793276744
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 3069440824
+            Timestamp echo reply: 3793276744
+    [Timestamps]
+        [Time since first frame in this TCP stream: 135.383 microseconds]
+        [Time since previous frame in this TCP stream: 100.424 microseconds]
+    [SEQ/ACK analysis]
+        [iRTT: 34.959 microseconds]
+        [Bytes in flight: 32]
+        [Bytes sent since last PSH flag: 32]
+    [Client Contiguous Streams: 1]
+    [Server Contiguous Streams: 1]
+    TCP payload (32 bytes)
+    [PDU Size: 32]
+MQ Telemetry Transport Protocol, Connect Command
+    Header Flags: 0x10, Message Type: Connect Command
+        0001 .... = Message Type: Connect Command (1)
+        .... 0000 = Reserved: 0
+    Msg Len: 30
+    Protocol Name Length: 4
+    Protocol Name: MQTT
+    Version: MQTT v3.1.1 (4)
+    Connect Flags: 0xc2, User Name Flag, Password Flag, QoS Level: At most once delivery (Fire and Forget), Clean Session Flag
+        1... .... = User Name Flag: Set
+        .1.. .... = Password Flag: Set
+        ..0. .... = Will Retain: Not set
+        ...0 0... = QoS Level: At most once delivery (Fire and Forget) (0)
+        .... .0.. = Will Flag: Not set
+        .... ..1. = Clean Session Flag: Set
+        .... ...0 = (Reserved): Not set
+    Keep Alive: 60
+    Client ID Length: 0
+    Client ID: 
+    User Name Length: 5
+    User Name: esp01
+    Password Length: 9
+    Password: esp01pass
+
+Frame 14: Packet, 103 bytes on wire (824 bits), 103 bytes captured (824 bits) on interface lo, id 0
+    Section number: 1
+    Interface id: 0 (lo)
+        Interface name: lo
+        Interface description: Loopback
+    Encapsulation type: Ethernet (1)
+    Arrival Time: Nov 17, 2026 12:33:17.371766672 CET
+    UTC Arrival Time: Nov 17, 2026 11:33:17.371766672 UTC
+    Epoch Arrival Time: 1794915197.371766672
+    [Time shift for this packet: 0.000000000 seconds]
+    [Time delta from previous captured frame: 71.644 microseconds]
+    [Time delta from previous displayed frame: 974.416912 milliseconds]
+    [Time since reference or first frame: 974.552295 milliseconds]
+    Frame Number: 14
+    Frame Length: 103 bytes (824 bits)
+    Capture Length: 103 bytes (824 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: eth:ethertype:ip:tcp:mqtt]
+    Character encoding: ASCII (0)
+Ethernet II, Src: 00:00:00_00:00:00 (00:00:00:00:00:00), Dst: 00:00:00_00:00:00 (00:00:00:00:00:00)
+    Destination: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Source: 00:00:00_00:00:00 (00:00:00:00:00:00)
+        .... ..0. .... .... .... .... = LG bit: Globally unique address (factory default)
+        .... ...0 .... .... .... .... = IG bit: Individual address (unicast)
+    Type: IPv4 (0x0800)
+    [Stream index: 0]
+Internet Protocol Version 4, Src: localhost (127.0.0.1), Dst: localhost (127.0.0.1)
+    0100 .... = Version: 4
+    .... 0101 = Header Length: 20 bytes (5)
+    Differentiated Services Field: 0x00 (DSCP: CS0, ECN: Not-ECT)
+        0000 00.. = Differentiated Services Codepoint: Default (0)
+        .... ..00 = Explicit Congestion Notification: Not ECN-Capable Transport (0)
+    Total Length: 89
+    Identification: 0x9718 (38680)
+    010. .... = Flags: 0x2, Don't fragment
+        0... .... = Reserved bit: Not set
+        .1.. .... = Don't fragment: Set
+        ..0. .... = More fragments: Not set
+    ...0 0000 0000 0000 = Fragment Offset: 0
+    Time to Live: 64
+    Protocol: TCP (6)
+    Header Checksum: 0xa584 [validation disabled]
+    [Header checksum status: Unverified]
+    Source Address: localhost (127.0.0.1)
+    Destination Address: localhost (127.0.0.1)
+    [Stream index: 0]
+Transmission Control Protocol, Src Port: 41845 (41845), Dst Port: mqtt (1883), Seq: 1, Ack: 1, Len: 37
+    Source Port: 41845 (41845)
+    Destination Port: mqtt (1883)
+    [Stream index: 1]
+    [Stream Packet Number: 4]
+    [Conversation completeness: Incomplete, ESTABLISHED (7)]
+        ..0. .... = RST: Absent
+        ...0 .... = FIN: Absent
+        .... 0... = Data: Absent
+        .... .1.. = ACK: Present
+        .... ..1. = SYN-ACK: Present
+        .... ...1 = SYN: Present
+        [Completeness Flags: ···ASS]
+    [TCP Segment Len: 37]
+    Sequence Number: 1    (relative sequence number)
+    Sequence Number (raw): 3325830175
+    [Next Sequence Number: 38    (relative sequence number)]
+    Acknowledgment Number: 1    (relative ack number)
+    Acknowledgment number (raw): 3361132206
+    1000 .... = Header Length: 32 bytes (8)
+    Flags: 0x018 (PSH, ACK)
+        000. .... .... = Reserved: Not set
+        ...0 .... .... = Accurate ECN: Not set
+        .... 0... .... = Congestion Window Reduced: Not set
+        .... .0.. .... = ECN-Echo: Not set
+        .... ..0. .... = Urgent: Not set
+        .... ...1 .... = Acknowledgment: Set
+        .... .... 1... = Push: Set
+        .... .... .0.. = Reset: Not set
+        .... .... ..0. = Syn: Not set
+        .... .... ...0 = Fin: Not set
+        [TCP Flags: ·······AP···]
+    Window: 64
+    [Calculated window size: 65536]
+    [Window size scaling factor: 1024]
+    Checksum: 0xfe4d [unverified]
+    [Checksum Status: Unverified]
+    Urgent Pointer: 0
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - No-Operation (NOP)
+            Kind: No-Operation (1)
+        TCP Option - Timestamps: TSval 1992564891, TSecr 3807593426
+            Kind: Time Stamp Option (8)
+            Length: 10
+            Timestamp value: 1992564891
+            Timestamp echo reply: 3807593426
+    [Timestamps]
+        [Time since first frame in this TCP stream: 125.471 microseconds]
+        [Time since previous frame in this TCP stream: 71.644 microseconds]
+    [SEQ/ACK analysis]
+        [iRTT: 53.827 microseconds]
+        [Bytes in flight: 37]
+        [Bytes sent since last PSH flag: 37]
+    [Client Contiguous Streams: 1]
+    [Server Contiguous Streams: 1]
+    TCP payload (37 bytes)
+    [PDU Size: 37]
+MQ Telemetry Transport Protocol, Connect Command
+    Header Flags: 0x10, Message Type: Connect Command
+        0001 .... = Message Type: Connect Command (1)
+        .... 0000 = Reserved: 0
+    Msg Len: 35
+    Protocol Name Length: 4
+    Protocol Name: MQTT
+    Version: MQTT v3.1.1 (4)
+    Connect Flags: 0xc2, User Name Flag, Password Flag, QoS Level: At most once delivery (Fire and Forget), Clean Session Flag
+        1... .... = User Name Flag: Set
+        .1.. .... = Password Flag: Set
+        ..0. .... = Will Retain: Not set
+        ...0 0... = QoS Level: At most once delivery (Fire and Forget) (0)
+        .... .0.. = Will Flag: Not set
+        .... ..1. = Clean Session Flag: Set
+        .... ...0 = (Reserved): Not set
+    Keep Alive: 30
+    Client ID Length: 5
+    Client ID: esp01
+    User Name Length: 5
+    User Name: esp01
+    Password Length: 9
+    Password: esp01pass
+
