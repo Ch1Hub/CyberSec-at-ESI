@@ -9,7 +9,6 @@ Network ACL practical work with packet-filter configurations and a small project
 
 | Path | Type | Size |
 | --- | --- | --- |
-| [project_acl/](project_acl/) | Directory | 0 files, 0 B |
 | [tp_acl/](tp_acl/) | Directory | 1 files, 0 B |
 
 ---
