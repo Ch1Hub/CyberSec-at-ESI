@@ -24,11 +24,9 @@ Broad network-security course: Nmap and service discovery, ACLs, IDS design in P
 | --- | --- |
 | [cours/](cours/) | Directory (7 files) |
 | [l-ids/](l-ids/) | Directory (19 files) |
-| [lab7/](lab7/) | Directory (0 files) |
 | [lids/](lids/) | Directory (20 files) |
 | [man/](man/) | Directory (9 files) |
 | [td1/](td1/) | Directory (5 files) |
-| [td2/](td2/) | Directory (0 files) |
 | [td3/](td3/) | Directory (1 files) |
 | [tp/](tp/) | Directory (11 files) |
 | [tp3/](tp3/) | Directory (2 files) |
